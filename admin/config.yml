@@ -5,7 +5,7 @@ backend:
   # Sveltia CMS uses a built-in proxy automatically for GitHub auth if no base_url is specified
 
 media_folder: "assets/img/uploads"
-public_folder: "assets/img/uploads"
+public_folder: "/assets/img/uploads"
 
 collections:
   - name: "database"

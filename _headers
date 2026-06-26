@@ -20,7 +20,3 @@
 
 /assets/icons/*
   Cache-Control: public, max-age=604800
-
-/data/*
-  Cache-Control: no-cache, must-revalidate
-

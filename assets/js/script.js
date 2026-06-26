@@ -570,7 +570,7 @@ const KopanaAPI = {
    */
   async getBerita(limit = 3) {
     try {
-      const response = await fetch('data/berita.json');
+      const response = await fetch(`data/berita.json?t=${new Date().getTime()}`);
       const data = await response.json();
       this.renderBerita(data.items || []);
     } catch (error) {
@@ -674,7 +674,7 @@ const KopanaAPI = {
    */
   async getGaleri() {
     try {
-      const response = await fetch('data/galeri.json');
+      const response = await fetch(`data/galeri.json?t=${new Date().getTime()}`);
       const data = await response.json();
       this.renderGaleri(data.items || []);
     } catch (error) {
@@ -687,7 +687,7 @@ const KopanaAPI = {
    */
   async getStatistik() {
     try {
-      const response = await fetch('data/statistik.json');
+      const response = await fetch(`data/statistik.json?t=${new Date().getTime()}`);
       const data = await response.json();
       
       const keys = ['anggota', 'tahun', 'pengurus', 'pengawas', 'cabang', 'karyawan'];
@@ -711,7 +711,7 @@ const KopanaAPI = {
    */
   async getKontak() {
     try {
-      const response = await fetch('data/kontak.json');
+      const response = await fetch(`data/kontak.json?t=${new Date().getTime()}`);
       const data = await response.json();
       
       const setEl = (id, text, attr, attrVal) => {
@@ -735,7 +735,7 @@ const KopanaAPI = {
    */
   async getBeranda() {
     try {
-      const response = await fetch('data/beranda.json');
+      const response = await fetch(`data/beranda.json?t=${new Date().getTime()}`);
       const data = await response.json();
       
       const setEl = (id, html) => {
@@ -762,7 +762,7 @@ const KopanaAPI = {
    */
   async getProfil() {
     try {
-      const response = await fetch('data/profil.json');
+      const response = await fetch(`data/profil.json?t=${new Date().getTime()}`);
       const data = await response.json();
       
       const setEl = (id, text) => {
@@ -793,7 +793,7 @@ const KopanaAPI = {
    */
   async getPengurus() {
     try {
-      const response = await fetch('data/pengurus.json');
+      const response = await fetch(`data/pengurus.json?t=${new Date().getTime()}`);
       const data = await response.json();
       
       // Render Pengurus

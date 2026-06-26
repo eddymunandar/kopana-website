@@ -17,16 +17,15 @@
   "dewan_pengawas": [
     {
       "nama": "Eddy Munandar",
-      "jabatan": "Pengawas"
+      "jabatan": "Ketua Pengawas"
     },
     {
       "nama": "Ahmad Toha",
-      "jabatan": "Pengawas",
-      "foto": "/assets/img/uploads/Toha.png"
+      "jabatan": "Anggota Pengawas"
     },
     {
       "nama": "Amin Purwanto",
-      "jabatan": "Pengawas"
+      "jabatan": "Anggota Pengawas"
     }
   ],
   "cabang": [
