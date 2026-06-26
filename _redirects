@@ -1,0 +1,8 @@
+# Cloudflare Pages Redirects
+# Format: [from] [to] [status]
+
+# Redirect non-www ke www (opsional, aktifkan jika perlu)
+# http://kopana.id/* https://www.kopana.id/:splat 301
+
+# SPA fallback (untuk pengembangan di masa depan jika jadi SPA)
+# /* /index.html 200

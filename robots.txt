@@ -1,0 +1,17 @@
+# robots.txt - KOPANA Yogyakarta
+# Website: https://kopana.id
+
+User-agent: *
+Allow: /
+
+# Izinkan akses ke semua halaman publik
+Allow: /index.html
+Allow: /assets/css/
+Allow: /assets/js/
+Allow: /assets/img/
+
+# Sitemap
+Sitemap: https://kopana.id/sitemap.xml
+
+# Crawl-delay untuk mengurangi beban server
+Crawl-delay: 1

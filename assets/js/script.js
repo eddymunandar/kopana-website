@@ -1,0 +1,671 @@
+/**
+ * ============================================================
+ * KOPANA - Koperasi Jasa Serba Usaha Purnakaryawan Pertamina
+ * Website Resmi | script.js
+ * Version: 1.0.0
+ * ============================================================
+ *
+ * Daftar Isi:
+ * 1.  Loading Screen
+ * 2.  Navbar (Sticky + Scroll)
+ * 3.  Mobile Navigation
+ * 4.  Dark Mode Toggle
+ * 5.  Hero Particles Animation
+ * 6.  Smooth Scroll
+ * 7.  Scroll Reveal Animation (IntersectionObserver)
+ * 8.  Tab (Tentang Kami)
+ * 9.  Counter Animation (Statistik)
+ * 10. Galeri Filter
+ * 11. Lightbox
+ * 12. Back to Top
+ * 13. Active NavLink on Scroll
+ * 14. API Ready (Google Apps Script Integration)
+ * ============================================================
+ */
+
+'use strict';
+
+/* ============================================================
+   1. LOADING SCREEN
+   ============================================================ */
+(function initLoadingScreen() {
+  const loadingScreen = document.getElementById('loading-screen');
+  if (!loadingScreen) return;
+
+  // Minimum loading time agar animasi terlihat
+  const minTime = 1800;
+  const startTime = Date.now();
+
+  window.addEventListener('load', () => {
+    const elapsed = Date.now() - startTime;
+    const remaining = Math.max(0, minTime - elapsed);
+
+    setTimeout(() => {
+      loadingScreen.classList.add('hidden');
+      // Hapus dari DOM setelah transisi selesai
+      setTimeout(() => loadingScreen.remove(), 700);
+    }, remaining);
+  });
+})();
+
+
+/* ============================================================
+   2. NAVBAR - STICKY & SCROLL EFFECT
+   ============================================================ */
+(function initNavbar() {
+  const navbar = document.getElementById('navbar');
+  if (!navbar) return;
+
+  let lastScroll = 0;
+
+  function handleScroll() {
+    const currentScroll = window.scrollY;
+
+    // Tambahkan class scrolled saat sudah scroll
+    if (currentScroll > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+
+    lastScroll = currentScroll;
+  }
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll(); // Panggil saat load
+})();
+
+
+/* ============================================================
+   3. MOBILE NAVIGATION
+   ============================================================ */
+(function initMobileNav() {
+  const hamburger = document.getElementById('nav-hamburger');
+  const navMenu = document.getElementById('nav-menu');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  if (!hamburger || !navMenu) return;
+
+  function toggleMenu() {
+    const isOpen = navMenu.classList.contains('open');
+    navMenu.classList.toggle('open');
+    hamburger.classList.toggle('open');
+    // Cegah scroll saat menu terbuka
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+    hamburger.setAttribute('aria-expanded', !isOpen);
+  }
+
+  function closeMenu() {
+    navMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+    document.body.style.overflow = '';
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
+
+  hamburger.addEventListener('click', toggleMenu);
+
+  // Tutup menu saat klik link atau tombol login mobile
+  const allMenuLinks = navMenu.querySelectorAll('.nav-link, .btn-login-mobile');
+  allMenuLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+  // Tutup menu saat klik di luar
+  document.addEventListener('click', (e) => {
+    if (navMenu.classList.contains('open') &&
+        !navMenu.contains(e.target) &&
+        !hamburger.contains(e.target)) {
+      closeMenu();
+    }
+  });
+
+  // Tutup saat resize ke desktop
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) closeMenu();
+  });
+})();
+
+
+/* ============================================================
+   4. DARK MODE TOGGLE
+   ============================================================ */
+(function initDarkMode() {
+  const toggleBtn = document.getElementById('dark-toggle');
+  const icon = document.getElementById('dark-icon');
+  if (!toggleBtn) return;
+
+  // Baca preferensi tersimpan atau system preference
+  const saved = localStorage.getItem('kopana-dark-mode');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  let isDark = saved !== null ? saved === 'true' : prefersDark;
+
+  function applyDarkMode(dark) {
+    document.body.classList.toggle('dark-mode', dark);
+    if (icon) {
+      icon.className = dark ? 'fas fa-sun' : 'fas fa-moon';
+    }
+    localStorage.setItem('kopana-dark-mode', dark);
+  }
+
+  applyDarkMode(isDark);
+
+  toggleBtn.addEventListener('click', () => {
+    isDark = !isDark;
+    applyDarkMode(isDark);
+  });
+
+  // Ikuti perubahan system preference
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (localStorage.getItem('kopana-dark-mode') === null) {
+      isDark = e.matches;
+      applyDarkMode(isDark);
+    }
+  });
+})();
+
+
+/* ============================================================
+   5. HERO PARTICLES ANIMATION
+   ============================================================ */
+(function initParticles() {
+  const container = document.getElementById('hero-particles');
+  if (!container) return;
+
+  // Kurangi partikel di mobile untuk performa
+  const count = window.innerWidth < 768 ? 10 : 20;
+
+  for (let i = 0; i < count; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'hero-particle';
+
+    // Ukuran acak
+    const size = Math.random() * 60 + 15;
+    particle.style.cssText = `
+      width: ${size}px;
+      height: ${size}px;
+      left: ${Math.random() * 100}%;
+      animation-duration: ${Math.random() * 15 + 10}s;
+      animation-delay: ${Math.random() * 10}s;
+    `;
+
+    container.appendChild(particle);
+  }
+})();
+
+
+/* ============================================================
+   6. SMOOTH SCROLL untuk anchor links
+   ============================================================ */
+(function initSmoothScroll() {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (!target) return;
+
+      e.preventDefault();
+      const navHeight = document.getElementById('navbar')?.offsetHeight || 80;
+      const targetPos = target.getBoundingClientRect().top + window.scrollY - navHeight;
+
+      window.scrollTo({ top: targetPos, behavior: 'smooth' });
+    });
+  });
+})();
+
+
+/* ============================================================
+   7. SCROLL REVEAL ANIMATION (IntersectionObserver)
+   ============================================================ */
+(function initScrollReveal() {
+  // Tidak jalankan jika user prefer reduced motion
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.reveal').forEach(el => {
+      el.classList.add('revealed');
+    });
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target); // Hanya animasi sekali
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
+
+
+/* ============================================================
+   8. TAB SYSTEM (Tentang Kami)
+   ============================================================ */
+(function initTabs() {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  if (!tabButtons.length) return;
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+
+      // Update buttons
+      tabButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Update content
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+        if (content.id === `tab-${target}`) {
+          content.classList.add('active');
+        }
+      });
+    });
+  });
+})();
+
+
+/* ============================================================
+   9. COUNTER ANIMATION (Statistik)
+   ============================================================ */
+(function initCounters() {
+  const counters = document.querySelectorAll('.stat-number[data-target]');
+  if (!counters.length) return;
+
+  let started = false;
+
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !started) {
+      started = true;
+      counters.forEach(counter => animateCounter(counter));
+    }
+  }, { threshold: 0.3 });
+
+  const statsSection = document.getElementById('statistik');
+  if (statsSection) observer.observe(statsSection);
+
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.target, 10);
+    const suffix = el.dataset.suffix || '';
+    const prefix = el.dataset.prefix || '';
+    const duration = 2000;
+    const startTime = performance.now();
+
+    // Jika placeholder (misal JUMLAH_ANGGOTA), tampilkan teks
+    if (isNaN(target)) {
+      el.textContent = el.dataset.target;
+      return;
+    }
+
+    function update(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.floor(eased * target);
+
+      el.textContent = prefix + current.toLocaleString('id-ID') + suffix;
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        el.textContent = prefix + target.toLocaleString('id-ID') + suffix;
+      }
+    }
+
+    requestAnimationFrame(update);
+  }
+})();
+
+
+/* ============================================================
+   10. GALERI FILTER
+   ============================================================ */
+(function initGaleriFilter() {
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const galeriItems = document.querySelectorAll('.galeri-item');
+
+  if (!filterBtns.length) return;
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+
+      // Update active button
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Filter items dengan animasi
+      galeriItems.forEach(item => {
+        const category = item.dataset.category;
+        const shouldShow = filter === 'all' || category === filter;
+
+        if (shouldShow) {
+          item.style.opacity = '0';
+          item.style.display = 'block';
+          // Gunakan requestAnimationFrame untuk trigger reflow
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              item.style.transition = 'opacity 0.4s ease';
+              item.style.opacity = '1';
+            });
+          });
+        } else {
+          item.style.transition = 'opacity 0.3s ease';
+          item.style.opacity = '0';
+          setTimeout(() => {
+            item.style.display = 'none';
+          }, 300);
+        }
+      });
+    });
+  });
+})();
+
+
+/* ============================================================
+   11. LIGHTBOX (dengan Touch Swipe untuk Mobile)
+   ============================================================ */
+(function initLightbox() {
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxCaption = document.getElementById('lightbox-caption');
+  const lightboxClose = document.getElementById('lightbox-close');
+
+  if (!lightbox) return;
+
+  let currentIndex = 0;
+  const galeriItems = document.querySelectorAll('.galeri-item');
+
+  // Buka lightbox
+  galeriItems.forEach((item, index) => {
+    // Click support
+    item.addEventListener('click', () => openLightbox(item, index));
+
+    // Keyboard support (Enter / Space)
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openLightbox(item, index);
+      }
+    });
+  });
+
+  function openLightbox(item, index) {
+    const img = item.querySelector('.galeri-img');
+    const caption = item.querySelector('.galeri-caption h4');
+    const subcap = item.querySelector('.galeri-caption span');
+
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightboxCaption.textContent = caption
+      ? `${caption.textContent}${subcap ? ' — ' + subcap.textContent : ''}`
+      : '';
+
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    currentIndex = index;
+    lightboxClose.focus();
+  }
+
+  // Tutup lightbox
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+    // Kembalikan fokus ke item galeri yang dibuka
+    if (galeriItems[currentIndex]) {
+      galeriItems[currentIndex].focus();
+    }
+  }
+
+  lightboxClose.addEventListener('click', closeLightbox);
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') navigateLightbox(1);
+    if (e.key === 'ArrowLeft') navigateLightbox(-1);
+  });
+
+  function navigateLightbox(direction) {
+    const visibleItems = Array.from(galeriItems).filter(
+      item => item.style.display !== 'none'
+    );
+    const visibleIndex = visibleItems.indexOf(galeriItems[currentIndex]);
+    const nextIndex = (visibleIndex + direction + visibleItems.length) % visibleItems.length;
+    const nextItem = visibleItems[nextIndex];
+
+    if (nextItem) {
+      currentIndex = Array.from(galeriItems).indexOf(nextItem);
+      const img = nextItem.querySelector('.galeri-img');
+      const caption = nextItem.querySelector('.galeri-caption h4');
+
+      lightboxImg.style.opacity = '0';
+      setTimeout(() => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxCaption.textContent = caption ? caption.textContent : '';
+        lightboxImg.style.opacity = '1';
+      }, 200);
+    }
+  }
+
+  // ---- TOUCH SWIPE SUPPORT (untuk HP/Mobile) ----
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchEndX = 0;
+  const SWIPE_THRESHOLD = 60; // pixel minimum untuk dianggap swipe
+
+  lightbox.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].clientX;
+    touchStartY = e.changedTouches[0].clientY;
+  }, { passive: true });
+
+  lightbox.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = Math.abs(touchEndY - touchStartY);
+
+    // Hanya proses swipe horizontal (bukan scroll vertikal)
+    if (Math.abs(deltaX) > SWIPE_THRESHOLD && deltaY < 80) {
+      if (deltaX < 0) {
+        // Swipe ke kiri → foto berikutnya
+        navigateLightbox(1);
+      } else {
+        // Swipe ke kanan → foto sebelumnya
+        navigateLightbox(-1);
+      }
+    }
+
+    // Tap cepat di area selain gambar → tutup
+    if (Math.abs(deltaX) < 10 && deltaY < 10 && e.target === lightbox) {
+      closeLightbox();
+    }
+  }, { passive: true });
+})();
+
+
+
+/* ============================================================
+   12. BACK TO TOP
+   ============================================================ */
+(function initBackToTop() {
+  const btn = document.getElementById('back-to-top');
+  if (!btn) return;
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 400) {
+      btn.classList.add('visible');
+    } else {
+      btn.classList.remove('visible');
+    }
+  }, { passive: true });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+
+
+/* ============================================================
+   13. ACTIVE NAV LINK ON SCROLL
+   ============================================================ */
+(function initActiveNavOnScroll() {
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+
+  if (!sections.length || !navLinks.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === `#${id}`) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }, {
+    threshold: 0.3,
+    rootMargin: '-80px 0px -60% 0px'
+  });
+
+  sections.forEach(section => observer.observe(section));
+})();
+
+
+/* ============================================================
+   14. API READY - Google Apps Script Integration
+   ============================================================
+   Struktur ini siap menerima data dari Google Apps Script.
+   Ganti https://script.google.com/macros/s/AKfycbzYDPTRz9usUEwOhgWEy7Y4HiC_gfKxQ310KWAr4seA3KgrFXObiEX1VAPjaUclF7XG/exec dengan URL deployment Anda.
+   ============================================================ */
+const KopanaAPI = {
+  // URL Google Apps Script - ganti dengan URL Anda
+  scriptUrl: 'https://script.google.com/macros/s/AKfycbzYDPTRz9usUEwOhgWEy7Y4HiC_gfKxQ310KWAr4seA3KgrFXObiEX1VAPjaUclF7XG/exec',
+
+  /**
+   * Ambil daftar berita dari Google Sheets
+   * @param {number} limit - Jumlah berita yang ditampilkan
+   * @returns {Promise<Array>}
+   */
+  async getBerita(limit = 3) {
+    try {
+      const url = `${this.scriptUrl}?action=getBerita&limit=${limit}`;
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.success) {
+        this.renderBerita(data.items);
+      }
+    } catch (error) {
+      console.info('KopanaAPI: Mode offline — menampilkan konten statis.', error);
+      // Konten statis sudah ditampilkan di HTML
+    }
+  },
+
+  /**
+   * Render berita ke DOM
+   * @param {Array} items
+   */
+  renderBerita(items) {
+    const container = document.getElementById('berita-container');
+    if (!container || !items?.length) return;
+
+    container.innerHTML = items.map(item => `
+      <article class="berita-card reveal">
+        <div class="berita-img-wrap">
+          <img src="${item.foto || 'assets/img/berita-placeholder.jpg'}"
+               alt="${item.judul}"
+               class="berita-img"
+               loading="lazy">
+          <span class="berita-category">${item.kategori || 'Berita'}</span>
+        </div>
+        <div class="berita-body">
+          <div class="berita-meta">
+            <span><i class="far fa-calendar-alt" aria-hidden="true"></i> ${item.tanggal}</span>
+            <span><i class="far fa-user" aria-hidden="true"></i> ${item.penulis || 'Redaksi'}</span>
+          </div>
+          <h3 class="berita-title">${item.judul}</h3>
+          <p class="berita-excerpt">${item.ringkasan}</p>
+          <a href="${item.url || '#'}" class="berita-read-more" aria-label="Baca selengkapnya: ${item.judul}">
+            Baca Selengkapnya <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </article>
+    `).join('');
+
+    // Re-init scroll reveal untuk elemen baru
+    document.querySelectorAll('#berita-container .reveal').forEach(el => {
+      new IntersectionObserver(([entry], obs) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          obs.unobserve(entry.target);
+        }
+      }, { threshold: 0.1 }).observe(el);
+    });
+  },
+
+  /**
+   * Ambil data galeri dari Google Sheets
+   */
+  async getGaleri() {
+    try {
+      const url = `${this.scriptUrl}?action=getGaleri`;
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.success) {
+        this.renderGaleri(data.items);
+      }
+    } catch (error) {
+      console.info('KopanaAPI: Mode offline — menampilkan galeri statis.', error);
+    }
+  },
+
+  /**
+   * Ambil statistik koperasi
+   */
+  async getStatistik() {
+    try {
+      const url = `${this.scriptUrl}?action=getStatistik`;
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.success && data.anggota) {
+        const counter = document.querySelector('.stat-number[data-key="anggota"]');
+        if (counter) {
+          counter.dataset.target = data.anggota;
+        }
+      }
+    } catch (error) {
+      console.info('KopanaAPI: Mode offline — menampilkan data statis.');
+    }
+  }
+};
+
+// Inisialisasi API (dinonaktifkan sampai URL tersedia)
+// KopanaAPI.getBerita();
+// KopanaAPI.getGaleri();
+// KopanaAPI.getStatistik();
+
+
+/* ============================================================
+   HELPER: Set current year di footer
+   ============================================================ */
+(function setYear() {
+  const yearEl = document.getElementById('footer-year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+})();
