@@ -773,6 +773,20 @@ const KopanaAPI = {
       setEl('dyn-sejarah-1', data.sejarah_1);
       setEl('dyn-sejarah-2', data.sejarah_2);
       setEl('dyn-visi', data.visi);
+      
+      const setElAttr = (id, text, attr, attrVal) => {
+        const el = document.getElementById(id);
+        if (el) {
+          if (text !== null) el.innerHTML = text;
+          if (attr && attrVal) el.setAttribute(attr, attrVal);
+        }
+      };
+      
+      setElAttr('dyn-profil-badge-angka', data.badge_angka, null, null);
+      setElAttr('dyn-profil-badge-teks', data.badge_teks, null, null);
+      
+      const profilImg = document.getElementById('dyn-profil-foto');
+      if (profilImg && data.foto) profilImg.src = data.foto;
 
       const misiContainer = document.getElementById('dyn-misi-container');
       if (misiContainer && data.misi) {

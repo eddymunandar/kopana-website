@@ -1,22 +1,22 @@
 {
-  "sejarah_1": "KOPANA &mdash; Koperasi Jasa Serba Usaha Purnakaryawan Pertamina &mdash; didirikan pada tahun <strong>1996</strong> oleh para purnakaryawan Pertamina yang bertekad mewujudkan kesejahteraan bersama melalui wadah koperasi yang kuat dan modern.",
-  "sejarah_2": "Berlokasi di Brambang Gatak, Selomartani, Kalasan, Sleman, Daerah Istimewa Yogyakarta, KOPANA telah berkembang menjadi lembaga keuangan koperasi yang dipercaya oleh ratusan anggota. Selama lebih dari tiga dekade, KOPANA konsisten memberikan layanan terbaik di bidang simpan-pinjam, investasi, dan jasa lainnya bagi para purnakaryawan Pertamina dan keluarganya.\n\nDengan semangat kebersamaan dan azas kekeluargaan, KOPANA terus bertransformasi menghadirkan layanan digital melalui aplikasi anggota berbasis Google Apps Script yang dapat diakses secara online.",
-  "visi": "Menjadi koperasi jasa terpercaya, modern, dan profesional yang mampu meningkatkan kesejahteraan anggota secara berkelanjutan berdasarkan nilai-nilai integritas dan kebersamaan.",
+  "foto": "/assets/img/galeri-5.jpg",
+  "badge_angka": "30+",
+  "badge_teks": "Tahun Berkarya",
+  "sejarah_1": "Koperasi Jasa Serba Usaha Purnakaryawan Pertamina (KOPANA) Yogyakarta didirikan pada tanggal 26 Oktober 1996 di Yogyakarta. Pendirian koperasi ini dilatarbelakangi oleh keinginan luhur para purnakaryawan Pertamina untuk tetap menjalin silaturahmi, saling membantu, serta meningkatkan kesejahteraan bersama di masa purna tugas.",
+  "sejarah_2": "Sejak awal berdirinya, KOPANA telah beroperasi berdasarkan prinsip-prinsip koperasi yang berasaskan kekeluargaan dan gotong royong. Dengan nomor badan hukum 242/BH/KWK.12/X/1996, kami terus berkembang dan berinovasi untuk memberikan layanan simpan pinjam, perdagangan, dan jasa lainnya yang dikelola secara profesional dan transparan demi kemajuan seluruh anggota.",
+  "visi": "Menjadi Koperasi Prima dan Terpercaya dalam memberikan layanan jasa keuangan, simpan pinjam, serta perdagangan, guna meningkatkan kesejahteraan ekonomi anggota secara berkesinambungan dan berkelanjutan.",
   "misi": [
     {
-      "teks": "Memberikan layanan simpan-pinjam dan jasa yang mudah, cepat, dan transparan kepada seluruh anggota."
+      "teks": "Memberikan pelayanan yang profesional, transparan, dan berorientasi pada kepuasan anggota."
     },
     {
-      "teks": "Meningkatkan kompetensi pengurus, pengawas, dan karyawan melalui pelatihan dan pendidikan berkala."
+      "teks": "Mengelola dana anggota dengan prinsip kehati-hatian (prudent) dan amanah."
     },
     {
-      "teks": "Mengelola keuangan koperasi secara akuntabel, efisien, dan bertanggung jawab demi kepercayaan anggota."
+      "teks": "Mengembangkan unit usaha koperasi secara inovatif dan produktif untuk memaksimalkan Sisa Hasil Usaha (SHU)."
     },
     {
-      "teks": "Mengembangkan sistem informasi dan teknologi digital untuk meningkatkan kualitas pelayanan kepada anggota."
-    },
-    {
-      "teks": "Menjalin sinergi dan kemitraan strategis yang saling menguntungkan untuk pengembangan usaha koperasi."
+      "teks": "Meningkatkan kemampuan SDM pengelola melalui pelatihan dan penerapan tata kelola koperasi yang baik (Good Corporate Governance)."
     }
   ]
 }

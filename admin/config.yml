@@ -69,11 +69,15 @@ collections:
           - { label: "Teks Sambutan Paragraf 2", name: "sambutan_2", widget: "text" }
 
       - name: "profil"
-        label: "Tentang Kami (Sejarah & Visi Misi)"
+        label: "Tentang Kami (Profil)"
         file: "data/profil.json"
+        description: "Sejarah, Visi, Misi, dan Foto Utama Profil"
         fields:
-          - { label: "Sejarah (Paragraf 1)", name: "sejarah_1", widget: "text" }
-          - { label: "Sejarah (Paragraf 2)", name: "sejarah_2", widget: "text" }
+          - { label: "Foto Utama Profil", name: "foto", widget: "image", required: false }
+          - { label: "Angka Badge (Kotak Biru)", name: "badge_angka", widget: "string", default: "30+" }
+          - { label: "Teks Badge (Kotak Biru)", name: "badge_teks", widget: "string", default: "Tahun Berkarya" }
+          - { label: "Sejarah Paragraf 1", name: "sejarah_1", widget: "text" }
+          - { label: "Sejarah Paragraf 2", name: "sejarah_2", widget: "text" }
           - { label: "Visi", name: "visi", widget: "text" }
           - name: "misi"
             label: "Daftar Misi"
