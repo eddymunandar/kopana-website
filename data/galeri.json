@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "url": "assets/img/galeri-1.jpg",
+      "judul": "Rapat Anggota Tahunan KOPANA 2025",
+      "kategori": "Kegiatan"
+    },
+    {
+      "url": "assets/img/galeri-2.jpg",
+      "judul": "Pelatihan Manajemen Anggota KOPANA",
+      "kategori": "Pelatihan"
+    },
+    {
+      "url": "assets/img/galeri-3.jpg",
+      "judul": "Gathering Keluarga Besar KOPANA Yogyakarta",
+      "kategori": "Sosial"
+    },
+    {
+      "url": "assets/img/galeri-4.jpg",
+      "judul": "Rapat Pengurus KOPANA Yogyakarta",
+      "kategori": "Kegiatan"
+    },
+    {
+      "url": "assets/img/galeri-5.jpg",
+      "judul": "Kegiatan Outbound Pengurus",
+      "kategori": "Sosial"
+    },
+    {
+      "url": "assets/img/galeri-6.jpg",
+      "judul": "Penyerahan Penghargaan Anggota Teladan",
+      "kategori": "Kegiatan"
+    }
+  ]
+}

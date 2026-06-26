@@ -323,7 +323,7 @@
 /* ============================================================
    10. GALERI FILTER
    ============================================================ */
-(function initGaleriFilter() {
+window.initGaleriFilter = function() {
   const filterBtns = document.querySelectorAll('.filter-btn');
   const galeriItems = document.querySelectorAll('.galeri-item');
 
@@ -368,7 +368,7 @@
 /* ============================================================
    11. LIGHTBOX (dengan Touch Swipe untuk Mobile)
    ============================================================ */
-(function initLightbox() {
+window.initLightbox = function() {
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
   const lightboxCaption = document.getElementById('lightbox-caption');
@@ -458,30 +458,9 @@
   }
 
   // ---- TOUCH SWIPE SUPPORT (untuk HP/Mobile) ----
+  // Touch Swipe Events untuk Mobile Lightbox
   let touchStartX = 0;
-  let touchStartY = 0;
   let touchEndX = 0;
-  const SWIPE_THRESHOLD = 60; // pixel minimum untuk dianggap swipe
-
-  lightbox.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].clientX;
-    touchStartY = e.changedTouches[0].clientY;
-  }, { passive: true });
-
-  lightbox.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
-
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = Math.abs(touchEndY - touchStartY);
-
-    // Hanya proses swipe horizontal (bukan scroll vertikal)
-    if (Math.abs(deltaX) > SWIPE_THRESHOLD && deltaY < 80) {
-      if (deltaX < 0) {
-        // Swipe ke kiri → foto berikutnya
-        navigateLightbox(1);
-      } else {
-        // Swipe ke kanan → foto sebelumnya
         navigateLightbox(-1);
       }
     }
@@ -557,22 +536,17 @@ const KopanaAPI = {
   scriptUrl: 'https://script.google.com/macros/s/AKfycbzYDPTRz9usUEwOhgWEy7Y4HiC_gfKxQ310KWAr4seA3KgrFXObiEX1VAPjaUclF7XG/exec',
 
   /**
-   * Ambil daftar berita dari Google Sheets
+   * Ambil daftar berita dari lokal data/berita.json
    * @param {number} limit - Jumlah berita yang ditampilkan
    * @returns {Promise<Array>}
    */
   async getBerita(limit = 3) {
     try {
-      const url = `${this.scriptUrl}?action=getBerita&limit=${limit}`;
-      const response = await fetch(url);
+      const response = await fetch('data/berita.json');
       const data = await response.json();
-
-      if (data.success) {
-        this.renderBerita(data.items);
-      }
+      this.renderBerita(data.items || []);
     } catch (error) {
-      console.info('KopanaAPI: Mode offline — menampilkan konten statis.', error);
-      // Konten statis sudah ditampilkan di HTML
+      console.info('KopanaAPI: Gagal memuat berita.json, menggunakan konten statis.', error);
     }
   },
 
@@ -582,7 +556,12 @@ const KopanaAPI = {
    */
   renderBerita(items) {
     const container = document.getElementById('berita-container');
-    if (!container || !items?.length) return;
+    if (!container) return;
+    
+    if (!items || items.length === 0) {
+      container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-light);">Belum ada berita saat ini.</p>';
+      return;
+    }
 
     container.innerHTML = items.map(item => `
       <article class="berita-card reveal">
@@ -616,50 +595,93 @@ const KopanaAPI = {
         }
       }, { threshold: 0.1 }).observe(el);
     });
+  /**
+   * Render Galeri ke DOM
+   */
+  renderGaleri(items) {
+    const container = document.querySelector('.galeri-grid');
+    if (!container) return;
+    
+    if (!items || items.length === 0) {
+      container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-light);">Belum ada foto galeri.</p>';
+      return;
+    }
+
+    container.innerHTML = items.map((item, index) => {
+      // Buat kelas filter yang aman (lowercase, tanpa spasi)
+      const cat = (item.kategori || 'lainnya').toLowerCase().replace(/[^a-z0-9]/g, '');
+      const delay = index > 0 ? `reveal-delay-${(index % 5) + 1}` : '';
+      return `
+        <div class="galeri-item reveal ${delay}" data-category="${cat}" role="button" tabindex="0" aria-label="Buka foto: ${item.judul}">
+          <img src="${item.url}" alt="${item.judul}" class="galeri-img" loading="lazy">
+          <div class="galeri-overlay">
+            <div class="galeri-overlay-icon" aria-hidden="true"><i class="fas fa-search-plus"></i></div>
+            <div class="galeri-caption">
+              <h4>${item.judul}</h4>
+              <span>${item.kategori}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Re-init observer untuk elemen baru
+    document.querySelectorAll('.galeri-grid .reveal').forEach(el => {
+      new IntersectionObserver(([entry], obs) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          obs.unobserve(entry.target);
+        }
+      }, { threshold: 0.1 }).observe(el);
+    });
+
+    // Re-init lightbox & filter setelah item dimuat
+    if (typeof window.initGaleriFilter === 'function') window.initGaleriFilter();
+    if (typeof window.initLightbox === 'function') window.initLightbox();
   },
 
   /**
-   * Ambil data galeri dari Google Sheets
+   * Ambil data galeri dari lokal data/galeri.json
    */
   async getGaleri() {
     try {
-      const url = `${this.scriptUrl}?action=getGaleri`;
-      const response = await fetch(url);
+      const response = await fetch('data/galeri.json');
       const data = await response.json();
-
-      if (data.success) {
-        this.renderGaleri(data.items);
-      }
+      this.renderGaleri(data.items || []);
     } catch (error) {
-      console.info('KopanaAPI: Mode offline — menampilkan galeri statis.', error);
+      console.info('KopanaAPI: Gagal memuat galeri.json, menggunakan konten statis.', error);
     }
   },
 
   /**
-   * Ambil statistik koperasi
+   * Ambil statistik koperasi dari lokal data/statistik.json
    */
   async getStatistik() {
     try {
-      const url = `${this.scriptUrl}?action=getStatistik`;
-      const response = await fetch(url);
+      const response = await fetch('data/statistik.json');
       const data = await response.json();
-
-      if (data.success && data.anggota) {
-        const counter = document.querySelector('.stat-number[data-key="anggota"]');
-        if (counter) {
-          counter.dataset.target = data.anggota;
+      
+      const keys = ['anggota', 'tahun', 'pengurus', 'pengawas', 'cabang', 'karyawan'];
+      keys.forEach(key => {
+        const counter = document.querySelector(`.stat-number[data-key="${key}"]`);
+        if (counter && data[key] !== undefined) {
+          counter.dataset.target = data[key];
+          // Jika tidak menggunakan animasi counter, atau untuk set nilai awal:
+          counter.textContent = data[key]; 
         }
-      }
+      });
+      // Panggil ulang initCounters agar angka bisa beranimasi dari 0
+      if (typeof initCounters === 'function') initCounters();
     } catch (error) {
-      console.info('KopanaAPI: Mode offline — menampilkan data statis.');
+      console.info('KopanaAPI: Gagal memuat statistik.json, menggunakan data statis.');
     }
   }
 };
 
-// Inisialisasi API (dinonaktifkan sampai URL tersedia)
-// KopanaAPI.getBerita();
-// KopanaAPI.getGaleri();
-// KopanaAPI.getStatistik();
+// Inisialisasi API
+KopanaAPI.getBerita();
+KopanaAPI.getGaleri(); 
+KopanaAPI.getStatistik();
 
 
 /* ============================================================

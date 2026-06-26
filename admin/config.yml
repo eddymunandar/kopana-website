@@ -1,0 +1,54 @@
+backend:
+  name: github
+  repo: eddymunandar/kopana-website
+  branch: main
+  # Sveltia CMS uses a built-in proxy automatically for GitHub auth if no base_url is specified
+
+media_folder: "assets/img/uploads"
+public_folder: "assets/img/uploads"
+
+collections:
+  - name: "database"
+    label: "Database Website"
+    files:
+      - name: "berita"
+        label: "Berita & Artikel"
+        file: "data/berita.json"
+        description: "Daftar berita KOPANA"
+        fields:
+          - name: "items"
+            label: "Daftar Berita"
+            widget: "list"
+            fields:
+              - { label: "Judul", name: "judul", widget: "string" }
+              - { label: "Tanggal", name: "tanggal", widget: "date", format: "DD MMM YYYY", date_format: "DD MMM YYYY" }
+              - { label: "Kategori", name: "kategori", widget: "string", default: "Berita" }
+              - { label: "Penulis", name: "penulis", widget: "string", default: "Redaksi KOPANA" }
+              - { label: "Ringkasan", name: "ringkasan", widget: "text" }
+              - { label: "Foto Utama", name: "foto", widget: "image", required: false }
+              - { label: "URL/Link Eksternal", name: "url", widget: "string", required: false }
+      
+      - name: "galeri"
+        label: "Galeri Foto"
+        file: "data/galeri.json"
+        description: "Foto-foto kegiatan KOPANA"
+        fields:
+          - name: "items"
+            label: "Daftar Foto"
+            widget: "list"
+            fields:
+              - { label: "Foto", name: "url", widget: "image" }
+              - { label: "Judul/Deskripsi", name: "judul", widget: "string" }
+              - { label: "Kategori", name: "kategori", widget: "string", default: "Kegiatan" }
+
+      - name: "statistik"
+        label: "Data Statistik"
+        file: "data/statistik.json"
+        description: "Angka statistik untuk KOPANA Dalam Angka"
+        fields:
+          - { label: "Jumlah Anggota Aktif", name: "anggota", widget: "number", default: 450 }
+          - { label: "Tahun Berdiri", name: "tahun", widget: "number", default: 1996 }
+          - { label: "Jumlah Pengurus", name: "pengurus", widget: "number", default: 3 }
+          - { label: "Jumlah Pengawas", name: "pengawas", widget: "number", default: 3 }
+          - { label: "Perwakilan Cabang", name: "cabang", widget: "number", default: 3 }
+          - { label: "Karyawan", name: "karyawan", widget: "number", default: 11 }
