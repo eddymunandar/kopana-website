@@ -371,7 +371,8 @@ window.initGaleriFilter = function() {
       });
     });
   });
-})();
+};
+window.initGaleriFilter();
 
 
 /* ============================================================
