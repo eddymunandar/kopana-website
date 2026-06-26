@@ -21,7 +21,7 @@ collections:
             widget: "list"
             fields:
               - { label: "Judul", name: "judul", widget: "string" }
-              - { label: "Tanggal", name: "tanggal", widget: "date", format: "DD MMM YYYY", date_format: "DD MMM YYYY" }
+              - { label: "Tanggal", name: "tanggal", widget: "datetime", format: "DD MMM YYYY", date_format: "DD MMM YYYY", time_format: false, type: "date" }
               - { label: "Kategori", name: "kategori", widget: "string", default: "Berita" }
               - { label: "Penulis", name: "penulis", widget: "string", default: "Redaksi KOPANA" }
               - { label: "Ringkasan", name: "ringkasan", widget: "text" }
