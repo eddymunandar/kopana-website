@@ -723,7 +723,7 @@ const KopanaAPI = {
       };
 
       setEl('dyn-kontak-alamat', data.alamat);
-      if (data.telepon) setEl('dyn-kontak-telepon', data.telepon, 'href', `tel:${data.telepon.replace(/\\s+/g, '')}`);
+      if (data.telepon) setEl('dyn-kontak-telepon', data.telepon, 'href', `tel:${data.telepon.replace(/\s+/g, '')}`);
       if (data.email) setEl('dyn-kontak-email', data.email, 'href', `mailto:${data.email}`);
     } catch (error) {
       console.info('KopanaAPI: Gagal memuat kontak.json');
@@ -805,18 +805,18 @@ const KopanaAPI = {
             ? `<img src="${p.foto}" alt="${p.nama} - ${p.jabatan}" class="card-photo" loading="lazy">`
             : `<div class="card-icon-placeholder" aria-hidden="true"><i class="fas fa-user-circle"></i></div>`;
             
-          return \`
-          <article class="person-card reveal \${delay}">
+          return `
+          <article class="person-card reveal ${delay}">
             <div class="card-photo-wrap">
-              \${photoHtml}
+              ${photoHtml}
             </div>
             <div class="card-body">
               <span class="card-badge">Pengurus</span>
-              <h3 class="card-name">\${p.nama}</h3>
-              <p class="card-role">\${p.jabatan}</p>
+              <h3 class="card-name">${p.nama}</h3>
+              <p class="card-role">${p.jabatan}</p>
             </div>
           </article>
-          \`;
+          `;
         }).join('');
       }
 
@@ -829,18 +829,18 @@ const KopanaAPI = {
             ? `<img src="${p.foto}" alt="${p.nama} - ${p.jabatan}" class="card-photo" loading="lazy">`
             : `<div class="card-icon-placeholder" aria-hidden="true"><i class="fas fa-user-circle"></i></div>`;
             
-          return \`
-          <article class="person-card pengawas-card reveal \${delay}">
+          return `
+          <article class="person-card pengawas-card reveal ${delay}">
             <div class="card-photo-wrap">
-              \${photoHtml}
+              ${photoHtml}
             </div>
             <div class="card-body">
               <span class="card-badge" style="background: rgba(214,40,40,0.08); color: var(--secondary);">Pengawas</span>
-              <h3 class="card-name">\${p.nama}</h3>
-              <p class="card-role">\${p.jabatan}</p>
+              <h3 class="card-name">${p.nama}</h3>
+              <p class="card-role">${p.jabatan}</p>
             </div>
           </article>
-          \`;
+          `;
         }).join('');
       }
 
@@ -849,16 +849,16 @@ const KopanaAPI = {
       if (cabangContainer && data.cabang) {
         cabangContainer.innerHTML = data.cabang.map((c, index) => {
           const delay = `reveal-delay-${(index % 3) + 1}`;
-          return \`
-          <article class="cabang-card reveal \${delay}">
+          return `
+          <article class="cabang-card reveal ${delay}">
             <div class="cabang-icon" aria-hidden="true">
               <i class="fas fa-map-marker-alt"></i>
             </div>
-            <h3 class="cabang-name">\${c.nama}</h3>
-            <p class="cabang-branch">\${c.cabang}</p>
-            <p class="cabang-desc">\${c.desc}</p>
+            <h3 class="cabang-name">${c.nama}</h3>
+            <p class="cabang-branch">${c.cabang}</p>
+            <p class="cabang-desc">${c.desc}</p>
           </article>
-          \`;
+          `;
         }).join('');
       }
 
