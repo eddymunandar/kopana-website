@@ -35,8 +35,12 @@
   // Minimum loading time agar animasi terlihat
   const minTime = 1800;
   const startTime = Date.now();
+  let isLoaded = false;
 
-  window.addEventListener('load', () => {
+  const hideLoader = () => {
+    if (isLoaded) return;
+    isLoaded = true;
+
     const elapsed = Date.now() - startTime;
     const remaining = Math.max(0, minTime - elapsed);
 
@@ -45,7 +49,12 @@
       // Hapus dari DOM setelah transisi selesai
       setTimeout(() => loadingScreen.remove(), 700);
     }, remaining);
-  });
+  };
+
+  window.addEventListener('load', hideLoader);
+  
+  // Fallback: paksa loader hilang setelah maksimal 5 detik jika ada koneksi lambat
+  setTimeout(hideLoader, 5000);
 })();
 
 
