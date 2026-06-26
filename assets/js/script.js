@@ -613,6 +613,7 @@ const KopanaAPI = {
         }
       }, { threshold: 0.1 }).observe(el);
     });
+  },
   /**
    * Render Galeri ke DOM
    */
