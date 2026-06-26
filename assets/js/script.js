@@ -458,19 +458,37 @@ window.initLightbox = function() {
   }
 
   // ---- TOUCH SWIPE SUPPORT (untuk HP/Mobile) ----
-  // Touch Swipe Events untuk Mobile Lightbox
   let touchStartX = 0;
+  let touchStartY = 0;
   let touchEndX = 0;
+  const SWIPE_THRESHOLD = 60;
+
+  lightbox.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].clientX;
+    touchStartY = e.changedTouches[0].clientY;
+  }, { passive: true });
+
+  lightbox.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = Math.abs(touchEndY - touchStartY);
+
+    if (Math.abs(deltaX) > SWIPE_THRESHOLD && deltaY < 80) {
+      if (deltaX < 0) {
+        navigateLightbox(1);
+      } else {
         navigateLightbox(-1);
       }
     }
 
-    // Tap cepat di area selain gambar → tutup
     if (Math.abs(deltaX) < 10 && deltaY < 10 && e.target === lightbox) {
       closeLightbox();
     }
   }, { passive: true });
-})();
+};
+window.initLightbox();
 
 
 
