@@ -387,7 +387,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-xl);
+  gap: var(--spacing-sm);
 }
 
 .nav-brand {
