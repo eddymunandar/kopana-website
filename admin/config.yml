@@ -122,3 +122,15 @@ collections:
           - { label: "Link Instagram", name: "instagram", widget: "string", required: false }
           - { label: "Link YouTube", name: "youtube", widget: "string", required: false }
           - { label: "Link WhatsApp Langsung", name: "whatsapp", widget: "string" }
+
+      - name: "formulir"
+        label: "Download Formulir"
+        file: "data/formulir.json"
+        description: "Daftar formulir (PDF/Word/Excel) yang bisa diunduh anggota"
+        fields:
+          - name: "items"
+            label: "Daftar Formulir"
+            widget: "list"
+            fields:
+              - { label: "Judul Formulir", name: "judul", widget: "string" }
+              - { label: "File Formulir", name: "file", widget: "file" }

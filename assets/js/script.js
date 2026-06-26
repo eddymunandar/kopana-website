@@ -891,6 +891,29 @@ const KopanaAPI = {
     } catch (error) {
       console.info('KopanaAPI: Gagal memuat pengurus.json');
     }
+  },
+
+  async getFormulir() {
+    try {
+      const response = await fetch(`data/formulir.json?t=${new Date().getTime()}`);
+      if (!response.ok) return;
+      const data = await response.json();
+      
+      const container = document.getElementById('dyn-formulir-container');
+      if (container && data.items) {
+        data.items.forEach(f => {
+          if (!f.file) return;
+          const a = document.createElement('a');
+          a.href = f.file;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.innerHTML = `<i class="fas fa-file-download" aria-hidden="true"></i> ${f.judul}`;
+          container.appendChild(a);
+        });
+      }
+    } catch (error) {
+      console.info('KopanaAPI: Gagal memuat formulir.json');
+    }
   }
 };
 
@@ -902,6 +925,7 @@ KopanaAPI.getPengurus();
 KopanaAPI.getBerita();
 KopanaAPI.getGaleri(); 
 KopanaAPI.getStatistik();
+KopanaAPI.getFormulir();
 
 
 /* ============================================================
