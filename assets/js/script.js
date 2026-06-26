@@ -704,10 +704,187 @@ const KopanaAPI = {
     } catch (error) {
       console.info('KopanaAPI: Gagal memuat statistik.json, menggunakan data statis.');
     }
+  },
+
+  /**
+   * Ambil data kontak
+   */
+  async getKontak() {
+    try {
+      const response = await fetch('data/kontak.json');
+      const data = await response.json();
+      
+      const setEl = (id, text, attr, attrVal) => {
+        const el = document.getElementById(id);
+        if (el) {
+          if (text !== null) el.textContent = text;
+          if (attr && attrVal) el.setAttribute(attr, attrVal);
+        }
+      };
+
+      setEl('dyn-kontak-alamat', data.alamat);
+      if (data.telepon) setEl('dyn-kontak-telepon', data.telepon, 'href', `tel:${data.telepon.replace(/\\s+/g, '')}`);
+      if (data.email) setEl('dyn-kontak-email', data.email, 'href', `mailto:${data.email}`);
+    } catch (error) {
+      console.info('KopanaAPI: Gagal memuat kontak.json');
+    }
+  },
+
+  /**
+   * Ambil data beranda
+   */
+  async getBeranda() {
+    try {
+      const response = await fetch('data/beranda.json');
+      const data = await response.json();
+      
+      const setEl = (id, html) => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = html;
+      };
+
+      setEl('dyn-hero-title', data.hero_title);
+      setEl('dyn-hero-subtitle', data.hero_subtitle);
+      setEl('dyn-hero-desc', data.hero_desc);
+      setEl('dyn-sambutan-1', data.sambutan_1);
+      setEl('dyn-sambutan-2', data.sambutan_2);
+      setEl('dyn-ketua-nama', data.ketua_nama);
+      
+      const img = document.getElementById('dyn-ketua-foto');
+      if (img && data.ketua_foto) img.src = data.ketua_foto;
+    } catch (error) {
+      console.info('KopanaAPI: Gagal memuat beranda.json');
+    }
+  },
+
+  /**
+   * Ambil data profil
+   */
+  async getProfil() {
+    try {
+      const response = await fetch('data/profil.json');
+      const data = await response.json();
+      
+      const setEl = (id, text) => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = text; // innerHTML for safe formatting like <strong>
+      };
+
+      setEl('dyn-sejarah-1', data.sejarah_1);
+      setEl('dyn-sejarah-2', data.sejarah_2);
+      setEl('dyn-visi', data.visi);
+
+      const misiContainer = document.getElementById('dyn-misi-container');
+      if (misiContainer && data.misi) {
+        misiContainer.innerHTML = data.misi.map(m => `
+          <div class="misi-item">
+            <div class="misi-icon"><i class="fas fa-check" aria-hidden="true"></i></div>
+            <p>${m.teks}</p>
+          </div>
+        `).join('');
+      }
+    } catch (error) {
+      console.info('KopanaAPI: Gagal memuat profil.json');
+    }
+  },
+
+  /**
+   * Ambil data pengurus
+   */
+  async getPengurus() {
+    try {
+      const response = await fetch('data/pengurus.json');
+      const data = await response.json();
+      
+      // Render Pengurus
+      const pengurusContainer = document.getElementById('dyn-pengurus-container');
+      if (pengurusContainer && data.dewan_pengurus) {
+        pengurusContainer.innerHTML = data.dewan_pengurus.map((p, index) => {
+          const delay = `reveal-delay-${(index % 3) + 1}`;
+          const photoHtml = p.foto 
+            ? `<img src="${p.foto}" alt="${p.nama} - ${p.jabatan}" class="card-photo" loading="lazy">`
+            : `<div class="card-icon-placeholder" aria-hidden="true"><i class="fas fa-user-circle"></i></div>`;
+            
+          return \`
+          <article class="person-card reveal \${delay}">
+            <div class="card-photo-wrap">
+              \${photoHtml}
+            </div>
+            <div class="card-body">
+              <span class="card-badge">Pengurus</span>
+              <h3 class="card-name">\${p.nama}</h3>
+              <p class="card-role">\${p.jabatan}</p>
+            </div>
+          </article>
+          \`;
+        }).join('');
+      }
+
+      // Render Pengawas
+      const pengawasContainer = document.getElementById('dyn-pengawas-container');
+      if (pengawasContainer && data.dewan_pengawas) {
+        pengawasContainer.innerHTML = data.dewan_pengawas.map((p, index) => {
+          const delay = `reveal-delay-${(index % 3) + 1}`;
+          const photoHtml = p.foto 
+            ? `<img src="${p.foto}" alt="${p.nama} - ${p.jabatan}" class="card-photo" loading="lazy">`
+            : `<div class="card-icon-placeholder" aria-hidden="true"><i class="fas fa-user-circle"></i></div>`;
+            
+          return \`
+          <article class="person-card pengawas-card reveal \${delay}">
+            <div class="card-photo-wrap">
+              \${photoHtml}
+            </div>
+            <div class="card-body">
+              <span class="card-badge" style="background: rgba(214,40,40,0.08); color: var(--secondary);">Pengawas</span>
+              <h3 class="card-name">\${p.nama}</h3>
+              <p class="card-role">\${p.jabatan}</p>
+            </div>
+          </article>
+          \`;
+        }).join('');
+      }
+
+      // Render Cabang
+      const cabangContainer = document.getElementById('dyn-cabang-container');
+      if (cabangContainer && data.cabang) {
+        cabangContainer.innerHTML = data.cabang.map((c, index) => {
+          const delay = `reveal-delay-${(index % 3) + 1}`;
+          return \`
+          <article class="cabang-card reveal \${delay}">
+            <div class="cabang-icon" aria-hidden="true">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <h3 class="cabang-name">\${c.nama}</h3>
+            <p class="cabang-branch">\${c.cabang}</p>
+            <p class="cabang-desc">\${c.desc}</p>
+          </article>
+          \`;
+        }).join('');
+      }
+
+      // Re-init reveal observer for new elements
+      const observer = new IntersectionObserver(([entry], obs) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          obs.unobserve(entry.target);
+        }
+      }, { threshold: 0.1 });
+      
+      document.querySelectorAll('#dyn-pengurus-container .reveal, #dyn-pengawas-container .reveal, #dyn-cabang-container .reveal').forEach(el => {
+        observer.observe(el);
+      });
+      
+    } catch (error) {
+      console.info('KopanaAPI: Gagal memuat pengurus.json');
+    }
   }
 };
 
 // Inisialisasi API
+KopanaAPI.getKontak();
+KopanaAPI.getBeranda();
+KopanaAPI.getProfil();
+KopanaAPI.getPengurus();
 KopanaAPI.getBerita();
 KopanaAPI.getGaleri(); 
 KopanaAPI.getStatistik();

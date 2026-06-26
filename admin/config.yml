@@ -52,3 +52,69 @@ collections:
           - { label: "Jumlah Pengawas", name: "pengawas", widget: "number", default: 3 }
           - { label: "Perwakilan Cabang", name: "cabang", widget: "number", default: 3 }
           - { label: "Karyawan", name: "karyawan", widget: "number", default: 11 }
+
+  - name: "halaman"
+    label: "Halaman Utama & Profil"
+    files:
+      - name: "beranda"
+        label: "Teks Beranda & Sambutan"
+        file: "data/beranda.json"
+        fields:
+          - { label: "Judul Utama", name: "hero_title", widget: "string" }
+          - { label: "Sub Judul", name: "hero_subtitle", widget: "string" }
+          - { label: "Deskripsi Singkat", name: "hero_desc", widget: "text" }
+          - { label: "Nama Ketua", name: "ketua_nama", widget: "string" }
+          - { label: "Foto Ketua", name: "ketua_foto", widget: "image" }
+          - { label: "Teks Sambutan Paragraf 1", name: "sambutan_1", widget: "text" }
+          - { label: "Teks Sambutan Paragraf 2", name: "sambutan_2", widget: "text" }
+
+      - name: "profil"
+        label: "Tentang Kami (Sejarah & Visi Misi)"
+        file: "data/profil.json"
+        fields:
+          - { label: "Sejarah (Paragraf 1)", name: "sejarah_1", widget: "text" }
+          - { label: "Sejarah (Paragraf 2)", name: "sejarah_2", widget: "text" }
+          - { label: "Visi", name: "visi", widget: "text" }
+          - name: "misi"
+            label: "Daftar Misi"
+            widget: "list"
+            fields:
+              - { label: "Teks Misi", name: "teks", widget: "string" }
+
+      - name: "pengurus"
+        label: "Struktur Organisasi (Pengurus & Pengawas)"
+        file: "data/pengurus.json"
+        fields:
+          - name: "dewan_pengurus"
+            label: "Dewan Pengurus"
+            widget: "list"
+            fields:
+              - { label: "Nama", name: "nama", widget: "string" }
+              - { label: "Jabatan", name: "jabatan", widget: "string" }
+              - { label: "Foto", name: "foto", widget: "image", required: false }
+          - name: "dewan_pengawas"
+            label: "Dewan Pengawas"
+            widget: "list"
+            fields:
+              - { label: "Nama", name: "nama", widget: "string" }
+              - { label: "Jabatan", name: "jabatan", widget: "string" }
+              - { label: "Foto", name: "foto", widget: "image", required: false }
+          - name: "cabang"
+            label: "Perwakilan Cabang"
+            widget: "list"
+            fields:
+              - { label: "Nama Penanggung Jawab", name: "nama", widget: "string" }
+              - { label: "Nama Cabang", name: "cabang", widget: "string" }
+              - { label: "Deskripsi", name: "desc", widget: "text" }
+
+      - name: "kontak"
+        label: "Informasi Kontak"
+        file: "data/kontak.json"
+        fields:
+          - { label: "Alamat Lengkap", name: "alamat", widget: "string" }
+          - { label: "No Telepon / WhatsApp", name: "telepon", widget: "string" }
+          - { label: "Alamat Email", name: "email", widget: "string" }
+          - { label: "Link Facebook", name: "facebook", widget: "string", required: false }
+          - { label: "Link Instagram", name: "instagram", widget: "string", required: false }
+          - { label: "Link YouTube", name: "youtube", widget: "string", required: false }
+          - { label: "Link WhatsApp Langsung", name: "whatsapp", widget: "string" }

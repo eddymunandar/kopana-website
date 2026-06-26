@@ -1,0 +1,48 @@
+{
+  "dewan_pengurus": [
+    {
+      "nama": "Ahmad Rizani",
+      "jabatan": "Ketua",
+      "foto": "/assets/img/ketua.jpg"
+    },
+    {
+      "nama": "Agus Purwanto",
+      "jabatan": "Sekretaris"
+    },
+    {
+      "nama": "Margono",
+      "jabatan": "Bendahara"
+    }
+  ],
+  "dewan_pengawas": [
+    {
+      "nama": "Eddy Munandar",
+      "jabatan": "Ketua Pengawas"
+    },
+    {
+      "nama": "Ahmad Toha",
+      "jabatan": "Anggota Pengawas"
+    },
+    {
+      "nama": "Amin Purwanto",
+      "jabatan": "Anggota Pengawas"
+    }
+  ],
+  "cabang": [
+    {
+      "nama": "Kasijatno",
+      "cabang": "Cabang Utara",
+      "desc": "Melayani seluruh anggota KOPANA di wilayah Utara Yogyakarta dan sekitarnya."
+    },
+    {
+      "nama": "Amin Purwanto",
+      "cabang": "Cabang Selatan",
+      "desc": "Melayani seluruh anggota KOPANA di wilayah Selatan Yogyakarta dan sekitarnya."
+    },
+    {
+      "nama": "Haryanto",
+      "cabang": "Cabang Magelang",
+      "desc": "Melayani seluruh anggota KOPANA yang berdomisili di wilayah Magelang dan sekitarnya."
+    }
+  ]
+}
