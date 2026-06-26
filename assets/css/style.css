@@ -449,6 +449,7 @@ section {
   color: rgba(255,255,255,0.9);
   border-radius: var(--radius-md);
   transition: all var(--transition-base);
+  white-space: nowrap;
 }
 
 .nav-link::after {
