@@ -41,6 +41,9 @@
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo.png?v=2">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
 
   <!-- Preconnect untuk performa -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -115,8 +118,8 @@
                  class="nav-logo"
                  width="44" height="44">
             <div class="nav-brand-text">
-              <span class="nav-brand-name">KOPANA</span>
-              <span class="nav-brand-tagline">Koperasi Purnakaryawan Pertamina</span>
+              <span class="nav-brand-name" id="dyn-nav-brand-name">KOPANA</span>
+              <span class="nav-brand-tagline" id="dyn-nav-brand-tagline">Koperasi Purnakaryawan Pertamina</span>
             </div>
           </a>
 
@@ -131,9 +134,12 @@
             <li role="none"><a href="#galeri" class="nav-link" role="menuitem">Galeri</a></li>
             <li role="none"><a href="#kontak" class="nav-link" role="menuitem">Kontak</a></li>
             <!-- Tombol Login khusus mobile menu -->
-            <li role="none" class="nav-login-mobile">
+            <li role="none" class="nav-login-mobile" style="display: flex; gap: 10px; padding: 0 1rem; margin-top: 1rem;">
+              <a href="daftar.html" class="btn-login-mobile" style="flex: 1; background: var(--primary-light); color: white;" aria-label="Daftar Anggota">
+                <i class="fas fa-user-plus" aria-hidden="true"></i> Daftar
+              </a>
               <a href="https://script.google.com/macros/s/AKfycbzYDPTRz9usUEwOhgWEy7Y4HiC_gfKxQ310KWAr4seA3KgrFXObiEX1VAPjaUclF7XG/exec"
-                 class="btn-login-mobile"
+                 class="btn-login-mobile" style="flex: 1;"
                  target="_blank" rel="noopener noreferrer"
                  aria-label="Aplikasi Kopana">
                 <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
@@ -150,6 +156,9 @@
             </button>
 
             <!-- Login Button -->
+            <a href="daftar.html" class="btn-login" style="background: var(--primary-light); color: white; border-color: var(--primary-light);" aria-label="Daftar Anggota">
+              <i class="fas fa-user-plus" aria-hidden="true"></i> Daftar
+            </a>
             <a href="https://script.google.com/macros/s/AKfycbzYDPTRz9usUEwOhgWEy7Y4HiC_gfKxQ310KWAr4seA3KgrFXObiEX1VAPjaUclF7XG/exec" class="btn-login" id="nav-login-btn" target="_blank" rel="noopener noreferrer"
                aria-label="Aplikasi Kopana">
               <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
@@ -678,111 +687,8 @@
           <button class="filter-btn" data-filter="cabang">Cabang</button>
         </div>
 
-        <!-- Grid Galeri -->
-        <div class="galeri-grid">
-
-          <div class="galeri-item reveal" data-category="rat" role="button" tabindex="0"
-               aria-label="Buka foto: Rapat Anggota Tahunan 2025">
-            <img src="assets/img/galeri-1.jpg"
-                 alt="Rapat Anggota Tahunan KOPANA 2025"
-                 class="galeri-img"
-                 loading="lazy">
-            <div class="galeri-overlay">
-              <div class="galeri-overlay-icon" aria-hidden="true">
-                <i class="fas fa-search-plus"></i>
-              </div>
-              <div class="galeri-caption">
-                <h4>Rapat Anggota Tahunan</h4>
-                <span>RAT KOPANA 2025</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="galeri-item reveal reveal-delay-1" data-category="pelatihan" role="button" tabindex="0"
-               aria-label="Buka foto: Pelatihan Anggota">
-            <img src="assets/img/galeri-2.jpg"
-                 alt="Pelatihan Manajemen Anggota KOPANA"
-                 class="galeri-img"
-                 loading="lazy">
-            <div class="galeri-overlay">
-              <div class="galeri-overlay-icon" aria-hidden="true">
-                <i class="fas fa-search-plus"></i>
-              </div>
-              <div class="galeri-caption">
-                <h4>Pelatihan Anggota</h4>
-                <span>Workshop Manajemen 2025</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="galeri-item reveal reveal-delay-2" data-category="gathering" role="button" tabindex="0"
-               aria-label="Buka foto: Gathering Keluarga Besar KOPANA">
-            <img src="assets/img/galeri-3.jpg"
-                 alt="Gathering Keluarga Besar KOPANA Yogyakarta"
-                 class="galeri-img"
-                 loading="lazy">
-            <div class="galeri-overlay">
-              <div class="galeri-overlay-icon" aria-hidden="true">
-                <i class="fas fa-search-plus"></i>
-              </div>
-              <div class="galeri-caption">
-                <h4>Gathering Keluarga</h4>
-                <span>Silaturahmi Tahunan 2026</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="galeri-item reveal reveal-delay-3" data-category="sosial" role="button" tabindex="0"
-               aria-label="Buka foto: Kegiatan Sosial KOPANA">
-            <img src="assets/img/galeri-4.jpg"
-                 alt="Kegiatan Sosial KOPANA - Bakti Sosial"
-                 class="galeri-img"
-                 loading="lazy">
-            <div class="galeri-overlay">
-              <div class="galeri-overlay-icon" aria-hidden="true">
-                <i class="fas fa-search-plus"></i>
-              </div>
-              <div class="galeri-caption">
-                <h4>Bakti Sosial KOPANA</h4>
-                <span>Kegiatan Sosial 2025</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="galeri-item reveal reveal-delay-4" data-category="pengurus" role="button" tabindex="0"
-               aria-label="Buka foto: Rapat Pengurus KOPANA">
-            <img src="assets/img/galeri-5.jpg"
-                 alt="Rapat Pengurus KOPANA Yogyakarta"
-                 class="galeri-img"
-                 loading="lazy">
-            <div class="galeri-overlay">
-              <div class="galeri-overlay-icon" aria-hidden="true">
-                <i class="fas fa-search-plus"></i>
-              </div>
-              <div class="galeri-caption">
-                <h4>Rapat Dewan Pengurus</h4>
-                <span>Koordinasi Pengurus 2025</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="galeri-item reveal reveal-delay-5" data-category="cabang" role="button" tabindex="0"
-               aria-label="Buka foto: Peresmian Kantor Cabang">
-            <img src="assets/img/galeri-6.jpg"
-                 alt="Peresmian Kantor Cabang KOPANA"
-                 class="galeri-img"
-                 loading="lazy">
-            <div class="galeri-overlay">
-              <div class="galeri-overlay-icon" aria-hidden="true">
-                <i class="fas fa-search-plus"></i>
-              </div>
-              <div class="galeri-caption">
-                <h4>Peresmian Kantor Cabang</h4>
-                <span>Pengembangan Cabang 2024</span>
-              </div>
-            </div>
-          </div>
-
+        <!-- Grid Galeri -->        <div class="galeri-grid" id="dyn-galeri-grid">
+          <!-- Galeri items injected here -->
         </div><!-- /galeri-grid -->
       </div>
     </section>
@@ -974,13 +880,13 @@
                  alt="Logo KOPANA"
                  class="footer-logo"
                  width="44" height="44">
-            <span class="footer-brand-name">KOPANA</span>
+            <span class="footer-brand-name" id="dyn-footer-brand-name">KOPANA</span>
           </div>
-          <p class="footer-about">
+          <p class="footer-about" id="dyn-footer-about">
             Koperasi Jasa Serba Usaha Purnakaryawan Pertamina KOPANA Yogyakarta.
             Melayani anggota dengan integritas, profesionalisme, dan kebersamaan sejak 1996.
           </p>
-          <div class="footer-social" role="list" aria-label="Media sosial KOPANA">
+          <div class="footer-social" id="dyn-footer-social" role="list" aria-label="Media sosial KOPANA">
             <a href="#" class="social-btn" role="listitem" aria-label="Facebook KOPANA">
               <i class="fab fa-facebook-f" aria-hidden="true"></i>
             </a>
@@ -1089,7 +995,21 @@
 
 
   <!-- Main Script -->
-  <script src="assets/js/script.js?v=9" defer></script>
-
+  <script src="assets/js/script.js" defer></script>
+  
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(registration => {
+            console.log('ServiceWorker registration successful');
+          })
+          .catch(err => {
+            console.log('ServiceWorker registration failed: ', err);
+          });
+      });
+    }
+  </script>
 </body>
 </html>

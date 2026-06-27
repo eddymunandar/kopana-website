@@ -11,6 +11,20 @@ collections:
   - name: "database"
     label: "Database Website"
     files:
+      - name: "pengaturan"
+        label: "Pengaturan Umum"
+        file: "data/pengaturan.json"
+        description: "Pengaturan identitas dan kontak website"
+        fields:
+          - { label: "Nama Koperasi", name: "nama", widget: "string", default: "KOPANA" }
+          - { label: "Tagline", name: "tagline", widget: "string", default: "Koperasi Purnakaryawan Pertamina" }
+          - { label: "Deskripsi Footer", name: "deskripsi", widget: "text" }
+          - { label: "Email", name: "email", widget: "string", default: "kopanayogya@gmail.com" }
+          - { label: "Telepon / WA", name: "telepon", widget: "string", default: "+62-822-2715-4266" }
+          - { label: "Facebook Link", name: "facebook", widget: "string", required: false }
+          - { label: "Instagram Link", name: "instagram", widget: "string", required: false }
+          - { label: "Alamat Lengkap", name: "alamat", widget: "text" }
+          - { label: "Logo (Opsional)", name: "logo", widget: "image", required: false }
       - name: "berita"
         label: "Berita & Artikel"
         file: "data/berita.json"
@@ -134,3 +148,15 @@ collections:
             fields:
               - { label: "Judul Formulir", name: "judul", widget: "string" }
               - { label: "File Formulir", name: "file", widget: "file" }
+      - name: "galeri"
+        label: "Galeri Kegiatan"
+        file: "data/galeri.json"
+        description: "Kumpulan foto kegiatan KOPANA"
+        fields:
+          - name: "items"
+            label: "Daftar Foto"
+            widget: "list"
+            fields:
+              - { label: "Foto URL", name: "url", widget: "image" }
+              - { label: "Judul Foto", name: "judul", widget: "string" }
+              - { label: "Kategori", name: "kategori", widget: "string" }

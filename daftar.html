@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pendaftaran Anggota KOPANA</title>
+  
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo.png?v=2">
+  <link rel="manifest" href="manifest.json">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  
+  <style>
+    .form-container {
+      max-width: 800px;
+      margin: 120px auto 60px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(10px);
+    }
+    .form-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .form-header h1 {
+      color: var(--primary-light);
+      margin-bottom: 10px;
+    }
+    .form-header p {
+      color: var(--text-light);
+    }
+    .form-group {
+      margin-bottom: 24px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 500;
+    }
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      color: white;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      font-size: var(--fs-md);
+      margin-top: 20px;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: var(--primary-light);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body class="dark-theme">
+  
+  <div class="form-container reveal">
+    <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</a>
+    
+    <div class="form-header">
+      <h1>Formulir Pendaftaran Anggota</h1>
+      <p>Silakan isi data diri Anda dengan lengkap dan benar.</p>
+    </div>
+
+    <!-- Formsubmit tanpa redirect otomatis, kita tangani dengan JavaScript -->
+    <form id="formPendaftaran" action="https://formsubmit.co/kopanayogya@gmail.com" method="POST">
+      <input type="hidden" name="_subject" value="Pendaftaran Anggota Baru KOPANA">
+      <input type="hidden" name="_captcha" value="false">
+      <!-- Mencegah redirect default dari formsubmit -->
+      <input type="hidden" name="_next" value="">
+
+      <div class="form-group">
+        <label for="namaLengkap">Nama Lengkap *</label>
+        <input type="text" id="namaLengkap" name="Nama Lengkap" class="form-control" required placeholder="Sesuai KTP">
+      </div>
+
+      <div class="form-group">
+        <label for="nik">NIK (Nomor Induk Kependudukan) *</label>
+        <input type="number" id="nik" name="NIK" class="form-control" required placeholder="16 Digit NIK">
+      </div>
+
+      <div class="form-group">
+        <label for="ttl">Tempat & Tanggal Lahir *</label>
+        <input type="text" id="ttl" name="Tempat Tanggal Lahir" class="form-control" required placeholder="Contoh: Yogyakarta, 17 Agustus 1960">
+      </div>
+
+      <div class="form-group">
+        <label for="alamat">Alamat Domisili *</label>
+        <textarea id="alamat" name="Alamat" class="form-control" required placeholder="Alamat lengkap saat ini"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="nohp">Nomor WhatsApp / HP *</label>
+        <input type="tel" id="nohp" name="No HP" class="form-control" required placeholder="08xxxxxxxxxx">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Alamat Email</label>
+        <input type="email" id="email" name="Email" class="form-control" placeholder="opsional@email.com">
+      </div>
+
+      <div class="form-group">
+        <label for="unit_kerja">Unit Kerja Terakhir (Pensiunan)</label>
+        <input type="text" id="unit_kerja" name="Unit Kerja Terakhir" class="form-control" placeholder="Contoh: Pertamina RU IV Cilacap">
+      </div>
+
+      <button type="submit" id="btnSubmit" class="btn btn-primary btn-submit">
+        <i class="fas fa-paper-plane"></i> Kirim Pendaftaran
+      </button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('formPendaftaran').addEventListener('submit', async function(e) {
+      e.preventDefault(); // Mencegah form pindah halaman secara default
+      
+      const form = e.target;
+      const btn = document.getElementById('btnSubmit');
+      const originalBtnText = btn.innerHTML;
+      
+      // Ambil data form
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      
+      // Ubah tombol menjadi loading
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sedang Memproses...';
+      btn.disabled = true;
+      
+      try {
+        // 1. Kirim data ke Email (via Formsubmit) secara diam-diam (background)
+        await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+        
+        // 2. Susun pesan untuk WhatsApp
+        // Nomor WA KOPANA (pastikan menggunakan kode negara 62)
+        const waNumber = "6282227154266";
+        
+        let textWa = "Halo Pengurus KOPANA, saya ingin mendaftar sebagai anggota baru dengan data berikut:\n\n";
+        textWa += `*Nama Lengkap:* ${data['Nama Lengkap']}\n`;
+        textWa += `*NIK:* ${data['NIK']}\n`;
+        textWa += `*Tempat/Tgl Lahir:* ${data['Tempat Tanggal Lahir']}\n`;
+        textWa += `*Alamat:* ${data['Alamat']}\n`;
+        textWa += `*No HP:* ${data['No HP']}\n`;
+        textWa += `*Email:* ${data['Email'] || '-'}\n`;
+        textWa += `*Unit Kerja:* ${data['Unit Kerja Terakhir'] || '-'}\n\n`;
+        textWa += "Mohon petunjuk selanjutnya. Terima kasih.";
+        
+        // 3. Arahkan pengguna ke aplikasi WhatsApp
+        const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(textWa)}`;
+        
+        alert("Pendaftaran berhasil! Anda akan diarahkan ke WhatsApp untuk mengirimkan pesan konfirmasi.");
+        window.location.href = waUrl;
+        
+      } catch (error) {
+        alert("Mohon maaf, terjadi kesalahan jaringan. Silakan coba lagi.");
+        btn.innerHTML = originalBtnText;
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -914,6 +914,54 @@ const KopanaAPI = {
     } catch (error) {
       console.info('KopanaAPI: Gagal memuat formulir.json');
     }
+  },
+
+  async getPengaturan() {
+    try {
+      const response = await fetch(`data/pengaturan.json?t=${new Date().getTime()}`);
+      if (!response.ok) return;
+      const data = await response.json();
+      
+      const el = (id) => document.getElementById(id);
+      
+      if (data.nama) {
+        if (el('dyn-nav-brand-name')) el('dyn-nav-brand-name').textContent = data.nama;
+        if (el('dyn-footer-brand-name')) el('dyn-footer-brand-name').textContent = data.nama;
+      }
+      if (data.tagline && el('dyn-nav-brand-tagline')) el('dyn-nav-brand-tagline').textContent = data.tagline;
+      if (data.deskripsi && el('dyn-footer-about')) el('dyn-footer-about').textContent = data.deskripsi;
+      
+      if (data.alamat && el('dyn-kontak-alamat')) el('dyn-kontak-alamat').textContent = data.alamat;
+      
+      if (data.telepon && el('dyn-kontak-telepon')) {
+        el('dyn-kontak-telepon').textContent = data.telepon;
+        el('dyn-kontak-telepon').href = `tel:${data.telepon.replace(/\D/g,'')}`;
+      }
+      
+      if (data.email && el('dyn-kontak-email')) {
+        el('dyn-kontak-email').textContent = data.email;
+        el('dyn-kontak-email').href = `mailto:${data.email}`;
+      }
+      
+      const socialContainer = el('dyn-footer-social');
+      if (socialContainer) {
+        socialContainer.innerHTML = '';
+        if (data.facebook) {
+          socialContainer.innerHTML += `<a href="${data.facebook}" target="_blank" class="social-btn" aria-label="Facebook KOPANA"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>`;
+        }
+        if (data.instagram) {
+          socialContainer.innerHTML += `<a href="${data.instagram}" target="_blank" class="social-btn" aria-label="Instagram KOPANA"><i class="fab fa-instagram" aria-hidden="true"></i></a>`;
+        }
+      }
+      
+      if (data.logo) {
+        document.querySelectorAll('.nav-logo, .footer-logo, .loading-logo').forEach(img => {
+          img.src = data.logo;
+        });
+      }
+    } catch (error) {
+      console.info('KopanaAPI: Gagal memuat pengaturan.json');
+    }
   }
 };
 
@@ -926,6 +974,7 @@ KopanaAPI.getBerita();
 KopanaAPI.getGaleri(); 
 KopanaAPI.getStatistik();
 KopanaAPI.getFormulir();
+KopanaAPI.getPengaturan();
 
 
 /* ============================================================
