@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pendaftaran Anggota KOPANA</title>
+  <title>Pengunduran Diri Anggota KOPANA</title>
   
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo.png?v=2">
@@ -170,7 +170,7 @@
 
       /* Isi Surat */
       .surat-isi p {
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         text-align: justify;
       }
       .surat-form {
@@ -179,7 +179,7 @@
       }
       .surat-form-row {
         display: flex;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
       }
       .surat-form-label {
         width: 180px;
@@ -192,27 +192,14 @@
         border-bottom: 1px dotted black;
       }
 
-      .surat-list {
-        margin-left: 20px;
-        margin-bottom: 30px;
-      }
-      .surat-list ol {
-        padding-left: 15px;
-        margin-top: 5px;
-        text-align: justify;
-      }
-      .surat-list li {
-        margin-bottom: 5px;
-      }
-
       /* Tanda Tangan */
       .ttd-section {
-        margin-top: 40px;
+        margin-top: 60px;
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
       }
       .ttd-box {
-        width: 30%;
+        width: 40%;
         text-align: center;
       }
       .ttd-box p {
@@ -230,49 +217,48 @@
     <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</a>
     
     <div class="form-header">
-      <h1>Formulir Pendaftaran Anggota</h1>
-      <p>Silakan isi data diri Anda dengan lengkap dan benar.</p>
+      <h1>Formulir Pengunduran Diri</h1>
+      <p>Silakan isi data berikut untuk mengajukan permohonan pengunduran diri dari keanggotaan KOPANA.</p>
     </div>
 
     <!-- Formsubmit tanpa redirect otomatis, kita tangani dengan JavaScript -->
-    <form id="formPendaftaran" action="https://formsubmit.co/kopanayogya@gmail.com" method="POST">
-      <input type="hidden" name="_subject" value="Pendaftaran Anggota Baru KOPANA">
+    <form id="formPengunduran" action="https://formsubmit.co/kopanayogya@gmail.com" method="POST">
+      <input type="hidden" name="_subject" value="Permohonan Pengunduran Diri Anggota KOPANA">
       <input type="hidden" name="_captcha" value="false">
-      <!-- Mencegah redirect default dari formsubmit -->
       <input type="hidden" name="_next" value="">
 
       <div class="form-group">
         <label for="nama">1. Nama Lengkap *</label>
-        <input type="text" id="nama" name="Nama" class="form-control" required placeholder="Sesuai KTP">
+        <input type="text" id="nama" name="Nama" class="form-control" required placeholder="Sesuai nama terdaftar">
       </div>
 
       <div class="form-group">
-        <label for="alamat">2. Alamat Domisili *</label>
+        <label for="noAnggota">2. Nomor Anggota (NA) *</label>
+        <input type="text" id="noAnggota" name="No Anggota" class="form-control" required placeholder="Contoh: 12345">
+      </div>
+
+      <div class="form-group">
+        <label for="indukPensiun">3. No. Induk Pensiun / KTP *</label>
+        <input type="text" id="indukPensiun" name="No Induk Pensiun" class="form-control" required placeholder="Nomor Induk Pensiun / KTP">
+      </div>
+
+      <div class="form-group">
+        <label for="alamat">4. Alamat Domisili *</label>
         <textarea id="alamat" name="Alamat" class="form-control" required placeholder="Alamat lengkap saat ini"></textarea>
       </div>
 
       <div class="form-group">
-        <label for="telepon">3. No. Telepon / HP *</label>
+        <label for="telepon">5. No. Telepon / HP *</label>
         <input type="tel" id="telepon" name="No Telepon" class="form-control" required placeholder="08xxxxxxxxxx">
       </div>
 
       <div class="form-group">
-        <label for="indukPensiun">4. No. Induk Pensiun *</label>
-        <input type="text" id="indukPensiun" name="No Induk Pensiun" class="form-control" required placeholder="Nomor Induk Pensiun">
-      </div>
-
-      <div class="form-group">
-        <label for="namaAhliWaris">5. Nama Ahli Waris *</label>
-        <input type="text" id="namaAhliWaris" name="Nama Ahli Waris" class="form-control" required placeholder="Nama ahli waris">
-      </div>
-
-      <div class="form-group">
-        <label for="alamatAhliWaris">6. Alamat Ahli Waris *</label>
-        <textarea id="alamatAhliWaris" name="Alamat Ahli Waris" class="form-control" required placeholder="Alamat lengkap ahli waris"></textarea>
+        <label for="alasan">6. Alasan Pengunduran Diri *</label>
+        <textarea id="alasan" name="Alasan" class="form-control" required placeholder="Sebutkan alasan pengunduran diri secara singkat"></textarea>
       </div>
 
       <button type="submit" id="btnSubmit" class="btn btn-primary btn-submit">
-        <i class="fas fa-paper-plane"></i> Kirim Data (Email & WhatsApp)
+        <i class="fas fa-paper-plane"></i> Kirim Permohonan (Email & WhatsApp)
       </button>
 
       <button type="button" id="btnPrint" class="btn btn-print">
@@ -281,7 +267,7 @@
     </form>
   </div>
 
-  <!-- Area Khusus Cetak (Sesuai PDF Asli) -->
+  <!-- Area Khusus Cetak (Sesuai Standar KOPANA) -->
   <div id="printArea">
     <div class="kop-surat">
       <img src="assets/img/logo.png" alt="Logo KOPANA" class="kop-logo">
@@ -293,85 +279,63 @@
         <p>No.Tlp : (0274).2832076 HP.:082.227.154.266</p>
         <p>Email : kopanayk@gmail.com</p>
       </div>
-      <!-- Logo Elpiji di sebelah kanan (opsional, ganti dgn kotak kosong agar balance) -->
       <div style="width: 80px;"></div>
     </div>
 
     <div class="surat-judul">
-      PERMOHONAN MENJADI ANGGOTA<br>
+      SURAT PERMOHONAN PENGUNDURAN DIRI ANGGOTA<br>
       KOPANA YOGYAKARTA
     </div>
 
     <div class="surat-isi">
+      <p>Kepada Yth.,<br>
+         Pengurus Koperasi Serba Usaha Purnakaryawan Pertamina<br>
+         (KOPANA) Yogyakarta<br>
+         Di tempat
+      </p>
+
       <p>Dengan hormat,</p>
       <p>Saya yang bertanda tangan di bawah ini :</p>
       
       <div class="surat-form">
         <div class="surat-form-row">
-          <div class="surat-form-label">1. Nama</div>
+          <div class="surat-form-label">Nama Lengkap</div>
           <div class="surat-form-colon">:</div>
           <div class="surat-form-value" id="print-nama"></div>
         </div>
         <div class="surat-form-row">
-          <div class="surat-form-label">2. Alamat</div>
+          <div class="surat-form-label">Nomor Anggota (NA)</div>
           <div class="surat-form-colon">:</div>
-          <div class="surat-form-value" id="print-alamat"></div>
+          <div class="surat-form-value" id="print-na"></div>
         </div>
         <div class="surat-form-row">
-          <div class="surat-form-label">3. No. Telepon</div>
-          <div class="surat-form-colon">:</div>
-          <div class="surat-form-value" id="print-telepon"></div>
-        </div>
-        <div class="surat-form-row">
-          <div class="surat-form-label">4. No. Induk Pensiun</div>
+          <div class="surat-form-label">No. Induk Pensiun / KTP</div>
           <div class="surat-form-colon">:</div>
           <div class="surat-form-value" id="print-induk"></div>
         </div>
         <div class="surat-form-row">
-          <div class="surat-form-label">5. Nama Ahli Waris</div>
+          <div class="surat-form-label">Alamat Domisili</div>
           <div class="surat-form-colon">:</div>
-          <div class="surat-form-value" id="print-aw-nama"></div>
+          <div class="surat-form-value" id="print-alamat"></div>
         </div>
         <div class="surat-form-row">
-          <div class="surat-form-label">6. Alamat Ahli Waris</div>
+          <div class="surat-form-label">No. Telepon / HP</div>
           <div class="surat-form-colon">:</div>
-          <div class="surat-form-value" id="print-aw-alamat"></div>
+          <div class="surat-form-value" id="print-telepon"></div>
         </div>
       </div>
 
-      <p>Dengan ini mengajukan permohonan untuk dapat menjadi anggota koperasi KOPANA Yogyakarta. Sehubungan hal tersebut, Saya menyatakan kesediaan sebagai berikut :</p>
+      <p>Dengan surat ini, saya bermaksud mengajukan permohonan pengunduran diri dari keanggotaan Koperasi Serba Usaha Purnakaryawan Pertamina (KOPANA) Yogyakarta. Adapun alasan pengunduran diri saya adalah sebagai berikut:</p>
       
-      <div class="surat-list">
-        <ol>
-          <li>Membayar uang Simpanan Pokok sebesar = Rp. 20.000,-</li>
-          <li>Membayar uang Simpanan Wajib sebesar = Rp. 5.000,- setiap bulan.</li>
-          <li>Membayar uang penyesuaian modal anggota sebesar = Rp .........................</li>
-          <li>WAJIB aktif dalam mengikuti kegiatan KOPANA YK, dan bersedia menjadi pengurus jika diperlukan.</li>
-          <li>Sanggup memenuhi / mematuhi ketentuan-ketentuan yang berlaku dalam Anggaran Dasar (AD) dan Anggaran Rumah Tangga (ART) KOPANA Yogyakarta.</li>
-          <li>Berkomitmen dan berkontribusi aktif dalam kegiatan Kopana, belanja dll.</li>
-          <li>Penerimaan SHU diberikan pada Tahun ke 2 setelah menjadi anggota.</li>
-        </ol>
-      </div>
+      <p style="border-bottom: 1px dotted black; min-height: 25px; padding-bottom: 5px; margin-left: 20px;" id="print-alasan"></p>
+      <p style="border-bottom: 1px dotted black; min-height: 25px; margin-left: 20px;"></p>
 
-      <p>Demikian permohonan ini, atas bantuan dan perhatiannya diucapkan terima kasih.</p>
+      <p>Bersamaan dengan ini, saya mohon agar hak-hak saya sebagai anggota (Simpanan Pokok, Simpanan Wajib, dan lain-lain) dapat diselesaikan sesuai dengan ketentuan Anggaran Dasar dan Anggaran Rumah Tangga KOPANA Yogyakarta yang berlaku.</p>
+
+      <p>Demikian surat permohonan ini saya buat dengan sadar dan tanpa paksaan dari pihak manapun. Atas perhatian dan kerjasamanya selama ini, saya ucapkan terima kasih.</p>
     </div>
 
     <div class="ttd-section">
-      <div class="ttd-box" style="margin-top: 80px;">
-        <p>Mengetahui,</p>
-        <p>Sekretaris HIMPANA</p>
-        <p>Ranting.......................</p>
-        <div class="ttd-space"></div>
-        <p>(........................................)</p>
-      </div>
-      
-      <div class="ttd-box" style="margin-top: 100px;">
-        <p>Ketua HIMPANA</p>
-        <p>Ranting.......................</p>
-        <div class="ttd-space"></div>
-        <p>(........................................)</p>
-      </div>
-
       <div class="ttd-box">
         <p>Yogyakarta, ........................ 20...</p>
         <p>Pemohon,</p>
@@ -386,11 +350,11 @@
     document.getElementById('btnPrint').addEventListener('click', function() {
       // Sinkronisasi data form ke print area
       document.getElementById('print-nama').textContent = document.getElementById('nama').value;
+      document.getElementById('print-na').textContent = document.getElementById('noAnggota').value;
+      document.getElementById('print-induk').textContent = document.getElementById('indukPensiun').value;
       document.getElementById('print-alamat').textContent = document.getElementById('alamat').value;
       document.getElementById('print-telepon').textContent = document.getElementById('telepon').value;
-      document.getElementById('print-induk').textContent = document.getElementById('indukPensiun').value;
-      document.getElementById('print-aw-nama').textContent = document.getElementById('namaAhliWaris').value;
-      document.getElementById('print-aw-alamat').textContent = document.getElementById('alamatAhliWaris').value;
+      document.getElementById('print-alasan').textContent = document.getElementById('alasan').value;
       
       // Update tanda tangan nama
       const nama = document.getElementById('nama').value;
@@ -401,7 +365,7 @@
     });
 
     // FUNGSI KIRIM (SUBMIT)
-    document.getElementById('formPendaftaran').addEventListener('submit', async function(e) {
+    document.getElementById('formPengunduran').addEventListener('submit', async function(e) {
       e.preventDefault();
       
       const form = e.target;
@@ -424,18 +388,18 @@
         
         // Kirim ke WhatsApp
         const waNumber = "6282227154266";
-        let textWa = "Halo Pengurus KOPANA, saya mengirimkan data pendaftaran anggota baru:\n\n";
+        let textWa = "Halo Pengurus KOPANA, saya mengajukan permohonan PENGUNDURAN DIRI keanggotaan:\n\n";
         textWa += `*1. Nama:* ${data['Nama']}\n`;
-        textWa += `*2. Alamat:* ${data['Alamat']}\n`;
-        textWa += `*3. No. Telepon:* ${data['No Telepon']}\n`;
-        textWa += `*4. No. Induk Pensiun:* ${data['No Induk Pensiun']}\n`;
-        textWa += `*5. Nama Ahli Waris:* ${data['Nama Ahli Waris']}\n`;
-        textWa += `*6. Alamat Ahli Waris:* ${data['Alamat Ahli Waris']}\n\n`;
+        textWa += `*2. No. Anggota (NA):* ${data['No Anggota']}\n`;
+        textWa += `*3. No. Induk Pensiun:* ${data['No Induk Pensiun']}\n`;
+        textWa += `*4. Alamat:* ${data['Alamat']}\n`;
+        textWa += `*5. No. Telepon:* ${data['No Telepon']}\n`;
+        textWa += `*6. Alasan:* ${data['Alasan']}\n\n`;
         textWa += "Terima kasih.";
         
         const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(textWa)}`;
         
-        alert("Pendaftaran berhasil terkirim ke Email. Anda akan diarahkan ke WhatsApp untuk konfirmasi pesan.");
+        alert("Permohonan berhasil terkirim ke Email. Anda akan diarahkan ke WhatsApp untuk konfirmasi pesan.");
         window.location.href = waUrl;
         
       } catch (error) {
