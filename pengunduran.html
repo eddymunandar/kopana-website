@@ -100,6 +100,10 @@
 
     /* Print Media Query */
     @media print {
+      @page {
+        size: A4;
+        margin: 1cm;
+      }
       body * {
         visibility: hidden;
       }
@@ -119,10 +123,10 @@
         left: 0;
         top: 0;
         width: 100%;
-        padding: 20px 40px;
+        padding: 0 10px;
         font-family: 'Times New Roman', Times, serif;
-        font-size: 12pt;
-        line-height: 1.5;
+        font-size: 11pt;
+        line-height: 1.3;
         background: white;
       }
 
@@ -132,11 +136,11 @@
         justify-content: space-between;
         align-items: center;
         border-bottom: 3px solid black;
-        padding-bottom: 10px;
-        margin-bottom: 30px;
+        padding-bottom: 5px;
+        margin-bottom: 20px;
       }
       .kop-logo {
-        width: 80px;
+        width: 70px;
         height: auto;
       }
       .kop-text {
@@ -145,41 +149,41 @@
       }
       .kop-text h2 {
         margin: 0;
-        font-size: 14pt;
+        font-size: 12pt;
         font-weight: bold;
       }
       .kop-text h1 {
-        margin: 5px 0;
-        font-size: 16pt;
+        margin: 3px 0;
+        font-size: 14pt;
         font-weight: bold;
         color: #000 !important;
       }
       .kop-text p {
         margin: 0;
-        font-size: 10pt;
+        font-size: 9pt;
       }
 
       /* Judul Surat */
       .surat-judul {
         text-align: center;
         font-weight: bold;
-        font-size: 14pt;
-        margin-bottom: 30px;
+        font-size: 12pt;
+        margin-bottom: 20px;
         text-transform: uppercase;
       }
 
       /* Isi Surat */
       .surat-isi p {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
         text-align: justify;
       }
       .surat-form {
-        margin-left: 20px;
-        margin-bottom: 20px;
+        margin-left: 15px;
+        margin-bottom: 15px;
       }
       .surat-form-row {
         display: flex;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
       }
       .surat-form-label {
         width: 180px;
@@ -194,7 +198,7 @@
 
       /* Tanda Tangan */
       .ttd-section {
-        margin-top: 60px;
+        margin-top: 40px;
         display: flex;
         justify-content: flex-end;
       }
@@ -206,7 +210,7 @@
         margin: 0;
       }
       .ttd-space {
-        height: 80px;
+        height: 60px;
       }
     }
   </style>

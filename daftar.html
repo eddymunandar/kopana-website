@@ -100,6 +100,10 @@
 
     /* Print Media Query */
     @media print {
+      @page {
+        size: A4;
+        margin: 1cm;
+      }
       body * {
         visibility: hidden;
       }
@@ -119,70 +123,72 @@
         left: 0;
         top: 0;
         width: 100%;
-        padding: 20px 40px;
-        font-family: 'Times New Roman', Times, serif;
-        font-size: 12pt;
-        line-height: 1.5;
+        padding: 0 10px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 10.5pt;
+        line-height: 1.3;
         background: white;
       }
 
       /* Header Kop Surat */
       .kop-surat {
         display: flex;
-        justify-content: space-between;
         align-items: center;
         border-bottom: 3px solid black;
         padding-bottom: 10px;
         margin-bottom: 30px;
       }
       .kop-logo {
-        width: 80px;
+        width: 70px;
         height: auto;
+        margin-right: 20px;
+        margin-left: 10px;
       }
       .kop-text {
         text-align: center;
         flex: 1;
-      }
-      .kop-text h2 {
-        margin: 0;
-        font-size: 14pt;
-        font-weight: bold;
+        padding-right: 80px; /* Balance logo */
       }
       .kop-text h1 {
-        margin: 5px 0;
-        font-size: 16pt;
+        margin: 0 0 2px 0;
+        font-size: 13pt;
         font-weight: bold;
-        color: #000 !important;
+        color: #002B5B !important;
+      }
+      .kop-text h2 {
+        margin: 0 0 2px 0;
+        font-size: 10pt;
+        font-weight: normal;
       }
       .kop-text p {
         margin: 0;
-        font-size: 10pt;
+        font-size: 9pt;
       }
 
       /* Judul Surat */
       .surat-judul {
         text-align: center;
         font-weight: bold;
-        font-size: 14pt;
-        margin-bottom: 30px;
-        text-transform: uppercase;
+        font-size: 11pt;
+        margin-bottom: 25px;
       }
 
       /* Isi Surat */
-      .surat-isi p {
-        margin-bottom: 10px;
+      .surat-intro {
+        margin-bottom: 20px;
         text-align: justify;
       }
+      
       .surat-form {
-        margin-left: 20px;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
       }
       .surat-form-row {
         display: flex;
-        margin-bottom: 8px;
+        margin-bottom: 15px;
       }
       .surat-form-label {
-        width: 180px;
+        width: 200px;
+        font-weight: bold;
       }
       .surat-form-colon {
         width: 15px;
@@ -192,34 +198,61 @@
         border-bottom: 1px dotted black;
       }
 
-      .surat-list {
-        margin-left: 20px;
-        margin-bottom: 30px;
+      /* Tabel Keuangan */
+      .keuangan-box {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 15px 20px;
+        margin-bottom: 25px;
+        background: #f9f9f9 !important;
       }
-      .surat-list ol {
-        padding-left: 15px;
-        margin-top: 5px;
+      .keuangan-title {
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+      .keuangan-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        border-bottom: 1px dotted #999;
+        padding-bottom: 5px;
+      }
+      .keuangan-total {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 2px solid black;
+        text-transform: uppercase;
+      }
+      .rp-box {
+        width: 120px;
+        text-align: left;
+      }
+
+      /* Footer Text */
+      .surat-footer-text {
         text-align: justify;
-      }
-      .surat-list li {
-        margin-bottom: 5px;
+        font-size: 9.5pt;
+        margin-bottom: 40px;
       }
 
       /* Tanda Tangan */
       .ttd-section {
-        margin-top: 40px;
         display: flex;
         justify-content: space-between;
+        margin-top: 40px;
       }
       .ttd-box {
-        width: 30%;
+        width: 40%;
         text-align: center;
       }
       .ttd-box p {
         margin: 0;
       }
       .ttd-space {
-        height: 80px;
+        height: 70px;
       }
     }
   </style>
@@ -231,44 +264,43 @@
     
     <div class="form-header">
       <h1>Formulir Pendaftaran Anggota</h1>
-      <p>Silakan isi data diri Anda dengan lengkap dan benar.</p>
+      <p>Silakan isi data diri Anda dengan lengkap sesuai KTP.</p>
     </div>
 
-    <!-- Formsubmit tanpa redirect otomatis, kita tangani dengan JavaScript -->
+    <!-- Formsubmit -->
     <form id="formPendaftaran" action="https://formsubmit.co/kopanayogya@gmail.com" method="POST">
       <input type="hidden" name="_subject" value="Pendaftaran Anggota Baru KOPANA">
       <input type="hidden" name="_captcha" value="false">
-      <!-- Mencegah redirect default dari formsubmit -->
       <input type="hidden" name="_next" value="">
 
       <div class="form-group">
         <label for="nama">1. Nama Lengkap *</label>
-        <input type="text" id="nama" name="Nama" class="form-control" required placeholder="Sesuai KTP">
+        <input type="text" id="nama" name="Nama Lengkap" class="form-control" required placeholder="Sesuai KTP">
       </div>
 
       <div class="form-group">
-        <label for="alamat">2. Alamat Domisili *</label>
-        <textarea id="alamat" name="Alamat" class="form-control" required placeholder="Alamat lengkap saat ini"></textarea>
+        <label for="na">2. No. Anggota (NA)</label>
+        <input type="text" id="na" name="No Anggota" class="form-control" placeholder="(Bisa dikosongi jika belum ada)">
       </div>
 
       <div class="form-group">
-        <label for="telepon">3. No. Telepon / HP *</label>
-        <input type="tel" id="telepon" name="No Telepon" class="form-control" required placeholder="08xxxxxxxxxx">
+        <label for="indukPensiun">3. No. Pensiun / KTP *</label>
+        <input type="text" id="indukPensiun" name="No Pensiun KTP" class="form-control" required placeholder="Nomor Pensiun atau NIK KTP">
       </div>
 
       <div class="form-group">
-        <label for="indukPensiun">4. No. Induk Pensiun *</label>
-        <input type="text" id="indukPensiun" name="No Induk Pensiun" class="form-control" required placeholder="Nomor Induk Pensiun">
+        <label for="alamat">4. Alamat Domisili *</label>
+        <textarea id="alamat" name="Alamat Domisili" class="form-control" required placeholder="Alamat lengkap saat ini"></textarea>
       </div>
 
       <div class="form-group">
-        <label for="namaAhliWaris">5. Nama Ahli Waris *</label>
-        <input type="text" id="namaAhliWaris" name="Nama Ahli Waris" class="form-control" required placeholder="Nama ahli waris">
+        <label for="telepon">5. No. Telepon / HP *</label>
+        <input type="tel" id="telepon" name="No Telepon HP" class="form-control" required placeholder="08xxxxxxxxxx">
       </div>
 
       <div class="form-group">
-        <label for="alamatAhliWaris">6. Alamat Ahli Waris *</label>
-        <textarea id="alamatAhliWaris" name="Alamat Ahli Waris" class="form-control" required placeholder="Alamat lengkap ahli waris"></textarea>
+        <label for="ranting">6. Ranting *</label>
+        <input type="text" id="ranting" name="Ranting" class="form-control" required placeholder="Nama Ranting KOPANA">
       </div>
 
       <button type="submit" id="btnSubmit" class="btn btn-primary btn-submit">
@@ -281,102 +313,93 @@
     </form>
   </div>
 
-  <!-- Area Khusus Cetak (Sesuai PDF Asli) -->
+  <!-- Area Khusus Cetak (Sesuai Desain Gambar Baru) -->
   <div id="printArea">
     <div class="kop-surat">
       <img src="assets/img/logo.png" alt="Logo KOPANA" class="kop-logo">
       <div class="kop-text">
-        <h2>AGEN LPG 3 KG</h2>
-        <h2>KOPERASI SERBA USAHA PURNAKARYAWAN PERTAMINA</h2>
-        <h1>KOPANA YOGYAKARTA</h1>
-        <p>Alamat : JL.Teh M-10 Sawitsari, Condongcatur, Depok, Sleman</p>
-        <p>No.Tlp : (0274).2832076 HP.:082.227.154.266</p>
-        <p>Email : kopanayk@gmail.com</p>
+        <h1>KOPERASI PURNA KARYAWAN PERTAMINA</h1>
+        <h2>Wilayah Daerah Istimewa Yogyakarta</h2>
+        <p>Jl. Kenari No. 9, Semaki, Kec. Umbulharjo, Kota Yogyakarta</p>
       </div>
-      <!-- Logo Elpiji di sebelah kanan (opsional, ganti dgn kotak kosong agar balance) -->
-      <div style="width: 80px;"></div>
     </div>
 
     <div class="surat-judul">
-      PERMOHONAN MENJADI ANGGOTA<br>
       KOPANA YOGYAKARTA
     </div>
 
-    <div class="surat-isi">
-      <p>Dengan hormat,</p>
-      <p>Saya yang bertanda tangan di bawah ini :</p>
+    <div class="surat-intro">
+      Yang bertanda tangan di bawah ini mengajukan permohonan untuk diterima menjadi Anggota Koperasi Serba Usaha (KSU) KOPANA Yogyakarta, dengan data identitas sebagai berikut:
+    </div>
       
-      <div class="surat-form">
-        <div class="surat-form-row">
-          <div class="surat-form-label">1. Nama</div>
-          <div class="surat-form-colon">:</div>
-          <div class="surat-form-value" id="print-nama"></div>
-        </div>
-        <div class="surat-form-row">
-          <div class="surat-form-label">2. Alamat</div>
-          <div class="surat-form-colon">:</div>
-          <div class="surat-form-value" id="print-alamat"></div>
-        </div>
-        <div class="surat-form-row">
-          <div class="surat-form-label">3. No. Telepon</div>
-          <div class="surat-form-colon">:</div>
-          <div class="surat-form-value" id="print-telepon"></div>
-        </div>
-        <div class="surat-form-row">
-          <div class="surat-form-label">4. No. Induk Pensiun</div>
-          <div class="surat-form-colon">:</div>
-          <div class="surat-form-value" id="print-induk"></div>
-        </div>
-        <div class="surat-form-row">
-          <div class="surat-form-label">5. Nama Ahli Waris</div>
-          <div class="surat-form-colon">:</div>
-          <div class="surat-form-value" id="print-aw-nama"></div>
-        </div>
-        <div class="surat-form-row">
-          <div class="surat-form-label">6. Alamat Ahli Waris</div>
-          <div class="surat-form-colon">:</div>
-          <div class="surat-form-value" id="print-aw-alamat"></div>
-        </div>
+    <div class="surat-form">
+      <div class="surat-form-row">
+        <div class="surat-form-label">Nama Lengkap</div>
+        <div class="surat-form-colon">:</div>
+        <div class="surat-form-value" id="print-nama"></div>
       </div>
-
-      <p>Dengan ini mengajukan permohonan untuk dapat menjadi anggota koperasi KOPANA Yogyakarta. Sehubungan hal tersebut, Saya menyatakan kesediaan sebagai berikut :</p>
-      
-      <div class="surat-list">
-        <ol>
-          <li>Membayar uang Simpanan Pokok sebesar = Rp. 20.000,-</li>
-          <li>Membayar uang Simpanan Wajib sebesar = Rp. 5.000,- setiap bulan.</li>
-          <li>Membayar uang penyesuaian modal anggota sebesar = Rp .........................</li>
-          <li>WAJIB aktif dalam mengikuti kegiatan KOPANA YK, dan bersedia menjadi pengurus jika diperlukan.</li>
-          <li>Sanggup memenuhi / mematuhi ketentuan-ketentuan yang berlaku dalam Anggaran Dasar (AD) dan Anggaran Rumah Tangga (ART) KOPANA Yogyakarta.</li>
-          <li>Berkomitmen dan berkontribusi aktif dalam kegiatan Kopana, belanja dll.</li>
-          <li>Penerimaan SHU diberikan pada Tahun ke 2 setelah menjadi anggota.</li>
-        </ol>
+      <div class="surat-form-row">
+        <div class="surat-form-label">No. Anggota (NA)</div>
+        <div class="surat-form-colon">:</div>
+        <div class="surat-form-value" id="print-na"></div>
       </div>
+      <div class="surat-form-row">
+        <div class="surat-form-label">No. Pensiun / KTP</div>
+        <div class="surat-form-colon">:</div>
+        <div class="surat-form-value" id="print-induk"></div>
+      </div>
+      <div class="surat-form-row">
+        <div class="surat-form-label">Alamat Domisili</div>
+        <div class="surat-form-colon">:</div>
+        <div class="surat-form-value" id="print-alamat"></div>
+      </div>
+      <div class="surat-form-row">
+        <div class="surat-form-label">No. Telepon / HP</div>
+        <div class="surat-form-colon">:</div>
+        <div class="surat-form-value" id="print-telepon"></div>
+      </div>
+      <div class="surat-form-row">
+        <div class="surat-form-label">Ranting</div>
+        <div class="surat-form-colon">:</div>
+        <div class="surat-form-value" id="print-ranting"></div>
+      </div>
+    </div>
 
-      <p>Demikian permohonan ini, atas bantuan dan perhatiannya diucapkan terima kasih.</p>
+    <div class="keuangan-box">
+      <div class="keuangan-title">Rincian Kewajiban Keuangan (Diisi oleh Petugas)</div>
+      <div class="keuangan-row">
+        <div>1. Simpanan Pokok (Sekali bayar saat mendaftar)</div>
+        <div class="rp-box">Rp</div>
+      </div>
+      <div class="keuangan-row">
+        <div>2. Simpanan Wajib (Setoran bulanan)</div>
+        <div class="rp-box">Rp</div>
+      </div>
+      <div class="keuangan-row">
+        <div>3. Penyesuaian Modal Anggota</div>
+        <div class="rp-box">Rp</div>
+      </div>
+      <div class="keuangan-total">
+        <div>TOTAL SETORAN AWAL</div>
+        <div class="rp-box" style="border-bottom: 2px solid black;">Rp</div>
+      </div>
+    </div>
+
+    <div class="surat-footer-text">
+      Dengan ini saya menyatakan bersedia mematuhi Anggaran Dasar, Anggaran Rumah Tangga, serta keputusan rapat anggota dan ketentuan yang berlaku pada KSU KOPANA Yogyakarta. Saya bersedia membayar kewajiban simpanan pokok, simpanan wajib, serta penyesuaian modal anggota sesuai dengan ketentuan yang telah ditetapkan.
     </div>
 
     <div class="ttd-section">
-      <div class="ttd-box" style="margin-top: 80px;">
-        <p>Mengetahui,</p>
-        <p>Sekretaris HIMPANA</p>
-        <p>Ranting.......................</p>
+      <div class="ttd-box">
+        <p style="text-align: left;">Yogyakarta,<br>Pemohon,</p>
         <div class="ttd-space"></div>
-        <p>(........................................)</p>
+        <p style="text-align: left;">( <span id="print-ttd-nama" style="display:inline-block; width: 80%; border-bottom: 1px solid black; text-align: center;"></span> )</p>
       </div>
       
-      <div class="ttd-box" style="margin-top: 100px;">
-        <p>Ketua HIMPANA</p>
-        <p>Ranting.......................</p>
-        <div class="ttd-space"></div>
-        <p>(........................................)</p>
-      </div>
-
       <div class="ttd-box">
-        <p>Yogyakarta, ........................ 20...</p>
-        <p>Pemohon,</p>
+        <p>Mengetahui/Menyetujui,<br>Pengurus KSU KOPANA Yogyakarta</p>
         <div class="ttd-space"></div>
-        <p>( <span id="print-ttd-nama">........................................</span> )</p>
+        <p>( <span style="display:inline-block; width: 80%; border-bottom: 1px solid black;">&nbsp;</span> )</p>
       </div>
     </div>
   </div>
@@ -386,15 +409,20 @@
     document.getElementById('btnPrint').addEventListener('click', function() {
       // Sinkronisasi data form ke print area
       document.getElementById('print-nama').textContent = document.getElementById('nama').value;
+      document.getElementById('print-na').textContent = document.getElementById('na').value;
+      document.getElementById('print-induk').textContent = document.getElementById('indukPensiun').value;
       document.getElementById('print-alamat').textContent = document.getElementById('alamat').value;
       document.getElementById('print-telepon').textContent = document.getElementById('telepon').value;
-      document.getElementById('print-induk').textContent = document.getElementById('indukPensiun').value;
-      document.getElementById('print-aw-nama').textContent = document.getElementById('namaAhliWaris').value;
-      document.getElementById('print-aw-alamat').textContent = document.getElementById('alamatAhliWaris').value;
+      document.getElementById('print-ranting').textContent = document.getElementById('ranting').value;
       
-      // Update tanda tangan nama
+      // Update tanda tangan nama (bawah garis)
       const nama = document.getElementById('nama').value;
-      document.getElementById('print-ttd-nama').textContent = nama ? nama : '........................................';
+      // Di form ini tanda tangannya bergaris bawah
+      if(nama) {
+        document.getElementById('print-ttd-nama').textContent = nama;
+      } else {
+        document.getElementById('print-ttd-nama').innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+      }
       
       // Panggil fungsi print browser
       window.print();
@@ -425,12 +453,12 @@
         // Kirim ke WhatsApp
         const waNumber = "6282227154266";
         let textWa = "Halo Pengurus KOPANA, saya mengirimkan data pendaftaran anggota baru:\n\n";
-        textWa += `*1. Nama:* ${data['Nama']}\n`;
-        textWa += `*2. Alamat:* ${data['Alamat']}\n`;
-        textWa += `*3. No. Telepon:* ${data['No Telepon']}\n`;
-        textWa += `*4. No. Induk Pensiun:* ${data['No Induk Pensiun']}\n`;
-        textWa += `*5. Nama Ahli Waris:* ${data['Nama Ahli Waris']}\n`;
-        textWa += `*6. Alamat Ahli Waris:* ${data['Alamat Ahli Waris']}\n\n`;
+        textWa += `*1. Nama Lengkap:* ${data['Nama Lengkap']}\n`;
+        textWa += `*2. No. Anggota:* ${data['No Anggota'] || '-'}\n`;
+        textWa += `*3. No. Pensiun / KTP:* ${data['No Pensiun KTP']}\n`;
+        textWa += `*4. Alamat Domisili:* ${data['Alamat Domisili']}\n`;
+        textWa += `*5. No. Telepon:* ${data['No Telepon HP']}\n`;
+        textWa += `*6. Ranting:* ${data['Ranting']}\n\n`;
         textWa += "Terima kasih.";
         
         const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(textWa)}`;
