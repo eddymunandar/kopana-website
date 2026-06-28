@@ -310,8 +310,14 @@
       </div>
       
       <div class="form-group">
-        <label for="nilaiPengembalian">4. Nilai pengembalian simpanan</label>
-        <input type="text" id="nilaiPengembalian" name="Nilai Pengembalian" class="form-control" placeholder="Contoh: 150.000">
+        <label for="nilaiPengembalian">4. Nilai pengembalian simpanan (Rp)</label>
+        <input type="text" id="nilaiPengembalian" name="Nilai Pengembalian" class="form-control" placeholder="Contoh: 150000">
+      </div>
+
+      <h2 class="section-title">Khusus Cetak Formulir</h2>
+      <div class="form-group">
+        <label for="namaKetua">Nama Ketua KOPANA (Untuk Tanda Tangan Cetak)</label>
+        <input type="text" id="namaKetua" class="form-control" placeholder="Contoh: Budi Santoso">
       </div>
 
       <button type="submit" id="btnSubmit" class="btn btn-primary btn-submit">
@@ -334,9 +340,8 @@
         <p>Alamat : Jl. Brambang Gatak 1, Selomartani, Kalasan, Sleman</p>
         <p>Telp. : 082.227.154.266 Email : kopanayk@gmail.com</p>
       </div>
-      <div class="kop-elpiji">
-        <i class="fas fa-fire" style="color: #e63946; font-size: 36px; margin-bottom: 2px;"></i><br>
-        <span style="color: #1d3557; font-weight: 900; font-size: 16px; letter-spacing: 1px;">ELPIJI</span>
+      <div class="kop-elpiji" style="display: flex; align-items: center; justify-content: center;">
+        <img src="assets/img/logo-elpiji.png" alt="ELPIJI" style="width: 70px;">
       </div>
     </div>
 
@@ -403,7 +408,7 @@
       <div class="ttd-box">
         <p><br>Ketua KOPANA</p>
         <div class="ttd-space"></div>
-        <p>(........................................)</p>
+        <p>( <span id="print-ttd-ketua">........................................</span> )</p>
       </div>
     </div>
 
@@ -464,6 +469,14 @@
       // Update tanda tangan nama
       const nama = document.getElementById('nama').value;
       if(nama) document.getElementById('print-ttd-nama').textContent = nama;
+      
+      const ketua = document.getElementById('namaKetua').value;
+      if(ketua) {
+        document.getElementById('print-ttd-ketua').textContent = ketua;
+        document.getElementById('print-ttd-ketua').style.borderBottom = "1px solid black";
+        document.getElementById('print-ttd-ketua').style.display = "inline-block";
+        document.getElementById('print-ttd-ketua').style.width = "80%";
+      }
       
       // Panggil fungsi print browser
       window.print();

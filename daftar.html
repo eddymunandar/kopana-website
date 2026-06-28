@@ -278,6 +278,12 @@
         <input type="number" id="penyesuaianModal" name="Penyesuaian Modal" class="form-control" placeholder="Contoh: 50000 (Isi jika ada)">
       </div>
 
+      <h2 class="section-title">Khusus Cetak Formulir</h2>
+      <div class="form-group">
+        <label for="namaKetua">Nama Ketua HIMPANA (Untuk Tanda Tangan Cetak)</label>
+        <input type="text" id="namaKetua" class="form-control" placeholder="Contoh: Budi Santoso">
+      </div>
+
       <button type="submit" id="btnSubmit" class="btn btn-primary btn-submit">
         <i class="fas fa-paper-plane"></i> Kirim Data (Email & WhatsApp)
       </button>
@@ -298,9 +304,8 @@
         <p>Alamat : Jl. Brambang Gatak 1, Selomartani, Kalasan, Sleman</p>
         <p>Telp. : 082.227.154.266 Email : kopanayk@gmail.com</p>
       </div>
-      <div class="kop-elpiji">
-        <i class="fas fa-fire" style="color: #e63946; font-size: 36px; margin-bottom: 2px;"></i><br>
-        <span style="color: #1d3557; font-weight: 900; font-size: 16px; letter-spacing: 1px;">ELPIJI</span>
+      <div class="kop-elpiji" style="display: flex; align-items: center; justify-content: center;">
+        <img src="assets/img/logo-elpiji.png" alt="ELPIJI" style="width: 70px;">
       </div>
     </div>
 
@@ -387,7 +392,7 @@
           <p>Ketua HIMPANA</p>
           <p>Ranting.......................</p>
           <div class="ttd-space"></div>
-          <p>(........................................)</p>
+          <p>( <span id="print-ttd-ketua">........................................</span> )</p>
         </div>
       </div>
     </div>
@@ -413,6 +418,14 @@
       
       const nama = document.getElementById('nama').value;
       if(nama) document.getElementById('print-ttd-nama').textContent = nama;
+
+      const ketua = document.getElementById('namaKetua').value;
+      if(ketua) {
+        document.getElementById('print-ttd-ketua').textContent = ketua;
+        document.getElementById('print-ttd-ketua').style.borderBottom = "1px solid black";
+        document.getElementById('print-ttd-ketua').style.display = "inline-block";
+        document.getElementById('print-ttd-ketua').style.width = "80%";
+      }
       
       window.print();
     });
