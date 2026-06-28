@@ -109,6 +109,20 @@
 
 <body>
 
+  <!-- ANTI-FOUC DARK MODE -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('kopana-dark-mode');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'true' || (saved === null && prefersDark)) {
+          document.body.classList.add('dark-mode');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+
 
   
 
