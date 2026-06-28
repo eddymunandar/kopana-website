@@ -228,6 +228,24 @@
   </style>
 </head>
 <body class="dark-theme">
+
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <img src="assets/img/logo.png" alt="Kopana Logo" class="preloader-logo">
+    <div class="spinner"></div>
+  </div>
+  <script>
+    window.addEventListener('load', function() {
+      const preloader = document.getElementById('preloader');
+      if (preloader) {
+        preloader.classList.add('hidden');
+        setTimeout(() => {
+          preloader.style.display = 'none';
+        }, 500);
+      }
+    });
+  </script>
+
   
   <div class="form-container">
     <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</a>
