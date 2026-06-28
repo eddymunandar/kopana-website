@@ -1,7 +1,8 @@
-const CACHE_NAME = 'kopana-v4';
+const CACHE_NAME = 'kopana-v5';
 const ASSETS = [
   '/',
   '/index.html',
+  '/pengurus.html',
   '/assets/css/style.css',
   '/assets/js/script.js',
   '/assets/img/logo.png'
