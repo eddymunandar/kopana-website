@@ -71,7 +71,7 @@
     const currentScroll = window.scrollY;
 
     // Tambahkan class scrolled saat sudah scroll
-    if (currentScroll > 50) {
+    if (currentScroll > 50 || navbar.classList.contains('always-scrolled')) {
       navbar.classList.add('scrolled');
     } else {
       navbar.classList.remove('scrolled');
