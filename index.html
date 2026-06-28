@@ -88,6 +88,23 @@
     "sameAs": []
   }
   </script>
+
+<script>
+  // CACHE KILLER: Force unregister all Service Workers to clean up stale cache
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      for(let registration of registrations) {
+        registration.unregister().then(function(boolean) {
+          console.log('Service worker unregistered');
+        });
+      }
+    });
+  }
+  
+  // Clear localStorage and sessionStorage cache versions if any
+  localStorage.clear();
+  sessionStorage.clear();
+</script>
 </head>
 
 <body>
