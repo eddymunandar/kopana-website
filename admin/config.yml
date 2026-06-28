@@ -123,6 +123,7 @@ collections:
             fields:
               - { label: "Nama Penanggung Jawab", name: "nama", widget: "string" }
               - { label: "Nama Cabang", name: "cabang", widget: "string" }
+              - { label: "Foto", name: "foto", widget: "image", required: false }
               - { label: "Deskripsi", name: "desc", widget: "text" }
 
       - name: "kontak"
