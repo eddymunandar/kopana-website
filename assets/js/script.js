@@ -725,6 +725,17 @@ const KopanaAPI = {
       setEl('dyn-kontak-alamat', data.alamat);
       if (data.telepon) setEl('dyn-kontak-telepon', data.telepon, 'href', `tel:${data.telepon.replace(/\s+/g, '')}`);
       if (data.email) setEl('dyn-kontak-email', data.email, 'href', `mailto:${data.email}`);
+
+      const mapsContainer = document.getElementById('dyn-maps-container');
+      if (mapsContainer && data.maps) {
+        let mapsUrl = data.maps;
+        // Check if user accidentally pasted full iframe code instead of just url
+        if(mapsUrl.includes('<iframe') && mapsUrl.includes('src="')) {
+           const match = mapsUrl.match(/src="([^"]+)"/);
+           if(match) mapsUrl = match[1];
+        }
+        mapsContainer.innerHTML = `<iframe src="${mapsUrl}" width="100%" height="380" style="border:0; border-radius: var(--radius-2xl);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
+      }
     } catch (error) {
       console.info('KopanaAPI: Gagal memuat kontak.json');
     }

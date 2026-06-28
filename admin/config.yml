@@ -137,6 +137,7 @@ collections:
           - { label: "Link Instagram", name: "instagram", widget: "string", required: false }
           - { label: "Link YouTube", name: "youtube", widget: "string", required: false }
           - { label: "Link WhatsApp Langsung", name: "whatsapp", widget: "string" }
+          - { label: "Google Maps Embed URL (Opsional)", name: "maps", widget: "string", required: false, hint: "Paste link 'src' dari Google Maps (https://www.google.com/maps/embed?...)" }
 
       - name: "formulir"
         label: "Download Formulir"
