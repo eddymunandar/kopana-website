@@ -280,6 +280,10 @@
 
       <h2 class="section-title">Khusus Cetak Formulir</h2>
       <div class="form-group">
+        <label for="namaSekretaris">Nama Sekretaris HIMPANA (Untuk Tanda Tangan Cetak)</label>
+        <input type="text" id="namaSekretaris" class="form-control" placeholder="Contoh: Joko Widodo">
+      </div>
+      <div class="form-group">
         <label for="namaKetua">Nama Ketua HIMPANA (Untuk Tanda Tangan Cetak)</label>
         <input type="text" id="namaKetua" class="form-control" placeholder="Contoh: Budi Santoso">
       </div>
@@ -305,7 +309,7 @@
         <p>Telp. : 082.227.154.266 Email : kopanayk@gmail.com</p>
       </div>
       <div class="kop-elpiji" style="display: flex; align-items: center; justify-content: center;">
-        <img src="assets/img/logo-elpiji.png" alt="ELPIJI" style="width: 70px;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Logo_Elpiji_Pertamina.svg/1024px-Logo_Elpiji_Pertamina.svg.png" alt="ELPIJI" style="width: 70px;">
       </div>
     </div>
 
@@ -386,7 +390,7 @@
           <p>Sekretaris HIMPANA</p>
           <p>Ranting.......................</p>
           <div class="ttd-space"></div>
-          <p>(........................................)</p>
+          <p>( <span id="print-ttd-sekretaris">........................................</span> )</p>
         </div>
         <div class="ttd-box" style="text-align: center;">
           <p>Ketua HIMPANA</p>
@@ -418,6 +422,14 @@
       
       const nama = document.getElementById('nama').value;
       if(nama) document.getElementById('print-ttd-nama').textContent = nama;
+
+      const sekretaris = document.getElementById('namaSekretaris').value;
+      if(sekretaris) {
+        document.getElementById('print-ttd-sekretaris').textContent = sekretaris;
+        document.getElementById('print-ttd-sekretaris').style.borderBottom = "1px solid black";
+        document.getElementById('print-ttd-sekretaris').style.display = "inline-block";
+        document.getElementById('print-ttd-sekretaris').style.width = "80%";
+      }
 
       const ketua = document.getElementById('namaKetua').value;
       if(ketua) {
