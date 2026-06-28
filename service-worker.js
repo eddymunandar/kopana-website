@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kopana-v2';
+const CACHE_NAME = 'kopana-v3';
 const ASSETS = [
   '/',
   '/index.html',

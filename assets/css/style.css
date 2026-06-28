@@ -1019,7 +1019,7 @@ section {
 
 .card-photo-wrap {
   position: relative;
-  height: 220px;
+  height: 340px;
   overflow: hidden;
   background: linear-gradient(135deg, var(--bg-alt), var(--border));
 }
