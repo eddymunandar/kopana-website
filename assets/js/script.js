@@ -866,7 +866,7 @@ const KopanaAPI = {
           return `
           <article class="cabang-card reveal ${delay}">
             ${c.foto 
-              ? `<img src="${c.foto}" alt="${c.nama}" style="width: 70px; height: 70px; border-radius: 16px; object-fit: cover; margin: 0 auto 16px auto; display: block; box-shadow: 0 8px 20px rgba(15,76,129,0.3);">`
+              ? `<img src="${c.foto}" alt="${c.nama}" style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin: 0 auto 20px auto; display: block; border: 4px solid var(--surface); box-shadow: 0 8px 25px rgba(0,0,0,0.15);">`
               : `<div class="cabang-icon" aria-hidden="true"><i class="fas fa-map-marker-alt"></i></div>`
             }
             <h3 class="cabang-name">${c.nama}</h3>
