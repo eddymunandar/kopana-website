@@ -724,7 +724,12 @@ const KopanaAPI = {
 
       setEl('dyn-kontak-alamat', data.alamat);
       if (data.telepon) setEl('dyn-kontak-telepon', data.telepon, 'href', `tel:${data.telepon.replace(/\s+/g, '')}`);
-      if (data.email) setEl('dyn-kontak-email', data.email, 'href', `mailto:${data.email}`);
+      if (data.email) {
+        document.querySelectorAll('.dyn-email').forEach(el => {
+          el.textContent = data.email;
+          el.href = `mailto:${data.email}`;
+        });
+      }
 
       const mapsContainer = document.getElementById('dyn-maps-container');
       if (mapsContainer && data.maps) {
@@ -950,9 +955,11 @@ const KopanaAPI = {
         el('dyn-kontak-telepon').href = `tel:${data.telepon.replace(/\D/g,'')}`;
       }
       
-      if (data.email && el('dyn-kontak-email')) {
-        el('dyn-kontak-email').textContent = data.email;
-        el('dyn-kontak-email').href = `mailto:${data.email}`;
+      if (data.email) {
+        document.querySelectorAll('.dyn-email').forEach(elem => {
+          elem.textContent = data.email;
+          elem.href = `mailto:${data.email}`;
+        });
       }
       
       const socialContainer = el('dyn-footer-social');
