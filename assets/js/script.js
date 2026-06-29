@@ -1056,7 +1056,6 @@ KopanaAPI.getKontak();
 KopanaAPI.getBeranda();
 KopanaAPI.getProfil();
 KopanaAPI.getPengurus();
-KopanaAPI.getPengawas();
 KopanaAPI.getBerita();
 KopanaAPI.getGaleri();
 KopanaAPI.getStatistik();
