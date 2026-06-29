@@ -19,11 +19,6 @@ collections:
           - { label: "Nama Koperasi", name: "nama", widget: "string", default: "KOPANA" }
           - { label: "Tagline", name: "tagline", widget: "string", default: "Koperasi Purnakaryawan Pertamina" }
           - { label: "Deskripsi Footer", name: "deskripsi", widget: "text" }
-          - { label: "Email", name: "email", widget: "string", default: "kopanayogya@gmail.com" }
-          - { label: "Telepon / WA", name: "telepon", widget: "string", default: "+62-822-2715-4266" }
-          - { label: "Facebook Link", name: "facebook", widget: "string", required: false }
-          - { label: "Instagram Link", name: "instagram", widget: "string", required: false }
-          - { label: "Alamat Lengkap", name: "alamat", widget: "text" }
           - { label: "Logo (Opsional)", name: "logo", widget: "image", required: false }
       - name: "berita"
         label: "Berita & Artikel"

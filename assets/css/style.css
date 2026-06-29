@@ -1763,7 +1763,7 @@ footer {
 .footer-links {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
+  gap: 0;
 }
 
 .footer-links a {
@@ -1773,7 +1773,7 @@ footer {
   align-items: center;
   gap: var(--spacing-sm);
   transition: all var(--transition-base);
-  padding-bottom: 0.25rem;
+  padding: 0.15rem 0;
 }
 
 .footer-links a i {
@@ -1789,8 +1789,8 @@ footer {
 
 .footer-contact-item {
   display: flex;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-sm);
+  gap: var(--spacing-sm);
+  margin-bottom: 0.25rem;
   font-size: var(--fs-sm);
   color: rgba(255,255,255,0.55);
   align-items: flex-start;
