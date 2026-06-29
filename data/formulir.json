@@ -2,11 +2,11 @@
   "items": [
     {
       "judul": "Formulir Pendaftaran Anggota",
-      "file": "/assets/img/uploads/Formulir Anggota Baru Kopana.pdf"
+      "file": "#"
     },
     {
       "judul": "Formulir Pengunduran Diri",
-      "file": "/assets/img/uploads/Formulir Pengunduran Diri Anggota Kopana.pdf"
+      "file": "#"
     }
   ]
 }
