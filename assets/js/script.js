@@ -591,13 +591,19 @@ const KopanaAPI = {
       return;
     }
 
-    // Sort items: Kategori 'Pengumuman' selalu di atas
+    // Sort items: Kategori 'Pengumuman' selalu di atas, sisanya diurutkan dari yang terbaru
     items.sort((a, b) => {
       const isAPengumuman = a.kategori && a.kategori.toLowerCase() === 'pengumuman';
       const isBPengumuman = b.kategori && b.kategori.toLowerCase() === 'pengumuman';
+      
       if (isAPengumuman && !isBPengumuman) return -1;
       if (!isAPengumuman && isBPengumuman) return 1;
-      return 0;
+      
+      // Jika keduanya pengumuman atau keduanya bukan, urutkan berdasarkan tanggal (terbaru ke terlama)
+      // Tanggal diformat "DD MMM YYYY", e.g., "15 Jan 2026"
+      const dateA = new Date(a.tanggal || 0).getTime();
+      const dateB = new Date(b.tanggal || 0).getTime();
+      return dateB - dateA;
     });
 
     container.innerHTML = items.map(item => `
