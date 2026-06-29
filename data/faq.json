@@ -2,7 +2,7 @@
   "items": [
     {
       "pertanyaan": "Siapa saja yang bisa menjadi anggota KOPANA?",
-      "jawaban": "Purnakaryawan Pertamina, janda/duda purnakaryawan anggota Himpana di cabang-cabang di DIY yang memenuhi persyaratan yang ditetapkan oleh Koperasi."
+      "jawaban": "Purnakaryawan Pertamina, janda/duda purnakaryawan, dan masyarakat umum yang memenuhi persyaratan yang ditetapkan oleh Koperasi."
     },
     {
       "pertanyaan": "Bagaimana cara mendaftar menjadi anggota?",
@@ -10,11 +10,11 @@
     },
     {
       "pertanyaan": "Apa saja keuntungan menjadi anggota KOPANA?",
-      "jawaban": "Anggota berhak mendapatkan mendapatkan Sisa Hasil Usaha (SHU) setiap tahun sesuai partisipasi, serta berbagai manfaat layanan koperasi lainnya."
+      "jawaban": "Anggota berhak mendapatkan layanan simpan pinjam dengan bunga yang kompetitif, mendapatkan Sisa Hasil Usaha (SHU) setiap tahun sesuai partisipasi, serta berbagai manfaat layanan koperasi lainnya."
     },
     {
-      "pertanyaan": "Apakah KOPANA melayani pinjaman?",
-      "jawaban": "Kopana adalah Koperasi serba usaha bukan koperasi simpan pinjam jadi tidak melayani pinjaman"
+      "pertanyaan": "Apakah KOPANA melayani pinjaman secara online?",
+      "jawaban": "Ya, bagi anggota yang sudah terdaftar secara resmi, pengajuan pinjaman maupun layanan lainnya bisa diakses secara online melalui Aplikasi KOPANA."
     },
     {
       "pertanyaan": "Bagaimana jika saya ingin mengundurkan diri dari keanggotaan?",

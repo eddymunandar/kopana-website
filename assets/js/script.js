@@ -299,6 +299,7 @@
     const target = parseInt(el.dataset.target, 10);
     const suffix = el.dataset.suffix || '';
     const prefix = el.dataset.prefix || '';
+    const noFormat = el.dataset.noFormat === 'true';
     const duration = 2000;
     const startTime = performance.now();
 
@@ -315,12 +316,12 @@
       const eased = 1 - Math.pow(1 - progress, 3);
       const current = Math.floor(eased * target);
 
-      el.textContent = prefix + current.toLocaleString('id-ID') + suffix;
+      el.textContent = prefix + (noFormat ? current : current.toLocaleString('id-ID')) + suffix;
 
       if (progress < 1) {
         requestAnimationFrame(update);
       } else {
-        el.textContent = prefix + target.toLocaleString('id-ID') + suffix;
+        el.textContent = prefix + (noFormat ? target : target.toLocaleString('id-ID')) + suffix;
       }
     }
 
@@ -990,6 +991,43 @@ const KopanaAPI = {
       console.info('KopanaAPI: Gagal memuat pengaturan.json');
     }
   },
+  async getUsaha() {
+    try {
+      const container = document.getElementById('dyn-usaha-container');
+      if (!container) return;
+      
+      const response = await fetch(`data/usaha.json?t=${new Date().getTime()}`);
+      if (!response.ok) return;
+      
+      const data = await response.json();
+      if (data && data.items && data.items.length > 0) {
+        container.innerHTML = '';
+        data.items.forEach(item => {
+          const card = document.createElement('article');
+          card.className = 'berita-card reveal';
+          card.innerHTML = `
+            <div class="berita-img-wrap">
+              <img src="${item.foto || 'assets/img/hero-bg.jpg'}" alt="${item.judul}" class="berita-img" loading="lazy">
+            </div>
+            <div class="berita-body">
+              <h3 class="berita-title">${item.judul}</h3>
+              <p class="berita-excerpt" style="-webkit-line-clamp: unset;">
+                ${item.deskripsi}
+              </p>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } else {
+        container.innerHTML = '<div class="loading-state"><p>Belum ada data bidang usaha.</p></div>';
+      }
+    } catch (error) {
+      console.info('KopanaAPI: Gagal memuat usaha.json');
+      const el = document.getElementById('dyn-usaha-container');
+      if(el) el.innerHTML = '<div class="loading-state"><p>Gagal memuat Bidang Usaha.</p></div>';
+    }
+  },
+
   async getFaq() {
     try {
       const listContainer = document.getElementById('dyn-faq-list');
@@ -1061,6 +1099,7 @@ KopanaAPI.getGaleri();
 KopanaAPI.getStatistik();
 KopanaAPI.getFormulir();
 KopanaAPI.getFaq();
+KopanaAPI.getUsaha();
 KopanaAPI.getPengaturan();
 
 

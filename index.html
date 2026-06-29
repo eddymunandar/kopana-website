@@ -150,6 +150,7 @@
           <ul class="nav-menu" id="nav-menu" role="menubar">
             <li role="none"><a href="#hero" class="nav-link active" role="menuitem">Beranda</a></li>
             <li role="none"><a href="#tentang" class="nav-link" role="menuitem">Tentang Kami</a></li>
+            <li role="none"><a href="#usaha" class="nav-link" role="menuitem">Bidang Usaha</a></li>
             <li role="none"><a href="pengurus.html" class="nav-link" role="menuitem">Pengurus</a></li>
             
             
@@ -405,10 +406,28 @@
       </div>
     </section>
 
+    <!-- 3. LAYANAN & BIDANG USAHA -->
+    <section id="usaha" aria-labelledby="usaha-heading" class="section-alt">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-subtitle reveal">Layanan Kami</span>
+          <h2 class="section-title reveal" id="usaha-heading">
+            Bidang <span>Usaha</span>
+          </h2>
+          <div class="section-line reveal"></div>
+          <p class="section-desc reveal">Beberapa unit layanan dan bidang usaha yang dijalankan oleh Koperasi Purnakaryawan Pertamina.</p>
+        </div>
+        
+        <div class="berita-grid" id="dyn-usaha-container">
+          <div class="loading-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Memuat Bidang Usaha...</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <!-- ============================================================
-         STATISTIK KOPERASI
-         ============================================================ -->
+    <!-- 4. STATISTIK KOPANA -->
     <section id="statistik" aria-labelledby="statistik-heading">
       <div class="container">
         <div class="section-header" style="color: white;">
@@ -441,35 +460,35 @@
           <!-- Tahun Berdiri -->
           <div class="stat-card reveal reveal-delay-1">
             <div class="stat-icon"><i class="fas fa-calendar-alt" aria-hidden="true"></i></div>
-            <div class="stat-number" data-target="1996" aria-label="Tahun berdiri 1996">1996</div>
+            <div class="stat-number" data-target="1996" data-key="tahun" data-no-format="true" aria-label="Tahun berdiri 1996">1996</div>
             <div class="stat-label">Tahun Berdiri</div>
           </div>
 
           <!-- Pengurus -->
           <div class="stat-card reveal reveal-delay-2">
             <div class="stat-icon"><i class="fas fa-user-tie" aria-hidden="true"></i></div>
-            <div class="stat-number" data-target="3" aria-label="3 orang pengurus">0</div>
+            <div class="stat-number" data-target="3" data-key="pengurus" aria-label="3 orang pengurus">0</div>
             <div class="stat-label">Pengurus</div>
           </div>
 
           <!-- Pengawas -->
           <div class="stat-card reveal reveal-delay-3">
             <div class="stat-icon"><i class="fas fa-user-shield" aria-hidden="true"></i></div>
-            <div class="stat-number" data-target="3" aria-label="3 orang pengawas">0</div>
+            <div class="stat-number" data-target="3" data-key="pengawas" aria-label="3 orang pengawas">0</div>
             <div class="stat-label">Pengawas</div>
           </div>
 
           <!-- Cabang -->
           <div class="stat-card reveal reveal-delay-4">
             <div class="stat-icon"><i class="fas fa-map-marker-alt" aria-hidden="true"></i></div>
-            <div class="stat-number" data-target="3" aria-label="3 perwakilan cabang">0</div>
+            <div class="stat-number" data-target="3" data-key="cabang" aria-label="3 perwakilan cabang">0</div>
             <div class="stat-label">Perwakilan Cabang</div>
           </div>
 
           <!-- Karyawan -->
           <div class="stat-card reveal reveal-delay-5">
             <div class="stat-icon"><i class="fas fa-id-badge" aria-hidden="true"></i></div>
-            <div class="stat-number" data-target="11" aria-label="11 karyawan">0</div>
+            <div class="stat-number" data-target="11" data-key="karyawan" aria-label="11 karyawan">0</div>
             <div class="stat-label">Karyawan</div>
           </div>
 
@@ -843,6 +862,7 @@
           <nav class="footer-links" aria-label="Menu cepat footer">
             <a href="#hero"><i class="fas fa-chevron-right" aria-hidden="true"></i> Beranda</a>
             <a href="#tentang"><i class="fas fa-chevron-right" aria-hidden="true"></i> Tentang Kami</a>
+            <a href="#usaha"><i class="fas fa-chevron-right" aria-hidden="true"></i> Bidang Usaha</a>
             <a href="#pengurus"><i class="fas fa-chevron-right" aria-hidden="true"></i> Pengurus</a>
             <a href="#berita"><i class="fas fa-chevron-right" aria-hidden="true"></i> Berita & Pengumuman</a>
             <a href="#galeri"><i class="fas fa-chevron-right" aria-hidden="true"></i> Galeri</a>
@@ -927,7 +947,7 @@
 
 
   <!-- Main Script -->
-  <script src="assets/js/script.js?v=75" defer></script>
+  <script src="assets/js/script.js?v=77" defer></script>
   
   <!-- PWA Service Worker Registration -->
   <script>

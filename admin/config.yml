@@ -20,6 +20,18 @@ collections:
           - { label: "Tagline", name: "tagline", widget: "string", default: "Koperasi Purnakaryawan Pertamina" }
           - { label: "Deskripsi Footer", name: "deskripsi", widget: "text" }
           - { label: "Logo (Opsional)", name: "logo", widget: "image", required: false }
+      - name: "usaha"
+        label: "Bidang Usaha"
+        file: "data/usaha.json"
+        description: "Daftar layanan dan bidang usaha KOPANA"
+        fields:
+          - name: "items"
+            label: "Daftar Usaha"
+            widget: "list"
+            fields:
+              - { label: "Nama Usaha", name: "judul", widget: "string" }
+              - { label: "Deskripsi", name: "deskripsi", widget: "text" }
+              - { label: "Foto Utama", name: "foto", widget: "image", required: false }
       - name: "berita"
         label: "Berita & Artikel"
         file: "data/berita.json"
