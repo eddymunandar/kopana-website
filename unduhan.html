@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pusat Unduhan - KOPANA</title>
+  
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo.png?v=2">
+  <link rel="manifest" href="manifest.json">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  
+  <style>
+    .faq-page-container {
+      max-width: 800px;
+      margin: 80px auto 60px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(10px);
+    }
+    .faq-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .faq-header h1 {
+      color: var(--primary, #1e293b);
+      margin-bottom: 10px;
+    }
+    .faq-header p {
+      color: #475569;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: var(--primary, #2563eb);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    
+    .loading-state {
+      text-align: center;
+      padding: 40px;
+      color: #64748b;
+    }
+
+    /* Formulir List Style */
+    #dyn-formulir-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    #dyn-formulir-container a {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 20px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-md);
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    #dyn-formulir-container a:hover {
+      background: var(--primary);
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(15,76,129,0.15);
+    }
+
+    #dyn-formulir-container a i {
+      font-size: 1.5rem;
+    }
+  </style>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      for(let registration of registrations) {
+        registration.unregister().then(function(boolean) {
+          console.log('Service worker unregistered');
+        });
+      }
+    });
+  }
+</script>
+</head>
+<body class="dark-theme">
+
+  <div class="faq-page-container">
+    <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</a>
+    
+    <div class="faq-header">
+      <h1>Pusat Unduhan Dokumen</h1>
+      <p>Pilih dan unduh formulir atau dokumen KOPANA yang Anda butuhkan.</p>
+    </div>
+
+    <div id="dyn-formulir-container">
+      <div class="loading-state">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Memuat Daftar Unduhan...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/script.js?v=80"></script>
+</body>
+</html>

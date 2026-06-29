@@ -944,12 +944,15 @@ const KopanaAPI = {
 
   async getFormulir() {
     try {
+      const container = document.getElementById('dyn-formulir-container');
+      if (!container) return; // Only fetch if container exists on the page
+      
       const response = await fetch(`data/formulir.json?t=${new Date().getTime()}`);
-      if (!response.ok) return;
+      if (!response.ok) throw new Error("Network not ok");
       const data = await response.json();
       
-      const container = document.getElementById('dyn-formulir-container');
-      if (container && data.items) {
+      if (data && data.items && data.items.length > 0) {
+        container.innerHTML = '';
         data.items.forEach(f => {
           if (!f.file) return;
           const a = document.createElement('a');
@@ -959,9 +962,13 @@ const KopanaAPI = {
           a.innerHTML = `<i class="fas fa-file-download" aria-hidden="true"></i> ${f.judul}`;
           container.appendChild(a);
         });
+      } else {
+        container.innerHTML = '<div class="loading-state"><p>Belum ada formulir atau dokumen yang diunggah.</p></div>';
       }
     } catch (error) {
       console.info('KopanaAPI: Gagal memuat formulir.json');
+      const container = document.getElementById('dyn-formulir-container');
+      if (container) container.innerHTML = '<div class="loading-state"><p>Gagal memuat daftar unduhan.</p></div>';
     }
   },
 

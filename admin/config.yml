@@ -32,6 +32,17 @@ collections:
               - { label: "Nama Usaha", name: "judul", widget: "string" }
               - { label: "Deskripsi", name: "deskripsi", widget: "text" }
               - { label: "Foto Utama", name: "foto", widget: "image", required: false }
+      - name: "formulir"
+        label: "Pusat Unduhan (Formulir)"
+        file: "data/formulir.json"
+        description: "Daftar dokumen dan formulir untuk diunduh"
+        fields:
+          - name: "items"
+            label: "Daftar Formulir"
+            widget: "list"
+            fields:
+              - { label: "Judul Dokumen", name: "judul", widget: "string" }
+              - { label: "File Dokumen (PDF/Doc/Excel)", name: "file", widget: "file" }
       - name: "berita"
         label: "Berita & Artikel"
         file: "data/berita.json"
