@@ -990,6 +990,65 @@ const KopanaAPI = {
       console.info('KopanaAPI: Gagal memuat pengaturan.json');
     }
   }
+  async getFaq() {
+    try {
+      const listContainer = document.getElementById('dyn-faq-list');
+      if (!listContainer) return; // Only run on pages that have the FAQ container
+      
+      const response = await fetch(`data/faq.json?t=${new Date().getTime()}`);
+      if (!response.ok) throw new Error("Gagal mengambil data FAQ");
+      const data = await response.json();
+      
+      if (data && data.items && data.items.length > 0) {
+        listContainer.innerHTML = '';
+        data.items.forEach((item, index) => {
+          const faqItem = document.createElement('div');
+          faqItem.className = 'faq-item';
+          
+          faqItem.innerHTML = `
+            <button class="faq-question">
+              ${item.pertanyaan} <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-content">
+                ${item.jawaban}
+              </div>
+            </div>
+          `;
+          
+          // Add click event for accordion
+          const btn = faqItem.querySelector('.faq-question');
+          const answer = faqItem.querySelector('.faq-answer');
+          
+          btn.addEventListener('click', () => {
+            // Close all other open items
+            document.querySelectorAll('.faq-item.active').forEach(activeItem => {
+              if (activeItem !== faqItem) {
+                activeItem.classList.remove('active');
+                activeItem.querySelector('.faq-answer').style.maxHeight = null;
+              }
+            });
+            
+            // Toggle current item
+            faqItem.classList.toggle('active');
+            if (faqItem.classList.contains('active')) {
+              answer.style.maxHeight = answer.scrollHeight + "px";
+            } else {
+              answer.style.maxHeight = null;
+            }
+          });
+          
+          listContainer.appendChild(faqItem);
+        });
+      } else {
+        listContainer.innerHTML = '<div class="loading-state"><p>Belum ada daftar FAQ.</p></div>';
+      }
+    } catch (error) {
+      console.info('KopanaAPI: Gagal memuat faq.json');
+      const el = document.getElementById('dyn-faq-list');
+      if(el) el.innerHTML = '<div class="loading-state"><p>Gagal memuat FAQ.</p></div>';
+    }
+  }
 };
 
 // Inisialisasi API
@@ -997,10 +1056,12 @@ KopanaAPI.getKontak();
 KopanaAPI.getBeranda();
 KopanaAPI.getProfil();
 KopanaAPI.getPengurus();
+KopanaAPI.getPengawas();
 KopanaAPI.getBerita();
-KopanaAPI.getGaleri(); 
+KopanaAPI.getGaleri();
 KopanaAPI.getStatistik();
 KopanaAPI.getFormulir();
+KopanaAPI.getFaq();
 KopanaAPI.getPengaturan();
 
 

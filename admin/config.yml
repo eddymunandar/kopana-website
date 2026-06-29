@@ -157,3 +157,14 @@ collections:
               - { label: "Foto URL", name: "url", widget: "image" }
               - { label: "Judul Foto", name: "judul", widget: "string" }
               - { label: "Kategori", name: "kategori", widget: "string" }
+      - name: "faq"
+        label: "FAQ & Pertanyaan"
+        file: "data/faq.json"
+        description: "Daftar pertanyaan yang sering ditanyakan (FAQ)"
+        fields:
+          - name: "items"
+            label: "Daftar Pertanyaan"
+            widget: "list"
+            fields:
+              - { label: "Pertanyaan", name: "pertanyaan", widget: "string" }
+              - { label: "Jawaban", name: "jawaban", widget: "text" }

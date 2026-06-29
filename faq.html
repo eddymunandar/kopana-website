@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ & Pertanyaan - KOPANA</title>
+  
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo.png?v=2">
+  <link rel="manifest" href="manifest.json">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  
+  <style>
+    .faq-page-container {
+      max-width: 800px;
+      margin: 120px auto 60px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(10px);
+    }
+    .faq-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .faq-header h1 {
+      color: var(--primary, #1e293b);
+      margin-bottom: 10px;
+    }
+    .faq-header p {
+      color: #475569;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: var(--primary, #2563eb);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Accordion Styles */
+    .faq-item {
+      margin-bottom: 15px;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #ffffff;
+      transition: all 0.3s ease;
+    }
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      padding: 18px 20px;
+      background: #f8fafc;
+      border: none;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #1e293b;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s ease;
+    }
+    .faq-question:hover {
+      background: #f1f5f9;
+    }
+    .faq-question i {
+      color: #3b82f6;
+      transition: transform 0.3s ease;
+    }
+    .faq-item.active .faq-question i {
+      transform: rotate(180deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      background: #ffffff;
+    }
+    .faq-answer-content {
+      padding: 20px;
+      color: #475569;
+      line-height: 1.6;
+      border-top: 1px solid #e2e8f0;
+    }
+    
+    .loading-state {
+      text-align: center;
+      padding: 40px;
+      color: #64748b;
+    }
+  </style>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      for(let registration of registrations) {
+        registration.unregister().then(function(boolean) {
+          console.log('Service worker unregistered');
+        });
+      }
+    });
+  }
+</script>
+</head>
+<body class="dark-theme">
+
+  <div class="faq-page-container">
+    <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</a>
+    
+    <div class="faq-header">
+      <h1>FAQ & Pertanyaan</h1>
+      <p>Temukan jawaban untuk pertanyaan-pertanyaan umum seputar KOPANA.</p>
+    </div>
+
+    <div id="dyn-faq-list">
+      <!-- Akan diisi oleh script -->
+      <div class="loading-state">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Memuat FAQ...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/script.js"></script>
+</body>
+</html>
