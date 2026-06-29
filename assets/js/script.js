@@ -591,6 +591,15 @@ const KopanaAPI = {
       return;
     }
 
+    // Sort items: Kategori 'Pengumuman' selalu di atas
+    items.sort((a, b) => {
+      const isAPengumuman = a.kategori && a.kategori.toLowerCase() === 'pengumuman';
+      const isBPengumuman = b.kategori && b.kategori.toLowerCase() === 'pengumuman';
+      if (isAPengumuman && !isBPengumuman) return -1;
+      if (!isAPengumuman && isBPengumuman) return 1;
+      return 0;
+    });
+
     container.innerHTML = items.map(item => `
       <article class="berita-card reveal">
         <div class="berita-img-wrap">
@@ -598,7 +607,7 @@ const KopanaAPI = {
                alt="${item.judul}"
                class="berita-img"
                loading="lazy">
-          <span class="berita-category">${item.kategori || 'Berita'}</span>
+          <span class="berita-category" style="${(item.kategori && item.kategori.toLowerCase() === 'pengumuman') ? 'background: var(--secondary);' : ''}">${item.kategori || 'Berita'}</span>
         </div>
         <div class="berita-body">
           <div class="berita-meta">
