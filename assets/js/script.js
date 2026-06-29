@@ -1018,6 +1018,16 @@ const KopanaAPI = {
           `;
           container.appendChild(card);
         });
+        
+        // Re-init scroll reveal untuk elemen baru
+        document.querySelectorAll('#dyn-usaha-container .reveal').forEach(el => {
+          new IntersectionObserver(([entry], obs) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+              obs.unobserve(entry.target);
+            }
+          }, { threshold: 0.1 }).observe(el);
+        });
       } else {
         container.innerHTML = '<div class="loading-state"><p>Belum ada data bidang usaha.</p></div>';
       }
