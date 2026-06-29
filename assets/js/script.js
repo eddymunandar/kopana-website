@@ -606,28 +606,44 @@ const KopanaAPI = {
       return dateB - dateA;
     });
 
-    container.innerHTML = items.map(item => `
-      <article class="berita-card reveal">
-        <div class="berita-img-wrap">
-          <img src="${item.foto || 'assets/img/berita-placeholder.jpg'}"
-               alt="${item.judul}"
-               class="berita-img"
-               loading="lazy">
-          <span class="berita-category" style="${(item.kategori && item.kategori.toLowerCase() === 'pengumuman') ? 'background: var(--secondary);' : ''}">${item.kategori || 'Berita'}</span>
-        </div>
-        <div class="berita-body">
-          <div class="berita-meta">
-            <span><i class="far fa-calendar-alt" aria-hidden="true"></i> ${item.tanggal}</span>
-            <span><i class="far fa-user" aria-hidden="true"></i> ${item.penulis || 'Redaksi'}</span>
+    container.innerHTML = items.map(item => {
+      const isPengumuman = item.kategori && item.kategori.toLowerCase() === 'pengumuman';
+      const badgeBg = isPengumuman ? 'background: var(--secondary);' : '';
+      
+      let imgWrapHtml = '';
+      let bodyBadgeHtml = '';
+
+      if (item.foto) {
+        imgWrapHtml = `
+          <div class="berita-img-wrap">
+            <img src="${item.foto}" alt="${item.judul}" class="berita-img" loading="lazy">
+            <span class="berita-category" style="${badgeBg}">${item.kategori || 'Berita'}</span>
           </div>
-          <h3 class="berita-title">${item.judul}</h3>
-          <p class="berita-excerpt">${item.ringkasan}</p>
-          <a href="${item.url || '#'}" class="berita-read-more" aria-label="Baca selengkapnya: ${item.judul}">
-            Baca Selengkapnya <i class="fas fa-arrow-right" aria-hidden="true"></i>
-          </a>
-        </div>
-      </article>
-    `).join('');
+        `;
+      } else {
+        bodyBadgeHtml = `
+          <span class="berita-category" style="position: relative; top: 0; left: 0; display: inline-block; margin-bottom: var(--spacing-sm); ${badgeBg}">${item.kategori || 'Berita'}</span>
+        `;
+      }
+
+      return `
+        <article class="berita-card reveal">
+          ${imgWrapHtml}
+          <div class="berita-body">
+            ${bodyBadgeHtml}
+            <div class="berita-meta">
+              <span><i class="far fa-calendar-alt" aria-hidden="true"></i> ${item.tanggal}</span>
+              <span><i class="far fa-user" aria-hidden="true"></i> ${item.penulis || 'Redaksi'}</span>
+            </div>
+            <h3 class="berita-title">${item.judul}</h3>
+            <p class="berita-excerpt">${item.ringkasan}</p>
+            <a href="${item.url || '#'}" class="berita-read-more" aria-label="Baca selengkapnya: ${item.judul}">
+              Baca Selengkapnya <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            </a>
+          </div>
+        </article>
+      `;
+    }).join('');
 
     // Re-init scroll reveal untuk elemen baru
     document.querySelectorAll('#berita-container .reveal').forEach(el => {
