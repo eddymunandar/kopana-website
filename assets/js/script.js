@@ -989,7 +989,7 @@ const KopanaAPI = {
     } catch (error) {
       console.info('KopanaAPI: Gagal memuat pengaturan.json');
     }
-  }
+  },
   async getFaq() {
     try {
       const listContainer = document.getElementById('dyn-faq-list');
