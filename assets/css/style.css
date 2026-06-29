@@ -1295,7 +1295,6 @@ section {
   color: var(--text);
   line-height: 1.4;
   margin-bottom: var(--spacing-md);
-  flex: 1;
 }
 
 .berita-excerpt {
@@ -1313,6 +1312,7 @@ section {
   font-size: var(--fs-sm);
   font-weight: 600;
   transition: gap var(--transition-base);
+  margin-top: auto;
 }
 
 .berita-read-more:hover { gap: var(--spacing-sm); }
