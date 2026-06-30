@@ -1,10 +1,12 @@
 {
   "items": [
     {
+      "kategori": "Formulir",
       "judul": "Formulir Pendaftaran Anggota",
       "file": "#"
     },
     {
+      "kategori": "Formulir",
       "judul": "Formulir Pengunduran Diri",
       "file": "#"
     }

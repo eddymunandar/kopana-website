@@ -40,17 +40,6 @@ collections:
               - { label: "Nama Usaha", name: "judul", widget: "string" }
               - { label: "Deskripsi", name: "deskripsi", widget: "text" }
               - { label: "Foto Utama", name: "foto", widget: "image", required: false }
-      - name: "formulir"
-        label: "Pusat Unduhan (Formulir)"
-        file: "data/formulir.json"
-        description: "Daftar dokumen dan formulir untuk diunduh"
-        fields:
-          - name: "items"
-            label: "Daftar Formulir"
-            widget: "list"
-            fields:
-              - { label: "Judul Dokumen", name: "judul", widget: "string" }
-              - { label: "File Dokumen (PDF/Doc/Excel)", name: "file", widget: "file" }
       - name: "berita"
         label: "Berita & Artikel"
         file: "data/berita.json"
@@ -166,16 +155,17 @@ collections:
           - { label: "Google Maps Embed URL (Opsional)", name: "maps", widget: "string", required: false, hint: "Paste link 'src' dari Google Maps (https://www.google.com/maps/embed?...)" }
 
       - name: "formulir"
-        label: "Download Formulir"
+        label: "Pusat Unduhan (Dokumen)"
         file: "data/formulir.json"
-        description: "Daftar formulir (PDF/Word/Excel) yang bisa diunduh anggota"
+        description: "Daftar formulir (PDF/Word/Excel) dan dokumen RAT/Laporan yang bisa diunduh"
         fields:
           - name: "items"
-            label: "Daftar Formulir"
+            label: "Daftar Dokumen"
             widget: "list"
             fields:
-              - { label: "Judul Formulir", name: "judul", widget: "string" }
-              - { label: "File Formulir", name: "file", widget: "file" }
+              - { label: "Kategori Dokumen", name: "kategori", widget: "select", options: ["Formulir", "Laporan Keuangan & RAT", "Dokumen Umum"], default: "Formulir" }
+              - { label: "Judul Dokumen", name: "judul", widget: "string" }
+              - { label: "File Dokumen", name: "file", widget: "file" }
       - name: "galeri"
         label: "Galeri Kegiatan"
         file: "data/galeri.json"

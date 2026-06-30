@@ -953,15 +953,49 @@ const KopanaAPI = {
       
       if (data && data.items && data.items.length > 0) {
         container.innerHTML = '';
+        
+        // Kelompokkan berdasarkan kategori
+        const grouped = {};
         data.items.forEach(f => {
           if (!f.file) return;
-          const a = document.createElement('a');
-          a.href = f.file;
-          a.target = "_blank";
-          a.rel = "noopener noreferrer";
-          a.innerHTML = `<i class="fas fa-file-download" aria-hidden="true"></i> ${f.judul}`;
-          container.appendChild(a);
+          const cat = f.kategori || 'Dokumen Umum';
+          if (!grouped[cat]) grouped[cat] = [];
+          grouped[cat].push(f);
         });
+        
+        // Render setiap kategori
+        for (const cat in grouped) {
+          const section = document.createElement('div');
+          section.className = 'download-category-section';
+          section.style.marginBottom = '30px';
+          
+          const title = document.createElement('h3');
+          title.textContent = cat;
+          title.style.color = 'var(--text-light)';
+          title.style.marginBottom = '15px';
+          title.style.borderBottom = '1px solid rgba(255,255,255,0.1)';
+          title.style.paddingBottom = '10px';
+          section.appendChild(title);
+          
+          const list = document.createElement('div');
+          list.style.display = 'flex';
+          list.style.flexDirection = 'column';
+          list.style.gap = '15px';
+          
+          grouped[cat].forEach(f => {
+            const a = document.createElement('a');
+            a.href = f.file;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            // Check if it's a link to a file or an external URL
+            const isExternal = f.file.startsWith('http');
+            a.innerHTML = `<i class="fas ${isExternal ? 'fa-external-link-alt' : 'fa-file-download'}" aria-hidden="true"></i> ${f.judul}`;
+            list.appendChild(a);
+          });
+          
+          section.appendChild(list);
+          container.appendChild(section);
+        }
       } else {
         container.innerHTML = '<div class="loading-state"><p>Belum ada formulir atau dokumen yang diunggah.</p></div>';
       }
