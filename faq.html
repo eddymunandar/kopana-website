@@ -20,8 +20,8 @@
       max-width: 800px;
       margin: 120px auto 60px;
       padding: 40px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: var(--surface, rgba(255, 255, 255, 0.02));
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.05));
       border-radius: var(--radius-lg);
       backdrop-filter: blur(10px);
     }
@@ -30,11 +30,11 @@
       margin-bottom: 40px;
     }
     .faq-header h1 {
-      color: var(--primary, #1e293b);
+      color: var(--text, #1e293b);
       margin-bottom: 10px;
     }
     .faq-header p {
-      color: #475569;
+      color: var(--text-muted, #475569);
     }
     .back-link {
       display: inline-block;
@@ -50,21 +50,21 @@
     /* Accordion Styles */
     .faq-item {
       margin-bottom: 15px;
-      border: 1px solid #cbd5e1;
+      border: 1px solid var(--border, #cbd5e1);
       border-radius: var(--radius-md);
       overflow: hidden;
-      background: #ffffff;
+      background: var(--bg, #ffffff);
       transition: all 0.3s ease;
     }
     .faq-question {
       width: 100%;
       text-align: left;
       padding: 18px 20px;
-      background: #f8fafc;
+      background: var(--bg-alt, #f8fafc);
       border: none;
       font-weight: 600;
       font-size: 1rem;
-      color: #1e293b;
+      color: var(--text, #1e293b);
       cursor: pointer;
       display: flex;
       justify-content: space-between;
@@ -72,10 +72,10 @@
       transition: background 0.3s ease;
     }
     .faq-question:hover {
-      background: #f1f5f9;
+      background: var(--surface, #f1f5f9);
     }
     .faq-question i {
-      color: #3b82f6;
+      color: var(--primary, #3b82f6);
       transition: transform 0.3s ease;
     }
     .faq-item.active .faq-question i {
@@ -85,19 +85,19 @@
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.3s ease-out;
-      background: #ffffff;
+      background: var(--bg, #ffffff);
     }
     .faq-answer-content {
       padding: 20px;
-      color: #475569;
+      color: var(--text-muted, #475569);
       line-height: 1.6;
-      border-top: 1px solid #e2e8f0;
+      border-top: 1px solid var(--border, #e2e8f0);
     }
     
     .loading-state {
       text-align: center;
       padding: 40px;
-      color: #64748b;
+      color: var(--text-muted, #64748b);
     }
   </style>
 
@@ -114,6 +114,11 @@
 </script>
 </head>
 <body class="dark-theme">
+
+  <!-- Dark Toggle Button Absolut -->
+  <button id="dark-toggle" class="dark-toggle" style="position: absolute; top: 20px; right: 20px; z-index: 1000;" aria-label="Ganti tema gelap/terang">
+    <i id="dark-icon" class="fas fa-moon"></i>
+  </button>
 
   <div class="faq-page-container">
     <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</a>

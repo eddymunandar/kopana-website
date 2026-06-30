@@ -18,10 +18,10 @@
   <style>
     .faq-page-container {
       max-width: 800px;
-      margin: 80px auto 60px;
+      margin: 120px auto 60px;
       padding: 40px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: var(--surface, rgba(255, 255, 255, 0.02));
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.05));
       border-radius: var(--radius-lg);
       backdrop-filter: blur(10px);
     }
@@ -30,11 +30,11 @@
       margin-bottom: 40px;
     }
     .faq-header h1 {
-      color: var(--primary, #1e293b);
+      color: var(--text, #1e293b);
       margin-bottom: 10px;
     }
     .faq-header p {
-      color: #475569;
+      color: var(--text-muted, #475569);
     }
     .back-link {
       display: inline-block;
@@ -50,7 +50,7 @@
     .loading-state {
       text-align: center;
       padding: 40px;
-      color: #64748b;
+      color: var(--text-muted, #64748b);
     }
 
     /* Formulir List Style */
@@ -65,10 +65,10 @@
       align-items: center;
       gap: 15px;
       padding: 20px;
-      background: #ffffff;
-      border: 1px solid #cbd5e1;
+      background: var(--bg-alt, #ffffff);
+      border: 1px solid var(--border, #cbd5e1);
       border-radius: var(--radius-md);
-      color: var(--primary);
+      color: var(--text, var(--primary));
       text-decoration: none;
       font-weight: 600;
       transition: all 0.3s ease;
@@ -99,6 +99,11 @@
 </script>
 </head>
 <body class="dark-theme">
+
+  <!-- Dark Toggle Button Absolut -->
+  <button id="dark-toggle" class="dark-toggle" style="position: absolute; top: 20px; right: 20px; z-index: 1000;" aria-label="Ganti tema gelap/terang">
+    <i id="dark-icon" class="fas fa-moon"></i>
+  </button>
 
   <div class="faq-page-container">
     <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</a>
