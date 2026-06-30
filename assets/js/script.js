@@ -800,6 +800,23 @@ const KopanaAPI = {
       
       const img = document.getElementById('dyn-ketua-foto');
       if (img && data.ketua_foto) img.src = data.ketua_foto;
+
+      if (data.tampilkan_foto_hero === false) {
+        const heroBg = document.querySelector('.hero-bg');
+        const heroOverlay = document.querySelector('.hero-overlay');
+        if (heroBg) heroBg.style.display = 'none';
+        if (heroOverlay) {
+          heroOverlay.style.background = 'linear-gradient(135deg, var(--primary) 0%, #061536 100%)';
+          heroOverlay.style.opacity = '1';
+        }
+      } else {
+        const heroBg = document.querySelector('.hero-bg');
+        const heroOverlay = document.querySelector('.hero-overlay');
+        if (heroBg) heroBg.style.display = 'block';
+        if (heroOverlay) {
+          heroOverlay.style.background = 'linear-gradient(135deg, rgba(10,37,88,0.95) 0%, rgba(10,37,88,0.8) 100%)';
+        }
+      }
     } catch (error) {
       console.info('KopanaAPI: Gagal memuat beranda.json');
     }
