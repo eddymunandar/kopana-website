@@ -944,6 +944,29 @@
 
 
   <!-- ============================================================
+       ANNOUNCEMENT MODAL (POPUP PENGUMUMAN)
+       ============================================================ -->
+  <div id="announcement-modal" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal-box">
+      <button class="modal-close-btn" aria-label="Tutup Pengumuman">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="modal-header">
+        <div class="modal-icon">
+          <i class="fas fa-bell"></i>
+        </div>
+        <h3 id="announcement-title">Pengumuman Penting</h3>
+      </div>
+      <div class="modal-body" id="announcement-body">
+        <!-- Content injected by JS -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary modal-ok-btn">Saya Mengerti</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
        BACK TO TOP BUTTON
        ============================================================ -->
   <button id="back-to-top" aria-label="Kembali ke atas halaman">

@@ -1103,6 +1103,66 @@ const KopanaAPI = {
       const el = document.getElementById('dyn-faq-list');
       if(el) el.innerHTML = '<div class="loading-state"><p>Gagal memuat FAQ.</p></div>';
     }
+  },
+
+  // 12. GET PENGUMUMAN (POPUP)
+  async getPengumuman() {
+    try {
+      const modal = document.getElementById('announcement-modal');
+      const titleEl = document.getElementById('announcement-title');
+      const bodyEl = document.getElementById('announcement-body');
+      const closeBtn = document.querySelector('.modal-close-btn');
+      const okBtn = document.querySelector('.modal-ok-btn');
+      
+      if (!modal) return;
+      
+      const response = await fetch(`data/pengumuman.json?t=${new Date().getTime()}`);
+      if (!response.ok) throw new Error("Gagal mengambil pengumuman");
+      const data = await response.json();
+      
+      if (data && data.aktifkan && data.judul) {
+        // Cek localStorage, apakah pengunjung sudah pernah menutup pengumuman ini?
+        const closedTitle = localStorage.getItem('kopana_announcement_closed');
+        if (closedTitle === data.judul) {
+          // Sudah pernah ditutup, jangan tampilkan lagi
+          return;
+        }
+        
+        // Render konten
+        titleEl.textContent = data.judul;
+        
+        // Dukungan untuk render baris baru
+        let contentHtml = data.pesan || '';
+        // Ubah newline jadi <br>
+        contentHtml = contentHtml.replace(/\n/g, '<br>');
+        
+        // Render bold / italic simple markdown style
+        contentHtml = contentHtml.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        contentHtml = contentHtml.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        
+        bodyEl.innerHTML = contentHtml;
+        
+        // Tampilkan modal
+        // Tunggu sedikit agar animasi terlihat smooth setelah load
+        setTimeout(() => {
+          modal.classList.remove('hidden');
+          modal.setAttribute('aria-hidden', 'false');
+        }, 1000);
+        
+        // Fungsi tutup modal
+        const closeModal = () => {
+          modal.classList.add('hidden');
+          modal.setAttribute('aria-hidden', 'true');
+          // Simpan ke localStorage agar tidak muncul lagi
+          localStorage.setItem('kopana_announcement_closed', data.judul);
+        };
+        
+        closeBtn.addEventListener('click', closeModal);
+        okBtn.addEventListener('click', closeModal);
+      }
+    } catch (error) {
+      console.info('KopanaAPI: Gagal memuat pengumuman.json');
+    }
   }
 };
 
@@ -1118,6 +1178,7 @@ KopanaAPI.getFormulir();
 KopanaAPI.getFaq();
 KopanaAPI.getUsaha();
 KopanaAPI.getPengaturan();
+KopanaAPI.getPengumuman();
 
 
 /* ============================================================

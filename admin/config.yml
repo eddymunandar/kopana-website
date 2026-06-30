@@ -20,6 +20,14 @@ collections:
           - { label: "Tagline", name: "tagline", widget: "string", default: "Koperasi Purnakaryawan Pertamina" }
           - { label: "Deskripsi Footer", name: "deskripsi", widget: "text" }
           - { label: "Logo (Opsional)", name: "logo", widget: "image", required: false }
+      - name: "pengumuman"
+        label: "Popup Pengumuman"
+        file: "data/pengumuman.json"
+        description: "Pengaturan popup yang muncul di tengah layar"
+        fields:
+          - { label: "Aktifkan Popup?", name: "aktifkan", widget: "boolean", default: false }
+          - { label: "Judul Pengumuman", name: "judul", widget: "string" }
+          - { label: "Pesan (Bisa format tebal/miring)", name: "pesan", widget: "markdown" }
       - name: "usaha"
         label: "Bidang Usaha"
         file: "data/usaha.json"
