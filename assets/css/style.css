@@ -443,7 +443,7 @@ section {
 
 .nav-link {
   position: relative;
-  padding: 0.6rem 1rem;
+  padding: 0.6rem 0.6rem;
   font-size: var(--fs-sm);
   font-weight: 500;
   color: rgba(255,255,255,0.9);
@@ -489,7 +489,7 @@ section {
 .btn-login {
   background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
   color: white;
-  padding: 0.6rem 1.25rem;
+  padding: 0.5rem 1rem;
   border-radius: var(--radius-full);
   font-size: var(--fs-sm);
   font-weight: 600;
@@ -505,27 +505,39 @@ section {
   box-shadow: 0 6px 20px rgba(214,40,40,0.4);
 }
 
-/* Dark mode toggle */
 .dark-toggle {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-full);
+  width: auto;
+  height: 34px;
+  border-radius: 17px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: rgba(255,255,255,0.85);
-  background: rgba(255,255,255,0.1);
+  gap: 6px;
+  padding: 0 12px;
+  color: rgba(255,255,255,0.95);
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
   transition: all var(--transition-base);
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.dark-toggle::after {
+  content: 'Mode Gelap';
+}
+
+body.dark-mode .dark-toggle::after {
+  content: 'Mode Terang';
 }
 
 #navbar.scrolled .dark-toggle {
   color: var(--text);
   background: var(--bg-alt);
+  border-color: var(--border);
 }
 
 .dark-toggle:hover {
-  background: rgba(255,255,255,0.2);
-  transform: rotate(20deg);
+  background: rgba(255,255,255,0.25);
+  transform: translateY(-2px);
 }
 
 /* Hamburger */
