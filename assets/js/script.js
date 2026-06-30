@@ -976,7 +976,8 @@ const KopanaAPI = {
           
           const title = document.createElement('h3');
           title.textContent = cat;
-          title.style.color = 'var(--text-light)';
+          title.style.color = 'var(--primary)';
+          title.style.fontWeight = '700';
           title.style.marginBottom = '15px';
           title.style.borderBottom = '1px solid rgba(255,255,255,0.1)';
           title.style.paddingBottom = '10px';
