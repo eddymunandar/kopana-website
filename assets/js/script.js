@@ -955,7 +955,12 @@ const KopanaAPI = {
         container.innerHTML = '';
         
         // Kelompokkan berdasarkan kategori
-        const grouped = {};
+        const grouped = {
+          'Formulir': [],
+          'Laporan Keuangan & RAT': [],
+          'Dokumen Umum': []
+        };
+        
         data.items.forEach(f => {
           if (!f.file) return;
           const cat = f.kategori || 'Dokumen Umum';
@@ -982,16 +987,24 @@ const KopanaAPI = {
           list.style.flexDirection = 'column';
           list.style.gap = '15px';
           
-          grouped[cat].forEach(f => {
-            const a = document.createElement('a');
-            a.href = f.file;
-            a.target = "_blank";
-            a.rel = "noopener noreferrer";
-            // Check if it's a link to a file or an external URL
-            const isExternal = f.file.startsWith('http');
-            a.innerHTML = `<i class="fas ${isExternal ? 'fa-external-link-alt' : 'fa-file-download'}" aria-hidden="true"></i> ${f.judul}`;
-            list.appendChild(a);
-          });
+          if (grouped[cat].length === 0) {
+            const emptyText = document.createElement('p');
+            emptyText.textContent = 'Belum ada dokumen di kategori ini.';
+            emptyText.style.color = 'var(--text-muted)';
+            emptyText.style.fontStyle = 'italic';
+            list.appendChild(emptyText);
+          } else {
+            grouped[cat].forEach(f => {
+              const a = document.createElement('a');
+              a.href = f.file;
+              a.target = "_blank";
+              a.rel = "noopener noreferrer";
+              // Check if it's a link to a file or an external URL
+              const isExternal = f.file.startsWith('http');
+              a.innerHTML = `<i class="fas ${isExternal ? 'fa-external-link-alt' : 'fa-file-download'}" aria-hidden="true"></i> ${f.judul}`;
+              list.appendChild(a);
+            });
+          }
           
           section.appendChild(list);
           container.appendChild(section);
