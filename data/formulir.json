@@ -1,14 +1,17 @@
 {
+  "pin_anggota": "KOPANA2026",
   "items": [
     {
       "kategori": "Formulir",
       "judul": "Formulir Pendaftaran Anggota",
-      "file": "#"
+      "file": "#",
+      "kunci_dokumen": true
     },
     {
       "kategori": "Formulir",
       "judul": "Formulir Pengunduran Diri",
-      "file": "#"
+      "file": "#",
+      "kunci_dokumen": false
     }
   ]
 }

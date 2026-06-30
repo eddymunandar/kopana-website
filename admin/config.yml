@@ -161,10 +161,12 @@ collections:
         file: "data/formulir.json"
         description: "Daftar formulir (PDF/Word/Excel) dan dokumen RAT/Laporan yang bisa diunduh"
         fields:
+          - { label: "PIN Anggota (Untuk Dokumen Terkunci)", name: "pin_anggota", widget: "string", default: "KOPANA2026" }
           - name: "items"
             label: "Daftar Dokumen"
             widget: "list"
             fields:
+              - { label: "Kunci Dokumen (Hanya Anggota)", name: "kunci_dokumen", widget: "boolean", default: false, required: false }
               - { label: "Kategori Dokumen", name: "kategori", widget: "select", options: ["Formulir", "Laporan Keuangan & RAT", "Dokumen Umum"], default: "Formulir" }
               - { label: "Judul Dokumen", name: "judul", widget: "string" }
               - { label: "File Dokumen", name: "file", widget: "file" }

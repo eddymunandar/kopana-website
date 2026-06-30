@@ -1019,12 +1019,29 @@ const KopanaAPI = {
           } else {
             grouped[cat].forEach(f => {
               const a = document.createElement('a');
-              a.href = f.file;
-              a.target = "_blank";
-              a.rel = "noopener noreferrer";
-              // Check if it's a link to a file or an external URL
-              const isExternal = f.file.startsWith('http');
-              a.innerHTML = `<i class="fas ${isExternal ? 'fa-external-link-alt' : 'fa-file-download'}" aria-hidden="true"></i> ${f.judul}`;
+              
+              if (f.kunci_dokumen) {
+                a.href = '#';
+                a.innerHTML = `<i class="fas fa-lock" aria-hidden="true" style="color:var(--secondary)"></i> ${f.judul} <span style="font-size:0.75rem; color:var(--secondary); opacity:0.8; margin-left:8px">(Terkunci)</span>`;
+                a.onclick = (e) => {
+                  e.preventDefault();
+                  const userPin = prompt("Dokumen ini khusus anggota.\\n\\nSilakan masukkan PIN Anggota KOPANA untuk mengunduh:");
+                  if (userPin === null) return;
+                  if (userPin === (data.pin_anggota || 'KOPANA2026')) {
+                    window.open(f.file, '_blank', 'noopener,noreferrer');
+                  } else {
+                    alert("PIN yang Anda masukkan salah. Silakan coba lagi.");
+                  }
+                };
+              } else {
+                a.href = f.file;
+                a.target = "_blank";
+                a.rel = "noopener noreferrer";
+                // Check if it's a link to a file or an external URL
+                const isExternal = f.file.startsWith('http');
+                a.innerHTML = `<i class="fas ${isExternal ? 'fa-external-link-alt' : 'fa-file-download'}" aria-hidden="true"></i> ${f.judul}`;
+              }
+              
               list.appendChild(a);
             });
           }
