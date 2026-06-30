@@ -812,7 +812,12 @@ const KopanaAPI = {
       } else {
         const heroBg = document.querySelector('.hero-bg');
         const heroOverlay = document.querySelector('.hero-overlay');
-        if (heroBg) heroBg.style.display = 'block';
+        if (heroBg) {
+          heroBg.style.display = 'block';
+          if (data.hero_bg) {
+            heroBg.style.backgroundImage = `url('${data.hero_bg}')`;
+          }
+        }
         if (heroOverlay) {
           heroOverlay.style.background = 'linear-gradient(135deg, rgba(10,37,88,0.95) 0%, rgba(10,37,88,0.8) 100%)';
         }

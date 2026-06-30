@@ -90,6 +90,7 @@ collections:
         file: "data/beranda.json"
         fields:
           - { label: "Tampilkan Latar Belakang Foto", name: "tampilkan_foto_hero", widget: "boolean", default: false }
+          - { label: "Foto Latar Belakang", name: "hero_bg", widget: "image", required: false }
           - { label: "Judul Utama", name: "hero_title", widget: "string" }
           - { label: "Sub Judul", name: "hero_subtitle", widget: "string" }
           - { label: "Deskripsi Singkat", name: "hero_desc", widget: "text" }
