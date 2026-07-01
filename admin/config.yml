@@ -167,7 +167,7 @@ collections:
             widget: "list"
             fields:
               - { label: "Kunci Dokumen (Hanya Anggota)", name: "kunci_dokumen", widget: "boolean", default: false, required: false }
-              - { label: "Kategori Dokumen", name: "kategori", widget: "select", options: ["Formulir", "Laporan Keuangan & RAT", "Dokumen Umum"], default: "Formulir" }
+              - { label: "Kategori Dokumen", name: "kategori", widget: "select", options: ["Formulir", "Laporan & RAT", "Dokumen Umum"], default: "Formulir" }
               - { label: "Judul Dokumen", name: "judul", widget: "string" }
               - { label: "File Dokumen", name: "file", widget: "file" }
       - name: "galeri"

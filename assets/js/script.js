@@ -979,7 +979,7 @@ const KopanaAPI = {
         // Kelompokkan berdasarkan kategori
         const grouped = {
           'Formulir': [],
-          'Laporan Keuangan & RAT': [],
+          'Laporan & RAT': [],
           'Dokumen Umum': []
         };
         
