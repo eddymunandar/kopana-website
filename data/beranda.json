@@ -1,6 +1,6 @@
 {
-  "tampilkan_foto_hero": false,
-  "hero_bg": "/assets/img/hero-bg.jpg",
+  "tampilkan_foto_hero": true,
+  "hero_bg": "/assets/img/uploads/0BB32A58-038A-49ED-9DBD-D3FFC8BE3595.png",
   "hero_title": "<span class=\"hero-title-accent\">KOPANA Yogyakarta</span><br><span style=\"font-size: 0.6em; font-weight: 600; display: inline-block; margin-top: 10px;\">Koperasi Jasa Serba Usaha<br>Purnakaryawan Pertamina</span>",
   "hero_subtitle": "\"Melayani Anggota dengan Integritas dan Kebersamaan Sejak 1996\"",
   "hero_desc": "KOPANA hadir sebagai koperasi modern yang mengutamakan pelayanan, transparansi, profesionalisme, serta kesejahteraan anggota melalui pengelolaan usaha yang berkelanjutan dan bertanggung jawab.",
