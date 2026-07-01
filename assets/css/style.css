@@ -1524,6 +1524,81 @@ body.dark-mode .dark-toggle::after {
   opacity: 0.8;
 }
 
+/* ---------- 15.5. TESTIMONI ---------- */
+.testimoni-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-xl);
+  margin-top: var(--spacing-2xl);
+}
+
+.testimoni-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  position: relative;
+}
+
+.testimoni-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-light);
+}
+
+.testimoni-quote-icon {
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-xl);
+  font-size: 2.5rem;
+  color: var(--primary);
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.testimoni-pesan {
+  font-size: var(--fs-base);
+  color: var(--text);
+  line-height: 1.6;
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+  flex-grow: 1;
+}
+
+.testimoni-rating {
+  color: #fbbf24; /* Amber-400 */
+  font-size: var(--fs-sm);
+  margin-bottom: var(--spacing-xs);
+  display: flex;
+  gap: 2px;
+}
+
+.testimoni-footer {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+  padding-top: var(--spacing-md);
+  margin-top: auto;
+}
+
+.testimoni-nama {
+  font-weight: 600;
+  color: var(--heading);
+  font-size: var(--fs-md);
+  margin-bottom: 2px;
+}
+
+.testimoni-status {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
 /* ---------- 16. KONTAK ---------- */
 .kontak-grid {
   display: grid;

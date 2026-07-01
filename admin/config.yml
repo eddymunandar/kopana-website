@@ -170,6 +170,19 @@ collections:
               - { label: "Kategori Dokumen", name: "kategori", widget: "select", options: ["Formulir", "Laporan & RAT", "Dokumen Umum"], default: "Formulir" }
               - { label: "Judul Dokumen", name: "judul", widget: "string" }
               - { label: "File Dokumen", name: "file", widget: "file" }
+      - name: "testimoni"
+        label: "Testimoni Anggota"
+        file: "data/testimoni.json"
+        description: "Daftar testimoni dan pesan kesan dari anggota"
+        fields:
+          - name: "items"
+            label: "Daftar Testimoni"
+            widget: "list"
+            fields:
+              - { label: "Nama Anggota", name: "nama", widget: "string" }
+              - { label: "Status/Keterangan", name: "status", widget: "string", hint: "Contoh: Pensiunan 2020 / Anggota Aktif" }
+              - { label: "Isi Testimoni", name: "pesan", widget: "text" }
+              - { label: "Rating (1-5)", name: "rating", widget: "number", default: 5, value_type: "int", min: 1, max: 5 }
       - name: "galeri"
         label: "Galeri Kegiatan"
         file: "data/galeri.json"

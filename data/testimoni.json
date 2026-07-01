@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "nama": "Bapak Budi Santoso",
+      "status": "Purnakaryawan 2018",
+      "pesan": "Sejak bergabung dengan KOPANA, pengurusan administrasi pensiunan saya jadi jauh lebih mudah. Koperasinya sangat peduli pada kesejahteraan anggota lama.",
+      "rating": 5
+    },
+    {
+      "nama": "Ibu Siti Aminah",
+      "status": "Anggota KOPANA",
+      "pesan": "Pelayanan simpan pinjam di KOPANA sangat transparan dan prosesnya cepat. Pengurusnya selalu siap membantu ketika ada kendala.",
+      "rating": 5
+    },
+    {
+      "nama": "Bapak Haryono",
+      "status": "Purnakaryawan 2020",
+      "pesan": "Fasilitas dan aplikasi anggotanya sangat inovatif. Sangat jarang melihat koperasi pensiunan yang melek digital seperti KOPANA.",
+      "rating": 4
+    }
+  ]
+}

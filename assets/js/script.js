@@ -1250,6 +1250,52 @@ const KopanaAPI = {
     } catch (error) {
       console.info('KopanaAPI: Gagal memuat pengumuman.json');
     }
+  },
+
+  getTestimoni: async function() {
+    const container = document.getElementById('dyn-testimoni-grid');
+    if (!container) return; // Only run on page that has testimoni section
+
+    try {
+      const response = await fetch(`data/testimoni.json?t=${new Date().getTime()}`);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      
+      const items = data.items || [];
+      if (items.length === 0) {
+        container.innerHTML = '<p class="text-center w-100">Belum ada testimoni.</p>';
+        return;
+      }
+
+      let html = '';
+      items.forEach(item => {
+        let starsHtml = '';
+        const rating = parseInt(item.rating) || 5;
+        for (let i = 0; i < rating; i++) {
+          starsHtml += '<i class="fas fa-star" aria-hidden="true"></i>';
+        }
+
+        html += `
+          <div class="testimoni-card reveal">
+            <i class="fas fa-quote-right testimoni-quote-icon" aria-hidden="true"></i>
+            <div class="testimoni-rating">
+              ${starsHtml}
+            </div>
+            <p class="testimoni-pesan">"${item.pesan}"</p>
+            <div class="testimoni-footer">
+              <h4 class="testimoni-nama">${item.nama}</h4>
+              <span class="testimoni-status">${item.status}</span>
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+      
+      // Re-trigger scroll reveal for newly added elements
+      window.dispatchEvent(new Event('scroll'));
+    } catch (error) {
+      console.info('KopanaAPI: Gagal memuat testimoni.json');
+    }
   }
 };
 
@@ -1266,6 +1312,7 @@ KopanaAPI.getFaq();
 KopanaAPI.getUsaha();
 KopanaAPI.getPengaturan();
 KopanaAPI.getPengumuman();
+KopanaAPI.getTestimoni();
 
 
 /* ============================================================
