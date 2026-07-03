@@ -524,16 +524,16 @@
       
       // Update Keuangan
       const pokok = document.getElementById('simpananPokok').value;
-      if(pokok) document.getElementById('print-pokok').textContent = pokok;
+      if(pokok) document.getElementById('print-pokok').textContent = "Rp. " + pokok;
       
       const wajib = document.getElementById('simpananWajib').value;
-      if(wajib) document.getElementById('print-wajib').textContent = wajib;
+      if(wajib) document.getElementById('print-wajib').textContent = "Rp. " + wajib;
       
       const faktor = document.getElementById('faktorPengali').value;
       if(faktor) document.getElementById('print-faktor').textContent = faktor;
       
       const nilai = document.getElementById('nilaiPengembalian').value;
-      if(nilai) document.getElementById('print-nilai').textContent = nilai;
+      if(nilai) document.getElementById('print-nilai').textContent = "Rp. " + nilai;
       
       // Update tanda tangan nama
       const nama = document.getElementById('nama').value;
