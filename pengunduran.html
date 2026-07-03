@@ -469,6 +469,44 @@
   </div>
 
   <script>
+    // Format input menjadi format Rupiah (dengan titik)
+    function formatRupiah(e) {
+      let val = e.target.value.replace(/\./g, '');
+      val = val.replace(/\D/g, ''); // hanya izinkan angka
+      if (val === '') {
+        e.target.value = '';
+      } else {
+        let num = parseInt(val, 10);
+        e.target.value = new Intl.NumberFormat('id-ID').format(num).replace(/,/g, '.');
+      }
+      calculateKeuangan();
+    }
+
+    // Auto-calculate Keuangan
+    function calculateKeuangan() {
+      const pokok = document.getElementById('simpananPokok').value;
+      const wajib = document.getElementById('simpananWajib').value;
+      const faktor = document.getElementById('faktorPengali').value;
+      
+      const pokokVal = parseFloat(pokok.replace(/\./g, '')) || 0;
+      const wajibVal = parseFloat(wajib.replace(/\./g, '')) || 0;
+      let faktorVal = parseFloat(faktor.replace(',', '.')) || 0;
+      
+      if (pokok || wajib || faktor) {
+        if (!faktor) faktorVal = 1; // jika faktor kosong, kalikan 1 saja
+        
+        const total = Math.round((pokokVal + wajibVal) * faktorVal);
+        document.getElementById('nilaiPengembalian').value = new Intl.NumberFormat('id-ID').format(total).replace(/,/g, '.');
+      } else {
+        document.getElementById('nilaiPengembalian').value = '';
+      }
+    }
+
+    document.getElementById('simpananPokok').addEventListener('input', formatRupiah);
+    document.getElementById('simpananWajib').addEventListener('input', formatRupiah);
+    document.getElementById('nilaiPengembalian').addEventListener('input', formatRupiah);
+    document.getElementById('faktorPengali').addEventListener('input', calculateKeuangan);
+
     document.getElementById('btnPrint').addEventListener('click', function() {
       // Sinkronisasi data form ke print area
       if(document.getElementById('nama').value) document.getElementById('print-nama').textContent = document.getElementById('nama').value;
