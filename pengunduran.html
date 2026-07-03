@@ -335,6 +335,7 @@
       <div class="form-group">
         <label for="nilaiPengembalian">4. Nilai pengembalian simpanan (Rp)</label>
         <input type="text" id="nilaiPengembalian" name="Nilai Pengembalian" class="form-control" placeholder="Contoh: 150000">
+        <small id="terbilang-teks" style="font-style: italic; color: #15803d; font-weight: 500;"></small>
       </div>
 
       <h2 class="section-title">Khusus Cetak Formulir</h2>
@@ -463,12 +464,58 @@
           <td>:</td>
           <td id="print-nilai">........................</td>
         </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td id="print-terbilang" style="font-style: italic;"></td>
+        </tr>
       </table>
     </div>
 
   </div>
 
   <script>
+    // Fungsi Terbilang (Angka ke Huruf)
+    function penyebut(nilai) {
+      nilai = Math.abs(nilai);
+      var huruf = ["", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas"];
+      var temp = "";
+      if (nilai < 12) {
+        temp = " " + huruf[nilai];
+      } else if (nilai < 20) {
+        temp = penyebut(nilai - 10) + " belas";
+      } else if (nilai < 100) {
+        temp = penyebut(Math.floor(nilai / 10)) + " puluh" + penyebut(nilai % 10);
+      } else if (nilai < 200) {
+        temp = " seratus" + penyebut(nilai - 100);
+      } else if (nilai < 1000) {
+        temp = penyebut(Math.floor(nilai / 100)) + " ratus" + penyebut(nilai % 100);
+      } else if (nilai < 2000) {
+        temp = " seribu" + penyebut(nilai - 1000);
+      } else if (nilai < 1000000) {
+        temp = penyebut(Math.floor(nilai / 1000)) + " ribu" + penyebut(nilai % 1000);
+      } else if (nilai < 1000000000) {
+        temp = penyebut(Math.floor(nilai / 1000000)) + " juta" + penyebut(nilai % 1000000);
+      } else if (nilai < 1000000000000) {
+        temp = penyebut(Math.floor(nilai / 1000000000)) + " miliar" + penyebut(nilai % 1000000000);
+      }
+      return temp;
+    }
+
+    function terbilang(nilai) {
+      if (nilai === 0) return "Nol Rupiah";
+      var hasil = penyebut(nilai).trim() + " rupiah";
+      // Capitalize first letters
+      return "(" + hasil.replace(/\b\w/g, function(l){ return l.toUpperCase(); }) + ")";
+    }
+
+    function updateTerbilang(nilaiText) {
+      const num = parseFloat((nilaiText || '').replace(/\./g, '')) || 0;
+      const text = num > 0 ? terbilang(num) : '';
+      document.getElementById('terbilang-teks').textContent = text;
+      return text;
+    }
+
     // Format input menjadi format Rupiah (dengan titik)
     function formatRupiah(e) {
       let val = e.target.value.replace(/\./g, '');
@@ -479,7 +526,12 @@
         let num = parseInt(val, 10);
         e.target.value = new Intl.NumberFormat('id-ID').format(num).replace(/,/g, '.');
       }
-      calculateKeuangan();
+      
+      if (e.target.id === 'nilaiPengembalian') {
+        updateTerbilang(e.target.value);
+      } else {
+        calculateKeuangan();
+      }
     }
 
     // Auto-calculate Keuangan
@@ -496,9 +548,12 @@
         if (!faktor) faktorVal = 1; // jika faktor kosong, kalikan 1 saja
         
         const total = Math.round((pokokVal + wajibVal) * faktorVal);
-        document.getElementById('nilaiPengembalian').value = new Intl.NumberFormat('id-ID').format(total).replace(/,/g, '.');
+        const formatted = new Intl.NumberFormat('id-ID').format(total).replace(/,/g, '.');
+        document.getElementById('nilaiPengembalian').value = formatted;
+        updateTerbilang(formatted);
       } else {
         document.getElementById('nilaiPengembalian').value = '';
+        updateTerbilang('');
       }
     }
 
@@ -533,7 +588,13 @@
       if(faktor) document.getElementById('print-faktor').textContent = faktor;
       
       const nilai = document.getElementById('nilaiPengembalian').value;
-      if(nilai) document.getElementById('print-nilai').textContent = "Rp. " + nilai;
+      if(nilai) {
+        document.getElementById('print-nilai').textContent = "Rp. " + nilai;
+        const num = parseFloat(nilai.replace(/\./g, '')) || 0;
+        document.getElementById('print-terbilang').textContent = terbilang(num);
+      } else {
+        document.getElementById('print-terbilang').textContent = "";
+      }
       
       // Update tanda tangan nama
       const nama = document.getElementById('nama').value;
