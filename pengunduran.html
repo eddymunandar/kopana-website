@@ -428,7 +428,7 @@
     <div class="ttd-section">
       <div class="ttd-box">
         <p>Yogyakarta,........................20..</p>
-        <p>Pemohon,</p>
+        <p id="print-ttd-label">Pemohon,</p>
         <div class="ttd-space"></div>
         <p>( <span id="print-ttd-nama">........................................</span> )</p>
       </div>
@@ -499,7 +499,15 @@
       
       // Update tanda tangan nama
       const nama = document.getElementById('nama').value;
-      if(nama) document.getElementById('print-ttd-nama').textContent = nama;
+      const namaAhliWaris = document.getElementById('namaAhliWaris').value;
+      
+      if(namaAhliWaris) {
+        document.getElementById('print-ttd-nama').textContent = namaAhliWaris;
+        document.getElementById('print-ttd-label').textContent = "Ahli Waris,";
+      } else if(nama) {
+        document.getElementById('print-ttd-nama').textContent = nama;
+        document.getElementById('print-ttd-label').textContent = "Pemohon,";
+      }
       
       const ketua = document.getElementById('namaKetua').value;
       if(ketua) {
