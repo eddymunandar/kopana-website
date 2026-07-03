@@ -280,32 +280,37 @@
       </div>
 
       <div class="form-group">
-        <label for="alamat">2. Alamat Domisili *</label>
+        <label for="noAnggota">2. No. Anggota *</label>
+        <input type="text" id="noAnggota" name="No Anggota" class="form-control" required placeholder="Nomor Anggota KOPANA">
+      </div>
+
+      <div class="form-group">
+        <label for="alamat">3. Alamat Domisili *</label>
         <textarea id="alamat" name="Alamat Domisili" class="form-control" required placeholder="Alamat lengkap saat ini"></textarea>
       </div>
 
       <div class="form-group">
-        <label for="telepon">3. No. Telepon / HP *</label>
+        <label for="telepon">4. No. Telepon / HP *</label>
         <input type="tel" id="telepon" name="No Telepon HP" class="form-control" required placeholder="08xxxxxxxxxx">
       </div>
 
       <div class="form-group">
-        <label for="indukPensiun">4. No. Induk Pensiun / KTP *</label>
+        <label for="indukPensiun">5. No. Induk Pensiun / KTP *</label>
         <input type="text" id="indukPensiun" name="No Pensiun KTP" class="form-control" required placeholder="Nomor Induk Pensiun / KTP">
       </div>
 
       <div class="form-group">
-        <label for="namaAhliWaris">5. Nama Ahli Waris *</label>
-        <input type="text" id="namaAhliWaris" name="Nama Ahli Waris" class="form-control" required placeholder="Nama ahli waris">
+        <label for="namaAhliWaris">6. Nama Ahli Waris</label>
+        <input type="text" id="namaAhliWaris" name="Nama Ahli Waris" class="form-control" placeholder="Nama ahli waris">
       </div>
 
       <div class="form-group">
-        <label for="alamatAhliWaris">6. Alamat Ahli Waris *</label>
-        <textarea id="alamatAhliWaris" name="Alamat Ahli Waris" class="form-control" required placeholder="Alamat lengkap ahli waris"></textarea>
+        <label for="alamatAhliWaris">7. Alamat Ahli Waris</label>
+        <textarea id="alamatAhliWaris" name="Alamat Ahli Waris" class="form-control" placeholder="Alamat lengkap ahli waris"></textarea>
       </div>
 
       <div class="form-group">
-        <label for="alasan">7. Alasan Pengunduran Diri *</label>
+        <label for="alasan">8. Alasan Pengunduran Diri *</label>
         <textarea id="alasan" name="Alasan" class="form-control" required placeholder="Sebutkan alasan pengunduran diri secara singkat"></textarea>
       </div>
 
@@ -379,27 +384,32 @@
           <div class="surat-form-value" id="print-nama">......................................................................................................</div>
         </div>
         <div class="surat-form-row">
-          <div class="surat-form-label">2. Alamat</div>
+          <div class="surat-form-label">2. No. Anggota</div>
+          <div class="surat-form-colon">:</div>
+          <div class="surat-form-value" id="print-no-anggota">......................................................................................................</div>
+        </div>
+        <div class="surat-form-row">
+          <div class="surat-form-label">3. Alamat</div>
           <div class="surat-form-colon">:</div>
           <div class="surat-form-value" id="print-alamat">......................................................................................................<br>......................................................................................................</div>
         </div>
         <div class="surat-form-row">
-          <div class="surat-form-label">3. No. Telepon</div>
+          <div class="surat-form-label">4. No. Telepon</div>
           <div class="surat-form-colon">:</div>
           <div class="surat-form-value" id="print-telepon">......................................................................................................</div>
         </div>
         <div class="surat-form-row">
-          <div class="surat-form-label">4. No. Induk Pensiun</div>
+          <div class="surat-form-label">5. No. Induk Pensiun</div>
           <div class="surat-form-colon">:</div>
           <div class="surat-form-value" id="print-induk">......................................................................................................</div>
         </div>
         <div class="surat-form-row">
-          <div class="surat-form-label">5. Nama Ahli Waris</div>
+          <div class="surat-form-label">6. Nama Ahli Waris</div>
           <div class="surat-form-colon">:</div>
           <div class="surat-form-value" id="print-aw-nama">......................................................................................................</div>
         </div>
         <div class="surat-form-row">
-          <div class="surat-form-label">6. Alamat Ahli Waris</div>
+          <div class="surat-form-label">7. Alamat Ahli Waris</div>
           <div class="surat-form-colon">:</div>
           <div class="surat-form-value" id="print-aw-alamat">......................................................................................................</div>
         </div>
@@ -426,7 +436,7 @@
       <div class="ttd-box">
         <p><br>Ketua KOPANA</p>
         <div class="ttd-space"></div>
-        <p>( <span id="print-ttd-ketua">........................................</span> )</p>
+        <p>( <span id="print-ttd-ketua" style="display:inline-block; min-width:150px; text-align:center;">........................................</span> )</p>
       </div>
     </div>
 
@@ -462,6 +472,9 @@
     document.getElementById('btnPrint').addEventListener('click', function() {
       // Sinkronisasi data form ke print area
       if(document.getElementById('nama').value) document.getElementById('print-nama').textContent = document.getElementById('nama').value;
+      const noAnggota = document.getElementById('noAnggota').value;
+      if(noAnggota) document.getElementById('print-no-anggota').textContent = noAnggota;
+      
       if(document.getElementById('alamat').value) document.getElementById('print-alamat').textContent = document.getElementById('alamat').value;
       if(document.getElementById('telepon').value) document.getElementById('print-telepon').textContent = document.getElementById('telepon').value;
       if(document.getElementById('indukPensiun').value) document.getElementById('print-induk').textContent = document.getElementById('indukPensiun').value;
@@ -491,9 +504,6 @@
       const ketua = document.getElementById('namaKetua').value;
       if(ketua) {
         document.getElementById('print-ttd-ketua').textContent = ketua;
-        document.getElementById('print-ttd-ketua').style.borderBottom = "1px solid black";
-        document.getElementById('print-ttd-ketua').style.display = "inline-block";
-        document.getElementById('print-ttd-ketua').style.width = "80%";
       }
       
       // Panggil fungsi print browser
@@ -523,12 +533,13 @@
         const waNumber = "6282227154266";
         let textWa = "Halo Pengurus KOPANA, saya mengajukan permohonan PENGUNDURAN DIRI keanggotaan:\n\n";
         textWa += `*1. Nama Lengkap:* ${data['Nama Lengkap']}\n`;
-        textWa += `*2. Alamat Domisili:* ${data['Alamat Domisili']}\n`;
-        textWa += `*3. No. Telepon / HP:* ${data['No Telepon HP']}\n`;
-        textWa += `*4. No. Induk Pensiun:* ${data['No Pensiun KTP']}\n`;
-        textWa += `*5. Nama Ahli Waris:* ${data['Nama Ahli Waris']}\n`;
-        textWa += `*6. Alamat Ahli Waris:* ${data['Alamat Ahli Waris']}\n`;
-        textWa += `*7. Alasan:* ${data['Alasan']}\n\n`;
+        textWa += `*2. No. Anggota:* ${data['No Anggota']}\n`;
+        textWa += `*3. Alamat Domisili:* ${data['Alamat Domisili']}\n`;
+        textWa += `*4. No. Telepon / HP:* ${data['No Telepon HP']}\n`;
+        textWa += `*5. No. Induk Pensiun:* ${data['No Pensiun KTP']}\n`;
+        textWa += `*6. Nama Ahli Waris:* ${data['Nama Ahli Waris'] || '-'}\n`;
+        textWa += `*7. Alamat Ahli Waris:* ${data['Alamat Ahli Waris'] || '-'}\n`;
+        textWa += `*8. Alasan:* ${data['Alasan']}\n\n`;
         
         if (data['Simpanan Pokok'] || data['Simpanan Wajib'] || data['Nilai Pengembalian']) {
           textWa += `*Data Keuangan (Diisi Petugas):*\n`;
