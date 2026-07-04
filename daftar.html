@@ -270,13 +270,13 @@
       </div>
 
       <div class="form-group">
-        <label for="indukPensiun">2. No. Pensiun / HC *</label>
-        <input type="text" id="indukPensiun" name="No Pensiun KTP" class="form-control" required placeholder="Nomor Pensiun / HC">
+        <label for="indukPensiun">2. No. Pensiun *</label>
+        <input type="text" id="indukPensiun" name="No Pensiun" class="form-control" required placeholder="Nomor Pensiun">
       </div>
 
       <div class="form-group">
-        <label for="alamat">3. Alamat Domisili *</label>
-        <textarea id="alamat" name="Alamat" class="form-control" required placeholder="Alamat lengkap saat ini"></textarea>
+        <label for="himpanaCabang">3. HIMPANA Cabang *</label>
+        <input type="text" id="himpanaCabang" name="HIMPANA Cabang" class="form-control" required placeholder="Contoh: Cabang Yogyakarta">
       </div>
 
       <div class="form-group">
@@ -285,12 +285,17 @@
       </div>
 
       <div class="form-group">
-        <label for="namaAhliWaris">5. Nama Ahli Waris *</label>
+        <label for="alamat">5. Alamat Domisili *</label>
+        <textarea id="alamat" name="Alamat" class="form-control" required placeholder="Alamat lengkap saat ini"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="namaAhliWaris">6. Nama Ahli Waris *</label>
         <input type="text" id="namaAhliWaris" name="Nama Ahli Waris" class="form-control" required placeholder="Nama ahli waris">
       </div>
 
       <div class="form-group">
-        <label for="alamatAhliWaris">6. Alamat Ahli Waris *</label>
+        <label for="alamatAhliWaris">7. Alamat Ahli Waris *</label>
         <textarea id="alamatAhliWaris" name="Alamat Ahli Waris" class="form-control" required placeholder="Alamat lengkap ahli waris"></textarea>
       </div>
 
@@ -307,8 +312,7 @@
 
       <h2 class="section-title">Khusus Cetak Formulir (Tanda Tangan)</h2>
       <div class="form-group">
-        <label for="namaCabang">Nama HIMPANA Cabang</label>
-        <input type="text" id="namaCabang" class="form-control" placeholder="Contoh: Cabang Yogyakarta">
+        <small style="color:#64748b; font-size:0.85em;">ℹ️ HIMPANA Cabang otomatis diambil dari input No. 3 di atas.</small>
       </div>
       <div class="form-group">
         <label for="namaKetua">Nama Ketua HIMPANA</label>
@@ -360,14 +364,14 @@
           <div class="surat-form-value" id="print-nama">......................................................................................................</div>
         </div>
         <div class="surat-form-row">
-          <div class="surat-form-label">2. No. Pensiun / HC</div>
+          <div class="surat-form-label">2. No. Pensiun</div>
           <div class="surat-form-colon">:</div>
           <div class="surat-form-value" id="print-induk">......................................................................................................</div>
         </div>
         <div class="surat-form-row">
-          <div class="surat-form-label">3. Alamat</div>
+          <div class="surat-form-label">3. HIMPANA Cabang</div>
           <div class="surat-form-colon">:</div>
-          <div class="surat-form-value" id="print-alamat">......................................................................................................<br>......................................................................................................</div>
+          <div class="surat-form-value" id="print-himpana-cabang">......................................................................................................</div>
         </div>
         <div class="surat-form-row">
           <div class="surat-form-label">4. No. Telepon</div>
@@ -375,12 +379,17 @@
           <div class="surat-form-value" id="print-telepon">......................................................................................................</div>
         </div>
         <div class="surat-form-row">
-          <div class="surat-form-label">5. Nama Ahli Waris</div>
+          <div class="surat-form-label">5. Alamat</div>
+          <div class="surat-form-colon">:</div>
+          <div class="surat-form-value" id="print-alamat">......................................................................................................<br>......................................................................................................</div>
+        </div>
+        <div class="surat-form-row">
+          <div class="surat-form-label">6. Nama Ahli Waris</div>
           <div class="surat-form-colon">:</div>
           <div class="surat-form-value"><span id="print-aw-nama">......................................................</span> (Suami / Istri / Anak Kandung)</div>
         </div>
         <div class="surat-form-row">
-          <div class="surat-form-label">6. Alamat Ahli Waris</div>
+          <div class="surat-form-label">7. Alamat Ahli Waris</div>
           <div class="surat-form-colon">:</div>
           <div class="surat-form-value" id="print-aw-alamat">......................................................................................................</div>
         </div>
@@ -507,9 +516,15 @@
 
     document.getElementById('btnPrint').addEventListener('click', function() {
       if(document.getElementById('nama').value) document.getElementById('print-nama').textContent = document.getElementById('nama').value;
-      if(document.getElementById('alamat').value) document.getElementById('print-alamat').textContent = document.getElementById('alamat').value;
-      if(document.getElementById('telepon').value) document.getElementById('print-telepon').textContent = document.getElementById('telepon').value;
       if(document.getElementById('indukPensiun').value) document.getElementById('print-induk').textContent = document.getElementById('indukPensiun').value;
+      // HIMPANA Cabang dari input No.3
+      const himpanaCabangVal = document.getElementById('himpanaCabang').value;
+      if(himpanaCabangVal) {
+        document.getElementById('print-himpana-cabang').textContent = himpanaCabangVal;
+        document.getElementById('print-cabang').textContent = himpanaCabangVal;
+      }
+      if(document.getElementById('telepon').value) document.getElementById('print-telepon').textContent = document.getElementById('telepon').value;
+      if(document.getElementById('alamat').value) document.getElementById('print-alamat').textContent = document.getElementById('alamat').value;
       if(document.getElementById('namaAhliWaris').value) document.getElementById('print-aw-nama').textContent = document.getElementById('namaAhliWaris').value;
       if(document.getElementById('alamatAhliWaris').value) document.getElementById('print-aw-alamat').textContent = document.getElementById('alamatAhliWaris').value;
       
