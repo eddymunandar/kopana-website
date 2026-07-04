@@ -19,6 +19,7 @@ collections:
           - { label: "Nama Koperasi", name: "nama", widget: "string", default: "KOPANA" }
           - { label: "Tagline", name: "tagline", widget: "string", default: "Koperasi Purnakaryawan Pertamina" }
           - { label: "Deskripsi Footer", name: "deskripsi", widget: "text" }
+          - { label: "Versi Counter Pengunjung", name: "versi_counter", widget: "string", default: "v1", hint: "Ubah teks ini (misal: v2, v3, dst) untuk mereset angka total pengunjung menjadi 0." }
           - { label: "Logo (Opsional)", name: "logo", widget: "image", required: false }
       - name: "pengumuman"
         label: "Popup Pengumuman"

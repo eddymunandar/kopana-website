@@ -1081,6 +1081,13 @@ const KopanaAPI = {
           img.src = data.logo;
         });
       }
+
+      if (data.versi_counter) {
+        const pathParam = encodeURIComponent(`https://kopana.co.id/${data.versi_counter}`);
+        document.querySelectorAll('.visitor-badge-img').forEach(img => {
+          img.src = `https://api.visitorbadge.io/api/visitors?path=${pathParam}&label=Total%20Pengunjung&labelColor=%230f172a&countColor=%232563eb`;
+        });
+      }
     } catch (error) {
       console.info('KopanaAPI: Gagal memuat pengaturan.json');
     }
