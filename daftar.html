@@ -105,7 +105,7 @@
     @media print {
       @page {
         size: A4;
-        margin: 1.5cm 2cm;
+        margin: 1cm 1.8cm;
       }
       body * {
         visibility: hidden;
@@ -128,8 +128,8 @@
         width: 100%;
         padding: 0;
         font-family: 'Times New Roman', Times, serif;
-        font-size: 11pt;
-        line-height: 1.4;
+        font-size: 10.5pt;
+        line-height: 1.3;
         background: white;
       }
 
@@ -139,11 +139,11 @@
         justify-content: space-between;
         align-items: center;
         border-bottom: 2px solid #002B5B;
-        padding-bottom: 5px;
-        margin-bottom: 20px;
+        padding-bottom: 4px;
+        margin-bottom: 10px;
       }
       .kop-logo {
-        width: 80px;
+        width: 70px;
         height: auto;
       }
       .kop-text {
@@ -152,21 +152,21 @@
         color: #002B5B !important;
       }
       .kop-text h1 {
-        margin: 0 0 5px 0;
-        font-size: 14pt;
+        margin: 0 0 3px 0;
+        font-size: 13pt;
         font-weight: bold;
       }
       .kop-text h2 {
-        margin: 0 0 5px 0;
-        font-size: 11pt;
+        margin: 0 0 3px 0;
+        font-size: 10pt;
         font-weight: bold;
       }
       .kop-text p {
         margin: 0;
-        font-size: 9.5pt;
+        font-size: 9pt;
       }
       .kop-elpiji {
-        width: 80px;
+        width: 70px;
         text-align: center;
         font-family: Arial, sans-serif;
       }
@@ -175,43 +175,46 @@
       .surat-judul {
         text-align: center;
         font-weight: bold;
-        font-size: 12pt;
-        margin-bottom: 20px;
+        font-size: 11.5pt;
+        margin-top: 8px;
+        margin-bottom: 10px;
         text-transform: uppercase;
       }
 
       /* Isi Surat */
       .surat-isi p {
-        margin-bottom: 8px;
+        margin-bottom: 5px;
         text-align: justify;
       }
       .surat-form {
-        margin-bottom: 15px;
+        margin-bottom: 8px;
       }
       .surat-form-row {
         display: flex;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
       }
       .surat-form-label {
         width: 160px;
+        flex-shrink: 0;
       }
       .surat-form-colon {
         width: 15px;
+        flex-shrink: 0;
       }
       .surat-form-value {
         flex: 1;
       }
 
       .surat-list {
-        margin-bottom: 15px;
+        margin-bottom: 8px;
       }
       .surat-list ol {
-        padding-left: 20px;
-        margin-top: 5px;
+        padding-left: 18px;
+        margin-top: 3px;
         text-align: justify;
       }
       .surat-list li {
-        margin-bottom: 4px;
+        margin-bottom: 2px;
       }
 
       /* Tanda Tangan */
@@ -222,7 +225,7 @@
         margin: 0;
       }
       .ttd-space {
-        height: 70px;
+        height: 55px;
       }
     }
   </style>
@@ -296,10 +299,18 @@
         <input type="number" id="penyesuaianModal" name="Penyesuaian Modal" class="form-control" placeholder="Contoh: 50000 (Isi jika ada)">
       </div>
 
-      <h2 class="section-title">Khusus Cetak Formulir</h2>
+      <h2 class="section-title">Khusus Cetak Formulir (Tanda Tangan)</h2>
       <div class="form-group">
-        <label for="namaKetua">Nama Ketua HIMPANA (Untuk Tanda Tangan Cetak)</label>
+        <label for="namaCabang">Nama HIMPANA Cabang</label>
+        <input type="text" id="namaCabang" class="form-control" placeholder="Contoh: Cabang Yogyakarta">
+      </div>
+      <div class="form-group">
+        <label for="namaKetua">Nama Ketua HIMPANA</label>
         <input type="text" id="namaKetua" class="form-control" placeholder="Contoh: Budi Santoso">
+      </div>
+      <div class="form-group">
+        <label for="namaKetuaKopana">Nama Ketua KOPANA</label>
+        <input type="text" id="namaKetuaKopana" class="form-control" placeholder="Contoh: Slamet Riyadi">
       </div>
 
       <button type="submit" id="btnSubmit" class="btn btn-primary btn-submit">
@@ -387,38 +398,38 @@
     </div>
 
     <!-- Tanda Tangan -->
-    <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+    <div style="display: flex; justify-content: space-between; margin-top: 18px;">
       
       <!-- Kiri -->
       <div class="ttd-box" style="text-align: left;">
-        <p>Mengetahui,</p>
-        <p>Ketua HIMPANA Cabang</p>
-        <p>.......................</p>
+        <p style="margin:2px 0">Mengetahui,</p>
+        <p style="margin:2px 0">Ketua HIMPANA Cabang</p>
+        <p style="margin:2px 0" id="print-cabang">.......................</p>
         <div class="ttd-space"></div>
-        <p>( <span id="print-ttd-ketua" style="display:inline-block; min-width:150px; text-align:center;">........................................</span> )</p>
+        <p style="margin:2px 0">( <span id="print-ttd-ketua" style="display:inline-block; min-width:150px; text-align:center;">........................................</span> )</p>
       </div>
 
       <!-- Kanan -->
       <div class="ttd-box" style="text-align: left;">
-        <p>Yogyakarta, ........................20..</p>
-        <p>Pemohon,</p>
+        <p style="margin:2px 0">Yogyakarta, ........................20..</p>
+        <p style="margin:2px 0">Pemohon,</p>
         <br>
         <div class="ttd-space"></div>
-        <p>( <span id="print-ttd-nama" style="display:inline-block; min-width:150px; text-align:center;">........................................</span> )</p>
+        <p style="margin:2px 0">( <span id="print-ttd-nama" style="display:inline-block; min-width:150px; text-align:center;">........................................</span> )</p>
       </div>
     </div>
 
     <!-- Tengah Bawah -->
-    <div style="margin-top: 40px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+    <div style="margin-top: 20px; text-align: center; display: flex; flex-direction: column; align-items: center;">
       <div style="text-align: left; display: inline-block;">
-        <p>Disetujui / Tidak disetujui,</p>
-        <p>Untuk menjadi Anggota KOPANA</p>
-        <p>Tmt, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; No. Anggota :</p>
+        <p style="margin:3px 0">Disetujui / Tidak disetujui,</p>
+        <p style="margin:3px 0">Untuk menjadi Anggota KOPANA</p>
+        <p style="margin:3px 0">Tmt, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; No. Anggota :</p>
       </div>
-      <div class="ttd-box" style="text-align: center; margin-top: 20px;">
-        <p>Ketua Kopana,</p>
+      <div class="ttd-box" style="text-align: center; margin-top: 10px;">
+        <p style="margin:2px 0">Ketua Kopana,</p>
         <div class="ttd-space"></div>
-        <p>( ........................................ )</p>
+        <p style="margin:2px 0">( <span id="print-ttd-kopana">........................................</span> )</p>
       </div>
     </div>
 
@@ -444,9 +455,17 @@
       const nama = document.getElementById('nama').value;
       if(nama) document.getElementById('print-ttd-nama').textContent = nama;
 
+      const cabang = document.getElementById('namaCabang').value;
+      if(cabang) document.getElementById('print-cabang').textContent = cabang;
+
       const ketua = document.getElementById('namaKetua').value;
       if(ketua) {
         document.getElementById('print-ttd-ketua').textContent = ketua;
+      }
+
+      const ketuaKopana = document.getElementById('namaKetuaKopana').value;
+      if(ketuaKopana) {
+        document.getElementById('print-ttd-kopana').textContent = ketuaKopana;
       }
       
       window.print();
