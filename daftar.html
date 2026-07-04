@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/style.css?v=122">
+  <link rel="stylesheet" href="assets/css/style.css?v=125">
   
   <style>
     .form-container {
@@ -323,9 +323,14 @@
         <input type="text" id="namaKetuaKopana" class="form-control" placeholder="Contoh: Slamet Riyadi">
       </div>
 
-      <button type="submit" id="btnSubmit" class="btn btn-primary btn-submit">
-        <i class="fas fa-paper-plane"></i> Kirim Data (Email & WhatsApp)
-      </button>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+        <button type="button" id="btnSubmitEmail" class="btn btn-primary btn-submit">
+          <i class="fas fa-envelope"></i> Kirim ke Email
+        </button>
+        <button type="button" id="btnSubmitWA" class="btn btn-success btn-submit" style="background-color: #25D366;">
+          <i class="fab fa-whatsapp"></i> Kirim ke WhatsApp
+        </button>
+      </div>
 
       <button type="button" id="btnPrint" class="btn btn-print">
         <i class="fas fa-print"></i> Cetak Formulir (Print A4)
@@ -559,49 +564,72 @@
       window.print();
     });
 
-    document.getElementById('formPendaftaran').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      
-      const form = e.target;
-      const btn = document.getElementById('btnSubmit');
-      const originalBtnText = btn.innerHTML;
-      
+    function getFormData() {
+      const form = document.getElementById('formPendaftaran');
+      if (!form.reportValidity()) return null;
       const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
+      return { form, formData, data: Object.fromEntries(formData.entries()) };
+    }
+
+    function buildPreviewDaftar(data) {
+      let text = "DATA PENDAFTARAN ANGGOTA BARU:\n\n";
+      text += `1. Nama Lengkap: ${data['Nama']}\n`;
+      text += `2. No. Pensiun / HC: ${data['No Pensiun KTP']}\n`;
+      text += `3. Alamat Domisili: ${data['Alamat']}\n`;
+      text += `4. No. Telepon / HP: ${data['No Telepon']}\n`;
+      text += `5. Nama Ahli Waris: ${data['Nama Ahli Waris']}\n`;
+      text += `6. Alamat Ahli Waris: ${data['Alamat Ahli Waris']}\n`;
+      if(data['Penyesuaian Modal']) {
+        text += `7. Penyesuaian Modal: Rp ${formatRupiah(data['Penyesuaian Modal'])}\n`;
+      }
+      return text;
+    }
+
+    document.getElementById('btnSubmitEmail').addEventListener('click', async function() {
+      const res = getFormData();
+      if (!res) return;
       
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sedang Memproses...';
+      const previewText = buildPreviewDaftar(res.data);
+      if (!confirm("=== PREVIEW DATA ===\n\n" + previewText + "\n\nApakah data di atas sudah benar dan ingin dikirim ke Email?")) return;
+      
+      const targetEmail = prompt("Masukkan alamat email tujuan:", "kopanayogya@gmail.com");
+      if (!targetEmail) return;
+      
+      const btn = this;
+      const originalBtnText = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
       btn.disabled = true;
       
       try {
-        await fetch(form.action, {
+        await fetch(`https://formsubmit.co/${targetEmail}`, {
           method: 'POST',
-          body: formData,
+          body: res.formData,
           headers: { 'Accept': 'application/json' }
         });
-        
-        const waNumber = "6282227154266";
-        let textWa = "Halo Pengurus KOPANA, saya mengirimkan data PENDAFTARAN ANGGOTA BARU:\n\n";
-        textWa += `*1. Nama Lengkap:* ${data['Nama']}\n`;
-        textWa += `*2. No. Pensiun / HC:* ${data['No Pensiun KTP']}\n`;
-        textWa += `*3. Alamat Domisili:* ${data['Alamat']}\n`;
-        textWa += `*4. No. Telepon / HP:* ${data['No Telepon']}\n`;
-        textWa += `*5. Nama Ahli Waris:* ${data['Nama Ahli Waris']}\n`;
-        textWa += `*6. Alamat Ahli Waris:* ${data['Alamat Ahli Waris']}\n`;
-        if(data['Penyesuaian Modal']) {
-          textWa += `*7. Penyesuaian Modal:* Rp ${formatRupiah(data['Penyesuaian Modal'])}\n`;
-        }
-        textWa += "\nTerima kasih.";
-        
-        const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(textWa)}`;
-        
-        alert("Pendaftaran berhasil terkirim ke Email. Anda akan diarahkan ke WhatsApp untuk konfirmasi pesan.");
-        window.location.href = waUrl;
-        
+        alert("Pendaftaran berhasil terkirim ke Email.");
       } catch (error) {
         alert("Mohon maaf, terjadi kesalahan jaringan saat mengirim email. Silakan coba lagi.");
-        btn.innerHTML = originalBtnText;
-        btn.disabled = false;
       }
+      btn.innerHTML = originalBtnText;
+      btn.disabled = false;
+    });
+
+    document.getElementById('btnSubmitWA').addEventListener('click', function() {
+      const res = getFormData();
+      if (!res) return;
+      
+      const previewText = buildPreviewDaftar(res.data);
+      if (!confirm("=== PREVIEW DATA ===\n\n" + previewText + "\n\nApakah data di atas sudah benar dan ingin dikirim ke WhatsApp?")) return;
+      
+      let targetWA = prompt("Masukkan nomor WhatsApp tujuan (gunakan format 62...):", "6282227154266");
+      if (!targetWA) return;
+      targetWA = targetWA.replace(/[^0-9]/g, '');
+
+      const waNumber = targetWA;
+      let textWa = "Halo Pengurus KOPANA, saya mengirimkan " + buildPreviewDaftar(res.data) + "\nTerima kasih.";
+      
+      const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(textWa)}`;
+      window.open(waUrl, '_blank');
     });
   </script>
 </body>
