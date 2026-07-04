@@ -295,8 +295,13 @@
       </div>
 
       <div class="form-group">
-        <label for="penyesuaianModal">7. Penyesuaian Modal Anggota (Rp)</label>
-        <input type="number" id="penyesuaianModal" name="Penyesuaian Modal" class="form-control" placeholder="Contoh: 50000 (Isi jika ada)">
+        <label for="nilaiEkuitas">7. Nilai Ekuitas (Faktor Pengali)</label>
+        <input type="number" id="nilaiEkuitas" name="Nilai Ekuitas" class="form-control" placeholder="Contoh: 3 (angka pengali ekuitas)" step="0.1" min="0">
+        <small style="color: #64748b; font-size: 0.85em;">Simpanan Pokok = Rp 20.000 | Simpanan Wajib 1 tahun = Rp 60.000 | Total = Rp 80.000</small>
+        <div style="margin-top:6px;">
+          <label style="font-size:0.9em; color:#475569;">Hasil Penyesuaian Ekuitas (otomatis):</label>
+          <input type="text" id="hasilEkuitas" class="form-control" readonly style="background:#f1f5f9; color:#0f172a; font-weight:600; margin-top:4px;" placeholder="Terisi otomatis...">
+        </div>
       </div>
 
       <h2 class="section-title">Khusus Cetak Formulir (Tanda Tangan)</h2>
@@ -386,7 +391,8 @@
         <ol>
           <li>Membayar uang Simpanan Pokok sebesar = Rp. 20.000,-</li>
           <li>Membayar uang Simpanan Wajib sebesar = Rp. 5.000,- setiap bulan.</li>
-          <li>Membayar uang penyesuaian modal anggota sebesar = Rp<span id="print-modal">.........................</span></li>
+          <li>Membayar uang penyesuaian Ekuitas/ modal anggota sebesar <span id="print-ekuitas-kali">.......</span> kali Simpanan Pokok &amp; Simpanan Wajib (1 tahun) = Rp. <span id="print-modal">.........................</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Hasil dari Ekuitas &times; (Simpanan Pokok + Simpanan Wajib 1 tahun) = <span id="print-ekuitas-kali2">.......</span> &times; Rp. 80.000,-)</li>
           <li>WAJIB aktif dalam mengikuti kegiatan KOPANA YK, dan bersedia menjadi pengurus jika diperlukan.</li>
           <li>Sanggup memenuhi / mematuhi ketentuan-ketentuan yang berlaku dalam Anggaran Dasar (AD) dan Anggaran Rumah Tangga (ART) KOPANA Yogyakarta.</li>
           <li>Berkomitmen dan berkontribusi aktif dalam kegiatan Kopana, belanja dll.</li>
@@ -436,10 +442,32 @@
   </div>
 
   <script>
+    // Konstanta simpanan
+    const SIMPOK = 20000;
+    const SIMWAJ_TAHUN = 60000; // 5.000 x 12 bulan
+    const BASE_EKUITAS = SIMPOK + SIMWAJ_TAHUN; // 80.000
+
     function formatRupiah(angka) {
       if(!angka) return '.........................';
       return parseInt(angka).toLocaleString('id-ID');
     }
+
+    // Hitung otomatis hasil ekuitas saat diketik
+    document.addEventListener('DOMContentLoaded', function() {
+      const inputEkuitas = document.getElementById('nilaiEkuitas');
+      if(inputEkuitas) {
+        inputEkuitas.addEventListener('input', function() {
+          const val = parseFloat(this.value) || 0;
+          const hasil = document.getElementById('hasilEkuitas');
+          if(val > 0) {
+            const total = val * BASE_EKUITAS;
+            hasil.value = 'Rp. ' + new Intl.NumberFormat('id-ID').format(total).replace(/,/g, '.');
+          } else {
+            hasil.value = '';
+          }
+        });
+      }
+    });
 
     document.getElementById('btnPrint').addEventListener('click', function() {
       if(document.getElementById('nama').value) document.getElementById('print-nama').textContent = document.getElementById('nama').value;
@@ -449,8 +477,21 @@
       if(document.getElementById('namaAhliWaris').value) document.getElementById('print-aw-nama').textContent = document.getElementById('namaAhliWaris').value;
       if(document.getElementById('alamatAhliWaris').value) document.getElementById('print-aw-alamat').textContent = document.getElementById('alamatAhliWaris').value;
       
-      const valModal = document.getElementById('penyesuaianModal').value;
-      document.getElementById('print-modal').textContent = formatRupiah(valModal);
+      const valEkuitas = document.getElementById('nilaiEkuitas').value;
+      const SIMPOK = 20000;
+      const SIMWAJ_TAHUN = 60000; // 5000 x 12
+      const BASE = SIMPOK + SIMWAJ_TAHUN; // 80000
+      if (valEkuitas) {
+        const hasil = parseFloat(valEkuitas) * BASE;
+        const formattedHasil = new Intl.NumberFormat('id-ID').format(hasil).replace(/,/g, '.');
+        document.getElementById('print-modal').textContent = formattedHasil;
+        document.getElementById('print-ekuitas-kali').textContent = valEkuitas;
+        document.getElementById('print-ekuitas-kali2').textContent = valEkuitas;
+      } else {
+        document.getElementById('print-modal').textContent = '.........................';
+        document.getElementById('print-ekuitas-kali').textContent = '.......';
+        document.getElementById('print-ekuitas-kali2').textContent = '.......';
+      }
       
       const nama = document.getElementById('nama').value;
       if(nama) document.getElementById('print-ttd-nama').textContent = nama;
