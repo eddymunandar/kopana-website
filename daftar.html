@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/style.css?v=127">
+  <link rel="stylesheet" href="assets/css/style.css?v=128">
   
   <style>
     .form-container {
@@ -327,6 +327,10 @@
       <button type="button" id="btnPrint" class="btn btn-print">
         <i class="fas fa-print"></i> Cetak Formulir (Print A4)
       </button>
+      
+      <button type="button" id="btnPdfWa" class="btn btn-primary" style="margin-top: 10px; background-color: #25D366; border-color: #25D366;">
+        <i class="fab fa-whatsapp"></i> Kirim PDF ke WhatsApp
+      </button>
     </form>
   </div>
 
@@ -446,6 +450,42 @@
     </div>
 
   </div>
+
+  <!-- Modal WhatsApp PDF -->
+  <div id="wa-pdf-modal" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal-box">
+      <button class="modal-close-btn" id="wa-modal-close" aria-label="Tutup">&times;</button>
+      <div class="modal-header">
+        <div class="modal-icon" style="color: #25D366; background: rgba(37,211,102,0.1);">
+          <i class="fab fa-whatsapp"></i>
+        </div>
+        <h3>Kirim PDF ke WhatsApp</h3>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom:15px; font-size:0.9em;">Pilih kontak tujuan atau ketik nomor manual (gunakan kode negara, misal: 628...).</p>
+        <div class="form-group" style="text-align:left;">
+          <label>Pilih Kontak Pengurus:</label>
+          <select id="wa-contact-select" class="form-control" style="margin-bottom:10px;">
+            <option value="">-- Ketik manual di bawah --</option>
+            <option value="628111111111">Ketua (Bpk. Slamet) - 628111111111</option>
+            <option value="628222222222">Sekretaris - 628222222222</option>
+          </select>
+          <label>Atau Ketik Nomor Tujuan:</label>
+          <input type="text" id="wa-number-input" class="form-control" placeholder="Contoh: 628123456789">
+        </div>
+      </div>
+      <div class="modal-footer" style="display:flex; gap:10px;">
+        <button id="wa-modal-cancel" class="btn btn-print" style="flex:1;">Batal</button>
+        <button id="wa-modal-send" class="btn btn-primary" style="flex:1; background-color:#25D366; border-color:#25D366;">
+          <span id="wa-modal-send-text"><i class="fas fa-paper-plane"></i> Buat & Kirim</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Library html2canvas & jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <script>
     // Konstanta simpanan
@@ -623,6 +663,114 @@
       const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(textWa)}`;
       window.open(waUrl, '_blank');
     });
+
+    // --- LOGIKA KIRIM PDF KE WA ---
+    const waModal = document.getElementById('wa-pdf-modal');
+    const waBtnOpen = document.getElementById('btnPdfWa');
+    const waBtnClose = document.getElementById('wa-modal-close');
+    const waBtnCancel = document.getElementById('wa-modal-cancel');
+    const waBtnSend = document.getElementById('wa-modal-send');
+    const waSelect = document.getElementById('wa-contact-select');
+    const waInput = document.getElementById('wa-number-input');
+    const waSendText = document.getElementById('wa-modal-send-text');
+
+    waBtnOpen.addEventListener('click', function() {
+      if (!getFormData()) return; // Validasi form
+      waModal.classList.remove('hidden');
+      waModal.setAttribute('aria-hidden', 'false');
+    });
+
+    function closeWaModal() {
+      waModal.classList.add('hidden');
+      waModal.setAttribute('aria-hidden', 'true');
+    }
+    waBtnClose.addEventListener('click', closeWaModal);
+    waBtnCancel.addEventListener('click', closeWaModal);
+
+    waSelect.addEventListener('change', function() {
+      if (this.value) waInput.value = this.value;
+    });
+
+    waBtnSend.addEventListener('click', async function() {
+      let targetWA = waInput.value.replace(/[^0-9]/g, '');
+      if (!targetWA) {
+        alert('Silakan pilih atau masukkan nomor WhatsApp tujuan.');
+        waInput.focus();
+        return;
+      }
+
+      waSendText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses PDF...';
+      waBtnSend.disabled = true;
+
+      try {
+        const printArea = document.getElementById('printArea');
+        printArea.style.display = 'block'; // Pastikan terlihat saat di-render
+        
+        // Simpan nilai asli margin/padding yang mungkin mengganggu
+        const originalMargin = printArea.style.margin;
+        printArea.style.margin = '0';
+        printArea.style.padding = '20px'; // Beri sedikit ruang
+
+        const canvas = await html2canvas(printArea, { scale: 2, useCORS: true });
+        
+        // Kembalikan style
+        printArea.style.margin = originalMargin;
+        printArea.style.padding = '0';
+        printArea.style.display = 'none';
+
+        const imgData = canvas.toDataURL('image/jpeg', 1.0);
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        
+        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+        
+        const pdfBlob = pdf.output('blob');
+        const fileName = "Pendaftaran_Anggota_KOPANA.pdf";
+        const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
+        
+        closeWaModal();
+
+        // Coba navigator.share (Mobile)
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: 'Formulir Pendaftaran KOPANA',
+              text: 'Berikut adalah lampiran PDF Formulir Pendaftaran Anggota KOPANA.'
+            });
+            // Share berhasil, selesai.
+          } catch(err) {
+            console.log('Share dibatalkan atau gagal', err);
+            fallbackShare(pdf, targetWA, fileName);
+          }
+        } else {
+          // Fallback (Desktop/PC)
+          fallbackShare(pdf, targetWA, fileName);
+        }
+
+      } catch (error) {
+        console.error("Gagal membuat PDF:", error);
+        alert("Terjadi kesalahan saat membuat PDF. Silakan coba lagi.");
+      } finally {
+        waSendText.innerHTML = '<i class="fas fa-paper-plane"></i> Buat & Kirim';
+        waBtnSend.disabled = false;
+      }
+    });
+
+    function fallbackShare(pdf, targetWA, fileName) {
+      // 1. Download file
+      pdf.save(fileName);
+      
+      // 2. Tampilkan instruksi dan buka WA Web
+      alert("File PDF telah di-download ke perangkat Anda.\n\nKlik OK untuk membuka WhatsApp, lalu lampirkan (attach) file PDF tersebut secara manual ke ruang chat.");
+      
+      const textWa = "Halo Pengurus KOPANA, berikut saya kirimkan lampiran Formulir Pendaftaran Anggota KOPANA.";
+      const waUrl = `https://wa.me/${targetWA}?text=${encodeURIComponent(textWa)}`;
+      window.open(waUrl, '_blank');
+    }
   </script>
 </body>
 </html>
