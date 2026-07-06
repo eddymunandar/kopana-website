@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/style.css?v=128">
+  <link rel="stylesheet" href="assets/css/style.css?v=129">
   
   <style>
     .form-container {
@@ -604,9 +604,9 @@
     }
 
     function buildPreviewDaftar(data) {
-      let text = "DATA PENDAFTARAN ANGGOTA BARU:\n\n";
-      text += `1. Nama Lengkap: ${data['Nama']}\n`;
-      text += `2. No. Pensiun / HC: ${data['No Pensiun KTP']}\n`;
+      let text = "PENDAFTARAN ANGGOTA BARU:\n\n";
+      text += `1. Nama Lengkap: ${data['Nama Lengkap']}\n`;
+      text += `2. No. Pensiun / HC: ${data['No Pensiun']}\n`;
       text += `3. Alamat Domisili: ${data['Alamat']}\n`;
       text += `4. No. Telepon / HP: ${data['No Telepon']}\n`;
       text += `5. Nama Ahli Waris: ${data['Nama Ahli Waris']}\n`;
@@ -616,53 +616,6 @@
       }
       return text;
     }
-
-    document.getElementById('btnSubmitEmail').addEventListener('click', async function() {
-      const res = getFormData();
-      if (!res) return;
-      
-      const previewText = buildPreviewDaftar(res.data);
-      if (!confirm("=== PREVIEW DATA ===\n\n" + previewText + "\n\nApakah data di atas sudah benar dan ingin dikirim ke Email?")) return;
-      
-      const targetEmail = prompt("Masukkan alamat email tujuan:", "kopanayogya@gmail.com");
-      if (!targetEmail) return;
-      
-      const btn = this;
-      const originalBtnText = btn.innerHTML;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-      btn.disabled = true;
-      
-      try {
-        await fetch(`https://formsubmit.co/${targetEmail}`, {
-          method: 'POST',
-          body: res.formData,
-          headers: { 'Accept': 'application/json' }
-        });
-        alert("Pendaftaran berhasil terkirim ke Email.");
-      } catch (error) {
-        alert("Mohon maaf, terjadi kesalahan jaringan saat mengirim email. Silakan coba lagi.");
-      }
-      btn.innerHTML = originalBtnText;
-      btn.disabled = false;
-    });
-
-    document.getElementById('btnSubmitWA').addEventListener('click', function() {
-      const res = getFormData();
-      if (!res) return;
-      
-      const previewText = buildPreviewDaftar(res.data);
-      if (!confirm("=== PREVIEW DATA ===\n\n" + previewText + "\n\nApakah data di atas sudah benar dan ingin dikirim ke WhatsApp?")) return;
-      
-      let targetWA = prompt("Masukkan nomor WhatsApp tujuan (gunakan format 62...):", "6282227154266");
-      if (!targetWA) return;
-      targetWA = targetWA.replace(/[^0-9]/g, '');
-
-      const waNumber = targetWA;
-      let textWa = "Halo Pengurus KOPANA, saya mengirimkan " + buildPreviewDaftar(res.data) + "\nTerima kasih.";
-      
-      const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(textWa)}`;
-      window.open(waUrl, '_blank');
-    });
 
     // --- LOGIKA KIRIM PDF KE WA ---
     const waModal = document.getElementById('wa-pdf-modal');
