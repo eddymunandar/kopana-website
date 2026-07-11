@@ -3,17 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pengunduran Diri Anggota KOPANA</title>
-  
+  <title>Pengunduran Diri Anggota - KOPANA Yogyakarta</title>
+  <meta name="description" content="Formulir pengunduran diri anggota KOPANA Yogyakarta. Isi data Anda lalu cetak formulir untuk diserahkan ke pengurus koperasi.">
+  <link rel="canonical" href="https://kopana.id/pengunduran.html">
+
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo.png?v=2">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo-192.png">
   <link rel="manifest" href="manifest.json">
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/style.css?v=130">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-Avb2QiuDEEvB4bZJYdab9wBMeP6E5RQLmBeRNqRXE7Z9wLd0zBX8U2nqeAh8iWcLrVSt8U9bfEa7fm/LzO+g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="assets/css/style.css?v=132">
   
   <style>
     .form-container {
@@ -241,38 +245,27 @@
   </style>
 
 <script>
-  // CACHE KILLER: Force unregister all Service Workers to clean up stale cache
+  // Bersihkan service worker lama milik pengunjung dari versi situs sebelumnya.
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for(let registration of registrations) {
-        registration.unregister().then(function(boolean) {
-          console.log('Service worker unregistered');
-        });
-      }
-    });
+    navigator.serviceWorker.getRegistrations()
+      .then(function(regs) { regs.forEach(function(r) { r.unregister(); }); })
+      .catch(function() {});
   }
-  
-  // Clear localStorage and sessionStorage cache versions if any
-  
-  
 </script>
 </head>
-<body class="dark-theme">
+<body>
 
-  
+
   <div class="form-container">
     <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</a>
-    
+
     <div class="form-header">
       <h1>Formulir Pengunduran Diri</h1>
-      <p>Silakan isi data berikut untuk mengajukan permohonan pengunduran diri dari keanggotaan KOPANA.</p>
+      <p>Silakan isi data berikut lalu cetak formulir untuk diserahkan ke pengurus KOPANA.</p>
     </div>
 
-    <!-- Formsubmit -->
-    <form id="formPengunduran" action="https://formsubmit.co/kopanayogya@gmail.com" method="POST">
-      <input type="hidden" name="_subject" value="Permohonan Pengunduran Diri Anggota KOPANA">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="">
+    <!-- Form ini khusus untuk diisi lalu dicetak (tidak dikirim online) -->
+    <form id="formPengunduran" onsubmit="return false;">
 
       <div class="form-group">
         <label for="nama">1. Nama Lengkap *</label>
@@ -613,34 +606,6 @@
       // Panggil fungsi print browser
       window.print();
     });
-
-    function getFormData() {
-      const form = document.getElementById('formPengunduran');
-      if (!form.reportValidity()) return null;
-      const formData = new FormData(form);
-      return { form, formData, data: Object.fromEntries(formData.entries()) };
-    }
-
-    function buildPreviewPengunduran(data) {
-      let text = "PERMOHONAN PENGUNDURAN DIRI KEANGGOTAAN:\n\n";
-      text += `1. Nama Lengkap: ${data['Nama Lengkap']}\n`;
-      text += `2. No. Anggota: ${data['No Anggota']}\n`;
-      text += `3. Alamat Domisili: ${data['Alamat Domisili']}\n`;
-      text += `4. No. Telepon / HP: ${data['No Telepon HP']}\n`;
-      text += `5. No. Induk Pensiun: ${data['No Pensiun KTP']}\n`;
-      text += `6. Nama Ahli Waris: ${data['Nama Ahli Waris'] || '-'}\n`;
-      text += `7. Alamat Ahli Waris: ${data['Alamat Ahli Waris'] || '-'}\n`;
-      text += `8. Alasan: ${data['Alasan']}\n\n`;
-      
-      if (data['Simpanan Pokok'] || data['Simpanan Wajib'] || data['Nilai Pengembalian']) {
-        text += `Data Keuangan (Diisi Petugas):\n`;
-        if (data['Simpanan Pokok']) text += `- Simpanan Pokok: ${data['Simpanan Pokok']}\n`;
-        if (data['Simpanan Wajib']) text += `- Simpanan Wajib: ${data['Simpanan Wajib']}\n`;
-        if (data['Faktor Pengali']) text += `- Faktor Pengali: ${data['Faktor Pengali']}\n`;
-        if (data['Nilai Pengembalian']) text += `- Nilai Pengembalian: ${data['Nilai Pengembalian']}\n`;
-      }
-      return text;
-    }
   </script>
 </body>
 </html>

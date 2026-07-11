@@ -3,18 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pusat Unduhan - KOPANA</title>
-  
+  <title>Pusat Unduhan Dokumen - KOPANA Yogyakarta</title>
+  <meta name="description" content="Unduh formulir pendaftaran, formulir pengunduran diri, laporan RAT, dan dokumen resmi lainnya dari KOPANA Yogyakarta.">
+  <link rel="canonical" href="https://kopana.id/unduhan.html">
+
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo.png?v=2">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo-192.png">
   <link rel="manifest" href="manifest.json">
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/style.css?v=130">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-Avb2QiuDEEvB4bZJYdab9wBMeP6E5RQLmBeRNqRXE7Z9wLd0zBX8U2nqeAh8iWcLrVSt8U9bfEa7fm/LzO+g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="assets/css/style.css?v=132">
+
   <style>
     .faq-page-container {
       max-width: 800px;
@@ -46,7 +50,7 @@
     .back-link:hover {
       text-decoration: underline;
     }
-    
+
     .loading-state {
       text-align: center;
       padding: 40px;
@@ -59,7 +63,7 @@
       flex-direction: column;
       gap: 15px;
     }
-    
+
     #dyn-formulir-container a {
       display: flex;
       align-items: center;
@@ -73,7 +77,7 @@
       font-weight: 600;
       transition: all 0.3s ease;
     }
-    
+
     #dyn-formulir-container a:hover {
       background: var(--primary);
       color: #ffffff;
@@ -87,18 +91,28 @@
   </style>
 
 <script>
+  // Bersihkan service worker lama milik pengunjung dari versi situs sebelumnya.
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for(let registration of registrations) {
-        registration.unregister().then(function(boolean) {
-          console.log('Service worker unregistered');
-        });
-      }
-    });
+    navigator.serviceWorker.getRegistrations()
+      .then(function(regs) { regs.forEach(function(r) { r.unregister(); }); })
+      .catch(function() {});
   }
 </script>
 </head>
-<body class="dark-theme">
+<body>
+
+  <!-- ANTI-FOUC DARK MODE -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('kopana-dark-mode');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'true' || (saved === null && prefersDark)) {
+          document.body.classList.add('dark-mode');
+        }
+      } catch (e) {}
+    })();
+  </script>
 
   <!-- Dark Toggle Button Absolut -->
   <button id="dark-toggle" class="dark-toggle" style="position: absolute; top: 20px; right: 20px; z-index: 1000;" aria-label="Ganti tema gelap/terang">
@@ -107,7 +121,7 @@
 
   <div class="faq-page-container">
     <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</a>
-    
+
     <div class="faq-header">
       <h1>Pusat Unduhan Dokumen</h1>
       <p>Pilih dan unduh formulir atau dokumen KOPANA yang Anda butuhkan.</p>
@@ -121,6 +135,6 @@
     </div>
   </div>
 
-  <script src="assets/js/script.js?v=130"></script>
+  <script src="assets/js/script.js?v=134" defer></script>
 </body>
 </html>

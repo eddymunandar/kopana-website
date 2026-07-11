@@ -6,185 +6,106 @@
 
 ---
 
-## 📋 Deskripsi
+## Deskripsi
 
-Website resmi **KOPANA** (Koperasi Jasa Serba Usaha Purnakaryawan Pertamina) Yogyakarta.
-Dibangun dengan HTML5, CSS3, dan Vanilla JavaScript — tanpa framework, ringan, cepat, dan siap deploy.
+Website resmi **KOPANA** (kopana.id). Dibangun dengan HTML5, CSS3, dan Vanilla JavaScript — tanpa framework dan tanpa build step. Konten dikelola melalui **Sveltia CMS** di halaman `/admin/` yang menyimpan data sebagai file JSON di folder `data/` dan meng-commit-nya langsung ke repo GitHub. Setiap commit otomatis di-deploy oleh **Cloudflare Pages**.
 
 ---
 
-## 🗂️ Struktur File
+## Struktur File
 
 ```
 /
 ├── index.html              # Halaman utama
-├── favicon.ico             # Favicon
-├── robots.txt              # Panduan crawler mesin pencari
-├── sitemap.xml             # Sitemap SEO
-├── README.md               # Dokumentasi ini
+├── pengurus.html           # Struktur organisasi (pengurus, pengawas, cabang)
+├── faq.html                # FAQ
+├── unduhan.html            # Pusat unduhan dokumen
+├── daftar.html             # Formulir pendaftaran anggota (isi → cetak A4)
+├── pengunduran.html        # Formulir pengunduran diri (isi → cetak A4)
 │
-└── assets/
-    ├── css/
-    │   └── style.css       # Stylesheet utama (design tokens, komponen, responsive)
-    ├── js/
-    │   └── script.js       # JavaScript utama
-    ├── img/                # Gambar & foto
-    └── icons/              # Ikon tambahan (jika ada)
+├── admin/
+│   ├── index.html          # Loader Sveltia CMS
+│   └── config.yml          # Skema koleksi CMS → data/*.json
+│
+├── data/                   # Konten website (dikelola via CMS, JANGAN edit manual)
+│   ├── pengaturan.json     # Nama, tagline, logo, versi counter pengunjung
+│   ├── beranda.json        # Hero + sambutan ketua
+│   ├── profil.json         # Sejarah, visi, misi
+│   ├── pengurus.json       # Pengurus, pengawas, cabang
+│   ├── berita.json         # Berita & pengumuman
+│   ├── galeri.json         # Galeri foto (kategori → tombol filter otomatis)
+│   ├── usaha.json          # Bidang usaha
+│   ├── statistik.json      # KOPANA dalam angka
+│   ├── kontak.json         # Alamat, telepon, email, embed Google Maps
+│   ├── faq.json            # Daftar FAQ
+│   ├── formulir.json       # Dokumen unduhan (+ PIN dokumen terkunci)
+│   └── pengumuman.json     # Popup pengumuman
+│
+├── assets/
+│   ├── css/style.css       # Stylesheet utama
+│   ├── js/script.js        # JavaScript utama (UI + KopanaAPI)
+│   └── img/                # Gambar situs; img/uploads/ = media dari CMS
+│
+├── _headers                # Header keamanan & cache (Cloudflare Pages)
+├── _redirects              # Aturan redirect (Cloudflare Pages)
+├── robots.txt, sitemap.xml # SEO
+├── manifest.json           # Manifest PWA (ikon & warna)
+└── favicon.ico
 ```
 
 ---
 
-## 🚀 Deploy ke Cloudflare Pages
+## Cara Kerja Konten
 
-### Cara 1: Upload Langsung (Drag & Drop)
+1. Pengurus login ke `https://kopana.id/admin/` (Sveltia CMS, autentikasi GitHub).
+2. Perubahan disimpan sebagai commit ke repo `eddymunandar/kopana-website` branch `main`.
+3. Cloudflare Pages otomatis men-deploy ulang; perubahan tampil dalam ±5 menit
+   (file `data/*.json` di-cache browser maksimal 5 menit).
+4. `assets/js/script.js` membaca `data/*.json` lalu merender konten ke halaman.
 
-1. Login ke [Cloudflare Dashboard](https://dash.cloudflare.com)
-2. Masuk ke **Pages** → **Create a project**
-3. Pilih **Direct Upload**
-4. Upload seluruh folder website ini
-5. Selesai! Website langsung live.
+### Catatan penting untuk pengelola
 
-### Cara 2: GitHub + Cloudflare Pages (Rekomendasi)
-
-1. Push seluruh folder ini ke repository GitHub
-2. Di Cloudflare Pages, klik **Connect to Git**
-3. Pilih repository GitHub Anda
-4. Konfigurasi build:
-   - **Framework preset:** `None`
-   - **Build command:** *(kosongkan)*
-   - **Build output directory:** `/` (root)
-5. Klik **Save and Deploy**
+- **Tanggal berita** wajib berformat `DD MMM YYYY` (contoh: `15 Jan 2026`) — dipakai untuk mengurutkan berita.
+- **Kategori galeri** bebas diisi; tombol filter di halaman utama dibangun otomatis dari kategori yang ada.
+- **Foto**: usahakan unggah foto maksimal ±1600 px dan di bawah 300 KB agar situs tetap cepat.
+- **PIN dokumen terkunci** (`formulir.json`) hanya penghalang ringan di sisi browser, BUKAN proteksi keamanan sungguhan — jangan gunakan untuk dokumen rahasia.
+- Jika mengubah `style.css` atau `script.js`, naikkan parameter versi `?v=...` di semua file HTML agar cache pengunjung diperbarui.
 
 ---
 
-## ⚙️ Konfigurasi & Kustomisasi
+## Deploy (Cloudflare Pages)
 
-### Placeholder yang Harus Diganti
+Repo GitHub sudah terhubung ke Cloudflare Pages:
 
-Cari dan ganti placeholder berikut di seluruh file:
+- **Framework preset:** None
+- **Build command:** (kosong)
+- **Build output directory:** `/` (root)
 
-| Placeholder | Keterangan | File |
-|---|---|---|
-| `https://script.google.com/macros/s/AKfycbzYDPTRz9usUEwOhgWEy7Y4HiC_gfKxQ310KWAr4seA3KgrFXObiEX1VAPjaUclF7XG/exec` | URL aplikasi anggota Google Apps Script | `index.html`, `assets/js/script.js` |
-| `EMAIL_KOPERASI` | Email resmi KOPANA | `index.html` |
-| `JUMLAH_ANGGOTA` | Jumlah anggota aktif (angka) | `index.html` |
-| `SAMBUTAN_KETUA` | Teks sambutan ketua | `index.html` |
-| `GOOGLE_MAPS` | Embed Google Maps | `index.html` |
-| `https://script.google.com/macros/s/AKfycbzYDPTRz9usUEwOhgWEy7Y4HiC_gfKxQ310KWAr4seA3KgrFXObiEX1VAPjaUclF7XG/exec` | URL API Google Apps Script | `assets/js/script.js` |
+Setiap push ke `main` otomatis ter-deploy.
 
-### Cara Mengganti Placeholder
+---
+
+## Pengembangan Lokal
 
 ```bash
-# Contoh mengganti https://script.google.com/macros/s/AKfycbzYDPTRz9usUEwOhgWEy7Y4HiC_gfKxQ310KWAr4seA3KgrFXObiEX1VAPjaUclF7XG/exec secara massal (Linux/Mac):
-sed -i 's|https://script.google.com/macros/s/AKfycbzYDPTRz9usUEwOhgWEy7Y4HiC_gfKxQ310KWAr4seA3KgrFXObiEX1VAPjaUclF7XG/exec|https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec|g' index.html
-```
-
----
-
-## 🔗 Integrasi Google Apps Script
-
-Website ini siap diintegrasikan dengan Google Apps Script sebagai backend CMS.
-
-### Format Response API yang Diharapkan
-
-**Endpoint Berita** (`?action=getBerita&limit=3`):
-```json
-{
-  "success": true,
-  "items": [
-    {
-      "judul": "Judul Berita",
-      "tanggal": "26 Juni 2026",
-      "penulis": "Redaksi",
-      "kategori": "RAT",
-      "ringkasan": "Ringkasan berita...",
-      "foto": "https://...",
-      "url": "https://..."
-    }
-  ]
-}
-```
-
-**Endpoint Statistik** (`?action=getStatistik`):
-```json
-{
-  "success": true,
-  "anggota": 450
-}
-```
-
-### Mengaktifkan API
-
-Di file `assets/js/script.js`, uncomment baris berikut dan isi URL:
-
-```javascript
-const KopanaAPI = {
-  scriptUrl: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec',
-  // ...
-};
-
-// Uncomment baris ini untuk mengaktifkan:
-KopanaAPI.getBerita();
-KopanaAPI.getStatistik();
-```
-
----
-
-## 🎨 Fitur
-
-| Fitur | Status |
-|---|---|
-| Responsive (Desktop/Tablet/Mobile) | ✅ |
-| Dark Mode | ✅ |
-| Loading Screen | ✅ |
-| Sticky Navbar | ✅ |
-| Smooth Scroll | ✅ |
-| Scroll Reveal Animation | ✅ |
-| Counter Animation | ✅ |
-| Galeri + Filter + Lightbox | ✅ |
-| Back to Top | ✅ |
-| SEO Friendly | ✅ |
-| Open Graph Meta | ✅ |
-| Structured Data (JSON-LD) | ✅ |
-| Accessibility (ARIA) | ✅ |
-| Lazy Loading Images | ✅ |
-| API Ready (Google Apps Script) | ✅ |
-| Siap Deploy Cloudflare Pages | ✅ |
-
----
-
-## 🔧 Pengembangan Lokal
-
-Karena website ini adalah HTML statis, cukup buka `index.html` di browser.
-
-Atau gunakan Live Server (VSCode extension) untuk hot reload:
-
-```bash
-# Jika menggunakan Node.js
+# Node.js
 npx serve .
 
 # Atau Python
 python3 -m http.server 8080
 ```
 
-Buka: `http://localhost:8080`
+Buka `http://localhost:8080`. (Membuka index.html langsung dari file explorer tidak akan memuat data JSON karena batasan fetch pada protokol file://.)
 
 ---
 
-## 📞 Informasi Kontak
+## Informasi Kontak
 
 - **Alamat:** Brambang Gatak, Selomartani, Kalasan, Sleman, DIY
-- **Telepon:** 0822 2715 4266
+- **Telepon/WA:** 0822 2715 4266
+- **Email:** kopanayk@gmail.com
 - **Website:** [kopana.id](https://kopana.id)
-- **Domain:** kopana.id
 
 ---
 
-## 📄 Lisensi & Hak Cipta
-
-© 2026 Koperasi Jasa Serba Usaha Purnakaryawan Pertamina KOPANA Yogyakarta.  
-Seluruh hak cipta dilindungi.
-
----
-
-*Dibuat dengan ❤️ untuk KOPANA Yogyakarta*
+© 2026 Koperasi Jasa Serba Usaha Purnakaryawan Pertamina KOPANA Yogyakarta.

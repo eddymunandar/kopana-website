@@ -1,14 +1,14 @@
 {
-  "name": "Koperasi KOPANA",
+  "name": "KOPANA Yogyakarta",
   "short_name": "KOPANA",
-  "description": "Aplikasi Web Koperasi Jasa Serba Usaha Purnakaryawan Pertamina Yogyakarta",
-  "start_url": "/index.html",
+  "description": "Website resmi Koperasi Jasa Serba Usaha Purnakaryawan Pertamina KOPANA Yogyakarta",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",
-  "theme_color": "#2563eb",
+  "theme_color": "#0F4C81",
   "icons": [
     {
-      "src": "assets/img/logo.png",
+      "src": "assets/img/logo-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },

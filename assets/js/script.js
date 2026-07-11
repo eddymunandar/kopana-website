@@ -6,78 +6,78 @@
  * ============================================================
  *
  * Daftar Isi:
- * 1.  Loading Screen
- * 2.  Navbar (Sticky + Scroll)
- * 3.  Mobile Navigation
- * 4.  Dark Mode Toggle
- * 5.  Hero Particles Animation
- * 6.  Smooth Scroll
- * 7.  Scroll Reveal Animation (IntersectionObserver)
- * 8.  Tab (Tentang Kami)
- * 9.  Counter Animation (Statistik)
- * 10. Galeri Filter
- * 11. Lightbox
- * 12. Back to Top
- * 13. Active NavLink on Scroll
- * 14. API Ready (Google Apps Script Integration)
+ * 1.  Navbar (Sticky + Scroll)
+ * 2.  Mobile Navigation
+ * 3.  Dark Mode Toggle
+ * 4.  Hero Particles Animation
+ * 5.  Smooth Scroll
+ * 6.  Scroll Reveal Animation (IntersectionObserver)
+ * 7.  Tab (Tentang Kami)
+ * 8.  Counter Animation (Statistik)
+ * 9.  Galeri Filter
+ * 10. Lightbox
+ * 11. Back to Top
+ * 12. Active NavLink on Scroll
+ * 13. KopanaAPI (render konten dari data/*.json)
  * ============================================================
  */
 
 'use strict';
 
 /* ============================================================
-   1. LOADING SCREEN
+   HELPER: Escape HTML — cegah injeksi markup dari data JSON
    ============================================================ */
-(function initLoadingScreen() {
-  const loadingScreen = document.getElementById('loading-screen');
-  if (!loadingScreen) return;
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
 
-  // Minimum loading time agar animasi terlihat
-  const minTime = 1800;
-  const startTime = Date.now();
-  let isLoaded = false;
+/* ============================================================
+   HELPER: Slug berita — dipakai untuk URL halaman detail berita
+   (harus sama persis dengan fungsi di berita.html)
+   ============================================================ */
+function slugBerita(judul) {
+  return String(judul ?? '').toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
 
-  const hideLoader = () => {
-    if (isLoaded) return;
-    isLoaded = true;
-
-    const elapsed = Date.now() - startTime;
-    const remaining = Math.max(0, minTime - elapsed);
-
-    setTimeout(() => {
-      loadingScreen.classList.add('hidden');
-      // Hapus dari DOM setelah transisi selesai
-      setTimeout(() => loadingScreen.remove(), 700);
-    }, remaining);
-  };
-
-  window.addEventListener('load', hideLoader);
-  
-  // Fallback: paksa loader hilang setelah maksimal 5 detik jika ada koneksi lambat
-  setTimeout(hideLoader, 5000);
-})();
+/* ============================================================
+   HELPER: Parse tanggal "DD MMM YYYY" — aman lintas browser
+   (Safari/iOS tidak mendukung format ini di new Date())
+   ============================================================ */
+function parseTanggal(str) {
+  if (!str) return 0;
+  const m = String(str).trim().match(/^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/);
+  if (m) {
+    const bulan = {
+      jan: 0, feb: 1, mar: 2, apr: 3, may: 4, mei: 4, jun: 5,
+      jul: 6, aug: 7, agu: 7, agt: 7, sep: 8, oct: 9, okt: 9,
+      nov: 10, dec: 11, des: 11
+    };
+    const idx = bulan[m[2].slice(0, 3).toLowerCase()];
+    if (idx !== undefined) return new Date(+m[3], idx, +m[1]).getTime();
+  }
+  const t = new Date(str).getTime();
+  return isNaN(t) ? 0 : t;
+}
 
 
 /* ============================================================
-   2. NAVBAR - STICKY & SCROLL EFFECT
+   1. NAVBAR - STICKY & SCROLL EFFECT
    ============================================================ */
 (function initNavbar() {
   const navbar = document.getElementById('navbar');
   if (!navbar) return;
 
-  let lastScroll = 0;
-
   function handleScroll() {
-    const currentScroll = window.scrollY;
-
     // Tambahkan class scrolled saat sudah scroll
-    if (currentScroll > 50 || navbar.classList.contains('always-scrolled')) {
+    if (window.scrollY > 50 || navbar.classList.contains('always-scrolled')) {
       navbar.classList.add('scrolled');
     } else {
       navbar.classList.remove('scrolled');
     }
-
-    lastScroll = currentScroll;
   }
 
   window.addEventListener('scroll', handleScroll, { passive: true });
@@ -86,12 +86,11 @@
 
 
 /* ============================================================
-   3. MOBILE NAVIGATION
+   2. MOBILE NAVIGATION
    ============================================================ */
 (function initMobileNav() {
   const hamburger = document.getElementById('nav-hamburger');
   const navMenu = document.getElementById('nav-menu');
-  const navLinks = document.querySelectorAll('.nav-link');
 
   if (!hamburger || !navMenu) return;
 
@@ -113,8 +112,8 @@
 
   hamburger.addEventListener('click', toggleMenu);
 
-  // Tutup menu saat klik link atau tombol login mobile
-  const allMenuLinks = navMenu.querySelectorAll('.nav-link, .btn-login-mobile');
+  // Tutup menu saat klik link
+  const allMenuLinks = navMenu.querySelectorAll('.nav-link');
   allMenuLinks.forEach(link => link.addEventListener('click', closeMenu));
 
   // Tutup menu saat klik di luar
@@ -134,7 +133,7 @@
 
 
 /* ============================================================
-   4. DARK MODE TOGGLE
+   3. DARK MODE TOGGLE
    ============================================================ */
 (function initDarkMode() {
   const toggleBtn = document.getElementById('dark-toggle');
@@ -172,7 +171,7 @@
 
 
 /* ============================================================
-   5. HERO PARTICLES ANIMATION
+   4. HERO PARTICLES ANIMATION
    ============================================================ */
 (function initParticles() {
   const container = document.getElementById('hero-particles');
@@ -201,12 +200,19 @@
 
 
 /* ============================================================
-   6. SMOOTH SCROLL untuk anchor links
+   5. SMOOTH SCROLL untuk anchor links
    ============================================================ */
 (function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
-      const target = document.querySelector(this.getAttribute('href'));
+      const href = this.getAttribute('href');
+      // Abaikan link kosong "#" (bukan anchor valid) agar tidak error
+      if (!href || href === '#') {
+        e.preventDefault();
+        return;
+      }
+      let target = null;
+      try { target = document.querySelector(href); } catch (err) { return; }
       if (!target) return;
 
       e.preventDefault();
@@ -220,7 +226,7 @@
 
 
 /* ============================================================
-   7. SCROLL REVEAL ANIMATION (IntersectionObserver)
+   6. SCROLL REVEAL ANIMATION (IntersectionObserver)
    ============================================================ */
 (function initScrollReveal() {
   // Tidak jalankan jika user prefer reduced motion
@@ -248,7 +254,7 @@
 
 
 /* ============================================================
-   8. TAB SYSTEM (Tentang Kami)
+   7. TAB SYSTEM (Tentang Kami)
    ============================================================ */
 (function initTabs() {
   const tabButtons = document.querySelectorAll('.tab-btn');
@@ -277,7 +283,7 @@
 
 
 /* ============================================================
-   9. COUNTER ANIMATION (Statistik)
+   8. COUNTER ANIMATION (Statistik)
    ============================================================ */
 (function initCounters() {
   const counters = document.querySelectorAll('.stat-number[data-target]');
@@ -331,7 +337,7 @@
 
 
 /* ============================================================
-   10. GALERI FILTER
+   9. GALERI FILTER
    ============================================================ */
 window.initGaleriFilter = function() {
   const filterBtns = document.querySelectorAll('.filter-btn');
@@ -377,7 +383,7 @@ window.initGaleriFilter();
 
 
 /* ============================================================
-   11. LIGHTBOX (dengan Touch Swipe untuk Mobile)
+   10. LIGHTBOX (dengan Touch Swipe untuk Mobile)
    ============================================================ */
 window.initLightbox = function() {
   const lightbox = document.getElementById('lightbox');
@@ -504,7 +510,7 @@ window.initLightbox();
 
 
 /* ============================================================
-   12. BACK TO TOP
+   11. BACK TO TOP
    ============================================================ */
 (function initBackToTop() {
   const btn = document.getElementById('back-to-top');
@@ -525,7 +531,7 @@ window.initLightbox();
 
 
 /* ============================================================
-   13. ACTIVE NAV LINK ON SCROLL
+   12. ACTIVE NAV LINK ON SCROLL
    ============================================================ */
 (function initActiveNavOnScroll() {
   const sections = document.querySelectorAll('section[id]');
@@ -555,23 +561,16 @@ window.initLightbox();
 
 
 /* ============================================================
-   14. API READY - Google Apps Script Integration
-   ============================================================
-   Struktur ini siap menerima data dari Google Apps Script.
-   Ganti https://script.google.com/macros/s/AKfycbzYDPTRz9usUEwOhgWEy7Y4HiC_gfKxQ310KWAr4seA3KgrFXObiEX1VAPjaUclF7XG/exec dengan URL deployment Anda.
+   13. KopanaAPI - render konten dinamis dari data/*.json
+   (dikelola lewat Sveltia CMS di /admin/)
    ============================================================ */
 const KopanaAPI = {
-  // URL Google Apps Script - ganti dengan URL Anda
-  scriptUrl: 'https://script.google.com/macros/s/AKfycbzYDPTRz9usUEwOhgWEy7Y4HiC_gfKxQ310KWAr4seA3KgrFXObiEX1VAPjaUclF7XG/exec',
-
   /**
    * Ambil daftar berita dari lokal data/berita.json
-   * @param {number} limit - Jumlah berita yang ditampilkan
-   * @returns {Promise<Array>}
    */
-  async getBerita(limit = 3) {
+  async getBerita() {
     try {
-      const response = await fetch(`data/berita.json?t=${new Date().getTime()}`);
+      const response = await fetch('data/berita.json');
       const data = await response.json();
       this.renderBerita(data.items || []);
     } catch (error) {
@@ -599,33 +598,46 @@ const KopanaAPI = {
       
       if (isAPengumuman && !isBPengumuman) return -1;
       if (!isAPengumuman && isBPengumuman) return 1;
-      
+
       // Jika keduanya pengumuman atau keduanya bukan, urutkan berdasarkan tanggal (terbaru ke terlama)
-      // Tanggal diformat "DD MMM YYYY", e.g., "15 Jan 2026"
-      const dateA = new Date(a.tanggal || 0).getTime();
-      const dateB = new Date(b.tanggal || 0).getTime();
-      return dateB - dateA;
+      // Tanggal diformat "DD MMM YYYY", e.g., "15 Jan 2026" — diparse dengan parseTanggal agar aman di Safari
+      return parseTanggal(b.tanggal) - parseTanggal(a.tanggal);
     });
+
+    // Batasi jumlah kartu jika kontainer punya data-limit (dipakai halaman utama)
+    const limit = parseInt(container.dataset.limit, 10);
+    if (!isNaN(limit) && limit > 0) items = items.slice(0, limit);
 
     container.innerHTML = items.map(item => {
       const isPengumuman = item.kategori && item.kategori.toLowerCase() === 'pengumuman';
       const badgeBg = isPengumuman ? 'background: var(--secondary);' : '';
-      
+      const judul = escapeHTML(item.judul);
+      const kategori = escapeHTML(item.kategori || 'Berita');
+
       let imgWrapHtml = '';
       let bodyBadgeHtml = '';
 
       if (item.foto) {
         imgWrapHtml = `
           <div class="berita-img-wrap">
-            <img src="${item.foto}" alt="${item.judul}" class="berita-img" loading="lazy">
-            <span class="berita-category" style="${badgeBg}">${item.kategori || 'Berita'}</span>
+            <img src="${escapeHTML(item.foto)}" alt="${judul}" class="berita-img" loading="lazy">
+            <span class="berita-category" style="${badgeBg}">${kategori}</span>
           </div>
         `;
       } else {
         bodyBadgeHtml = `
-          <span class="berita-category" style="position: relative; top: 0; left: 0; display: inline-block; margin-bottom: var(--spacing-sm); ${badgeBg}">${item.kategori || 'Berita'}</span>
+          <span class="berita-category" style="position: relative; top: 0; left: 0; display: inline-block; margin-bottom: var(--spacing-sm); ${badgeBg}">${kategori}</span>
         `;
       }
+
+      // Tujuan tombol "Baca Selengkapnya": link eksternal jika diisi,
+      // selain itu ke halaman detail berita di website ini.
+      const eksternal = item.url && item.url !== '#';
+      const targetUrl = eksternal ? item.url : `berita.html?id=${slugBerita(item.judul)}`;
+      const readMoreHtml = `
+            <a href="${escapeHTML(targetUrl)}" class="berita-read-more" aria-label="Baca selengkapnya: ${judul}">
+              Baca Selengkapnya <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            </a>`;
 
       return `
         <article class="berita-card reveal">
@@ -633,14 +645,11 @@ const KopanaAPI = {
           <div class="berita-body">
             ${bodyBadgeHtml}
             <div class="berita-meta">
-              <span><i class="far fa-calendar-alt" aria-hidden="true"></i> ${item.tanggal}</span>
-              <span><i class="far fa-user" aria-hidden="true"></i> ${item.penulis || 'Redaksi'}</span>
+              <span><i class="far fa-calendar-alt" aria-hidden="true"></i> ${escapeHTML(item.tanggal)}</span>
+              <span><i class="far fa-user" aria-hidden="true"></i> ${escapeHTML(item.penulis || 'Redaksi')}</span>
             </div>
-            <h3 class="berita-title">${item.judul}</h3>
-            <p class="berita-excerpt">${item.ringkasan}</p>
-            <a href="${item.url || '#'}" class="berita-read-more" aria-label="Baca selengkapnya: ${item.judul}">
-              Baca Selengkapnya <i class="fas fa-arrow-right" aria-hidden="true"></i>
-            </a>
+            <h3 class="berita-title">${judul}</h3>
+            <p class="berita-excerpt">${escapeHTML(item.ringkasan)}</p>${readMoreHtml}
           </div>
         </article>
       `;
@@ -668,23 +677,56 @@ const KopanaAPI = {
       return;
     }
 
+    // Kelas filter yang aman (lowercase, tanpa spasi)
+    const slugify = (s) => (s || 'lainnya').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+    // Batasi jumlah foto jika kontainer punya data-limit (dipakai halaman utama)
+    const limit = parseInt(container.dataset.limit, 10);
+    const terbatas = !isNaN(limit) && limit > 0;
+    if (terbatas) items = items.slice(0, limit);
+
     container.innerHTML = items.map((item, index) => {
-      // Buat kelas filter yang aman (lowercase, tanpa spasi)
-      const cat = (item.kategori || 'lainnya').toLowerCase().replace(/[^a-z0-9]/g, '');
+      const cat = slugify(item.kategori);
       const delay = index > 0 ? `reveal-delay-${(index % 5) + 1}` : '';
+      const judul = escapeHTML(item.judul);
       return `
-        <div class="galeri-item reveal ${delay}" data-category="${cat}" role="button" tabindex="0" aria-label="Buka foto: ${item.judul}">
-          <img src="${item.url}" alt="${item.judul}" class="galeri-img" loading="lazy">
+        <div class="galeri-item reveal ${delay}" data-category="${cat}" role="button" tabindex="0" aria-label="Buka foto: ${judul}">
+          <img src="${escapeHTML(item.url)}" alt="${judul}" class="galeri-img" loading="lazy">
           <div class="galeri-overlay">
             <div class="galeri-overlay-icon" aria-hidden="true"><i class="fas fa-search-plus"></i></div>
             <div class="galeri-caption">
-              <h4>${item.judul}</h4>
-              <span>${item.kategori}</span>
+              <h4>${judul}</h4>
+              <span>${escapeHTML(item.kategori)}</span>
             </div>
           </div>
         </div>
       `;
     }).join('');
+
+    // Bangun tombol filter secara dinamis dari kategori yang benar-benar ada di data,
+    // agar tombol filter selalu cocok dengan foto galeri (sebelumnya hardcoded dan tidak cocok).
+    const filterContainer = document.querySelector('.galeri-filter');
+    if (filterContainer && terbatas) {
+      // Halaman utama hanya menampilkan sebagian foto — filter ada di halaman arsip
+      filterContainer.style.display = 'none';
+    } else if (filterContainer) {
+      const catMap = new Map();
+      items.forEach(item => {
+        const label = item.kategori || 'Lainnya';
+        if (!catMap.has(slugify(label))) catMap.set(slugify(label), label);
+      });
+      if (catMap.size > 1) {
+        filterContainer.style.display = '';
+        filterContainer.innerHTML =
+          '<button class="filter-btn active" data-filter="all">Semua</button>' +
+          [...catMap.entries()].map(([slug, label]) =>
+            `<button class="filter-btn" data-filter="${slug}">${escapeHTML(label)}</button>`
+          ).join('');
+      } else {
+        // Hanya satu kategori — filter tidak berguna, sembunyikan barisnya
+        filterContainer.style.display = 'none';
+      }
+    }
 
     // Re-init observer untuk elemen baru
     document.querySelectorAll('.galeri-grid .reveal').forEach(el => {
@@ -706,7 +748,7 @@ const KopanaAPI = {
    */
   async getGaleri() {
     try {
-      const response = await fetch(`data/galeri.json?t=${new Date().getTime()}`);
+      const response = await fetch('data/galeri.json');
       const data = await response.json();
       this.renderGaleri(data.items || []);
     } catch (error) {
@@ -719,20 +761,18 @@ const KopanaAPI = {
    */
   async getStatistik() {
     try {
-      const response = await fetch(`data/statistik.json?t=${new Date().getTime()}`);
+      const response = await fetch('data/statistik.json');
       const data = await response.json();
-      
+
       const keys = ['anggota', 'tahun', 'pengurus', 'pengawas', 'cabang', 'karyawan'];
       keys.forEach(key => {
         const counter = document.querySelector(`.stat-number[data-key="${key}"]`);
         if (counter && data[key] !== undefined) {
           counter.dataset.target = data[key];
-          // Jika tidak menggunakan animasi counter, atau untuk set nilai awal:
-          counter.textContent = data[key]; 
+          // Set nilai langsung; animasi counter berjalan saat section terlihat
+          counter.textContent = data[key];
         }
       });
-      // Panggil ulang initCounters agar angka bisa beranimasi dari 0
-      if (typeof initCounters === 'function') initCounters();
     } catch (error) {
       console.info('KopanaAPI: Gagal memuat statistik.json, menggunakan data statis.');
     }
@@ -743,7 +783,7 @@ const KopanaAPI = {
    */
   async getKontak() {
     try {
-      const response = await fetch(`data/kontak.json?t=${new Date().getTime()}`);
+      const response = await fetch('data/kontak.json');
       const data = await response.json();
       
       const setEl = (id, text, attr, attrVal) => {
@@ -771,7 +811,7 @@ const KopanaAPI = {
            const match = mapsUrl.match(/src="([^"]+)"/);
            if(match) mapsUrl = match[1];
         }
-        mapsContainer.innerHTML = `<iframe src="${mapsUrl}" width="100%" height="380" style="border:0; border-radius: var(--radius-2xl);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
+        mapsContainer.innerHTML = `<iframe src="${escapeHTML(mapsUrl)}" width="100%" height="380" style="border:0; border-radius: var(--radius-2xl);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
       }
     } catch (error) {
       console.info('KopanaAPI: Gagal memuat kontak.json');
@@ -783,7 +823,7 @@ const KopanaAPI = {
    */
   async getBeranda() {
     try {
-      const response = await fetch(`data/beranda.json?t=${new Date().getTime()}`);
+      const response = await fetch('data/beranda.json');
       const data = await response.json();
       
       const setEl = (id, html) => {
@@ -832,7 +872,7 @@ const KopanaAPI = {
    */
   async getProfil() {
     try {
-      const response = await fetch(`data/profil.json?t=${new Date().getTime()}`);
+      const response = await fetch('data/profil.json');
       const data = await response.json();
       
       const setEl = (id, text) => {
@@ -863,7 +903,7 @@ const KopanaAPI = {
         misiContainer.innerHTML = data.misi.map(m => `
           <div class="misi-item">
             <div class="misi-icon"><i class="fas fa-check" aria-hidden="true"></i></div>
-            <p>${m.teks}</p>
+            <p>${escapeHTML(m.teks)}</p>
           </div>
         `).join('');
       }
@@ -877,7 +917,7 @@ const KopanaAPI = {
    */
   async getPengurus() {
     try {
-      const response = await fetch(`data/pengurus.json?t=${new Date().getTime()}`);
+      const response = await fetch('data/pengurus.json');
       const data = await response.json();
       
       // Render Pengurus
@@ -885,10 +925,12 @@ const KopanaAPI = {
       if (pengurusContainer && data.dewan_pengurus) {
         pengurusContainer.innerHTML = data.dewan_pengurus.map((p, index) => {
           const delay = `reveal-delay-${(index % 3) + 1}`;
-          const photoHtml = p.foto 
-            ? `<img src="${p.foto}" alt="${p.nama} - ${p.jabatan}" class="card-photo" loading="lazy">`
+          const nama = escapeHTML(p.nama);
+          const jabatan = escapeHTML(p.jabatan);
+          const photoHtml = p.foto
+            ? `<img src="${escapeHTML(p.foto)}" alt="${nama} - ${jabatan}" class="card-photo" loading="lazy">`
             : `<div class="card-icon-placeholder" aria-hidden="true"><i class="fas fa-user-circle"></i></div>`;
-            
+
           return `
           <article class="person-card reveal ${delay}">
             <div class="card-photo-wrap">
@@ -896,8 +938,8 @@ const KopanaAPI = {
             </div>
             <div class="card-body">
               <span class="card-badge">Pengurus</span>
-              <h3 class="card-name">${p.nama}</h3>
-              <p class="card-role">${p.jabatan}</p>
+              <h3 class="card-name">${nama}</h3>
+              <p class="card-role">${jabatan}</p>
             </div>
           </article>
           `;
@@ -909,10 +951,12 @@ const KopanaAPI = {
       if (pengawasContainer && data.dewan_pengawas) {
         pengawasContainer.innerHTML = data.dewan_pengawas.map((p, index) => {
           const delay = `reveal-delay-${(index % 3) + 1}`;
-          const photoHtml = p.foto 
-            ? `<img src="${p.foto}" alt="${p.nama} - ${p.jabatan}" class="card-photo" loading="lazy">`
+          const nama = escapeHTML(p.nama);
+          const jabatan = escapeHTML(p.jabatan);
+          const photoHtml = p.foto
+            ? `<img src="${escapeHTML(p.foto)}" alt="${nama} - ${jabatan}" class="card-photo" loading="lazy">`
             : `<div class="card-icon-placeholder" aria-hidden="true"><i class="fas fa-user-circle"></i></div>`;
-            
+
           return `
           <article class="person-card pengawas-card reveal ${delay}">
             <div class="card-photo-wrap">
@@ -920,8 +964,8 @@ const KopanaAPI = {
             </div>
             <div class="card-body">
               <span class="card-badge" style="background: rgba(214,40,40,0.08); color: var(--secondary);">Pengawas</span>
-              <h3 class="card-name">${p.nama}</h3>
-              <p class="card-role">${p.jabatan}</p>
+              <h3 class="card-name">${nama}</h3>
+              <p class="card-role">${jabatan}</p>
             </div>
           </article>
           `;
@@ -933,15 +977,16 @@ const KopanaAPI = {
       if (cabangContainer && data.cabang) {
         cabangContainer.innerHTML = data.cabang.map((c, index) => {
           const delay = `reveal-delay-${(index % 3) + 1}`;
+          const nama = escapeHTML(c.nama);
           return `
           <article class="cabang-card reveal ${delay}">
-            ${c.foto 
-              ? `<img src="${c.foto}" alt="${c.nama}" style="width: 260px; height: 260px; border-radius: 50%; object-fit: cover; margin: 0 auto 20px auto; display: block; border: 4px solid var(--surface); box-shadow: 0 8px 25px rgba(0,0,0,0.15);">`
+            ${c.foto
+              ? `<img src="${escapeHTML(c.foto)}" alt="${nama}" style="width: 260px; height: 260px; border-radius: 50%; object-fit: cover; margin: 0 auto 20px auto; display: block; border: 4px solid var(--surface); box-shadow: 0 8px 25px rgba(0,0,0,0.15);">`
               : `<div class="cabang-icon" aria-hidden="true"><i class="fas fa-map-marker-alt"></i></div>`
             }
-            <h3 class="cabang-name">${c.nama}</h3>
-            <p class="cabang-branch">${c.cabang}</p>
-            <p class="cabang-desc">${c.desc}</p>
+            <h3 class="cabang-name">${nama}</h3>
+            <p class="cabang-branch">${escapeHTML(c.cabang)}</p>
+            <p class="cabang-desc">${escapeHTML(c.desc)}</p>
           </article>
           `;
         }).join('');
@@ -969,7 +1014,7 @@ const KopanaAPI = {
       const container = document.getElementById('dyn-formulir-container');
       if (!container) return; // Only fetch if container exists on the page
       
-      const response = await fetch(`data/formulir.json?t=${new Date().getTime()}`);
+      const response = await fetch('data/formulir.json');
       if (!response.ok) throw new Error("Network not ok");
       const data = await response.json();
       
@@ -1022,7 +1067,7 @@ const KopanaAPI = {
               
               if (f.kunci_dokumen) {
                 a.href = '#';
-                a.innerHTML = `<i class="fas fa-lock" aria-hidden="true" style="color:var(--secondary)"></i> ${f.judul} <span style="font-size:0.75rem; color:var(--secondary); opacity:0.8; margin-left:8px">(Terkunci)</span>`;
+                a.innerHTML = `<i class="fas fa-lock" aria-hidden="true" style="color:var(--secondary)"></i> ${escapeHTML(f.judul)} <span style="font-size:0.75rem; color:var(--secondary); opacity:0.8; margin-left:8px">(Terkunci)</span>`;
                 a.onclick = (e) => {
                   e.preventDefault();
                   const userPin = prompt("Dokumen ini khusus anggota.\\n\\nSilakan masukkan PIN Anggota KOPANA untuk mengunduh:");
@@ -1039,7 +1084,7 @@ const KopanaAPI = {
                 a.rel = "noopener noreferrer";
                 // Check if it's a link to a file or an external URL
                 const isExternal = f.file.startsWith('http');
-                a.innerHTML = `<i class="fas ${isExternal ? 'fa-external-link-alt' : 'fa-file-download'}" aria-hidden="true"></i> ${f.judul}`;
+                a.innerHTML = `<i class="fas ${isExternal ? 'fa-external-link-alt' : 'fa-file-download'}" aria-hidden="true"></i> ${escapeHTML(f.judul)}`;
               }
               
               list.appendChild(a);
@@ -1061,7 +1106,7 @@ const KopanaAPI = {
 
   async getPengaturan() {
     try {
-      const response = await fetch(`data/pengaturan.json?t=${new Date().getTime()}`);
+      const response = await fetch('data/pengaturan.json');
       if (!response.ok) return;
       const data = await response.json();
       
@@ -1077,7 +1122,7 @@ const KopanaAPI = {
       // Kontak data is now handled exclusively by getKontak() to avoid race conditions.
       
       if (data.logo) {
-        document.querySelectorAll('.nav-logo, .footer-logo, .loading-logo').forEach(img => {
+        document.querySelectorAll('.nav-logo, .footer-logo').forEach(img => {
           img.src = data.logo;
         });
       }
@@ -1097,7 +1142,7 @@ const KopanaAPI = {
       const container = document.getElementById('dyn-usaha-container');
       if (!container) return;
       
-      const response = await fetch(`data/usaha.json?t=${new Date().getTime()}`);
+      const response = await fetch('data/usaha.json');
       if (!response.ok) return;
       
       const data = await response.json();
@@ -1108,12 +1153,12 @@ const KopanaAPI = {
           card.className = 'berita-card reveal';
           card.innerHTML = `
             <div class="berita-img-wrap">
-              <img src="${item.foto || 'assets/img/hero-bg.jpg'}" alt="${item.judul}" class="berita-img" loading="lazy">
+              <img src="${escapeHTML(item.foto || 'assets/img/hero-bg.jpg')}" alt="${escapeHTML(item.judul)}" class="berita-img" loading="lazy">
             </div>
             <div class="berita-body">
-              <h3 class="berita-title">${item.judul}</h3>
+              <h3 class="berita-title">${escapeHTML(item.judul)}</h3>
               <p class="berita-excerpt" style="-webkit-line-clamp: unset;">
-                ${item.deskripsi}
+                ${escapeHTML(item.deskripsi)}
               </p>
             </div>
           `;
@@ -1144,7 +1189,7 @@ const KopanaAPI = {
       const listContainer = document.getElementById('dyn-faq-list');
       if (!listContainer) return; // Only run on pages that have the FAQ container
       
-      const response = await fetch(`data/faq.json?t=${new Date().getTime()}`);
+      const response = await fetch('data/faq.json');
       if (!response.ok) throw new Error("Gagal mengambil data FAQ");
       const data = await response.json();
       
@@ -1156,11 +1201,11 @@ const KopanaAPI = {
           
           faqItem.innerHTML = `
             <button class="faq-question">
-              ${item.pertanyaan} <i class="fas fa-chevron-down"></i>
+              ${escapeHTML(item.pertanyaan)} <i class="fas fa-chevron-down"></i>
             </button>
             <div class="faq-answer">
               <div class="faq-answer-content">
-                ${item.jawaban}
+                ${escapeHTML(item.jawaban)}
               </div>
             </div>
           `;
@@ -1210,7 +1255,7 @@ const KopanaAPI = {
       
       if (!modal) return;
       
-      const response = await fetch(`data/pengumuman.json?t=${new Date().getTime()}`);
+      const response = await fetch('data/pengumuman.json');
       if (!response.ok) throw new Error("Gagal mengambil pengumuman");
       const data = await response.json();
       
@@ -1225,15 +1270,15 @@ const KopanaAPI = {
         // Render konten
         titleEl.textContent = data.judul;
         
-        // Dukungan untuk render baris baru
-        let contentHtml = data.pesan || '';
+        // Escape dulu agar aman, lalu dukung baris baru + bold/italic sederhana
+        let contentHtml = escapeHTML(data.pesan || '');
         // Ubah newline jadi <br>
         contentHtml = contentHtml.replace(/\n/g, '<br>');
-        
+
         // Render bold / italic simple markdown style
         contentHtml = contentHtml.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         contentHtml = contentHtml.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        
+
         bodyEl.innerHTML = contentHtml;
         
         // Tampilkan modal
@@ -1257,69 +1302,29 @@ const KopanaAPI = {
     } catch (error) {
       console.info('KopanaAPI: Gagal memuat pengumuman.json');
     }
-  },
-
-  getTestimoni: async function() {
-    const container = document.getElementById('dyn-testimoni-grid');
-    if (!container) return; // Only run on page that has testimoni section
-
-    try {
-      const response = await fetch(`data/testimoni.json?t=${new Date().getTime()}`);
-      if (!response.ok) throw new Error('Network response was not ok');
-      const data = await response.json();
-      
-      const items = data.items || [];
-      if (items.length === 0) {
-        container.innerHTML = '<p class="text-center w-100">Belum ada testimoni.</p>';
-        return;
-      }
-
-      let html = '';
-      items.forEach(item => {
-        let starsHtml = '';
-        const rating = parseInt(item.rating) || 5;
-        for (let i = 0; i < rating; i++) {
-          starsHtml += '<i class="fas fa-star" aria-hidden="true"></i>';
-        }
-
-        html += `
-          <div class="testimoni-card reveal">
-            <i class="fas fa-quote-right testimoni-quote-icon" aria-hidden="true"></i>
-            <div class="testimoni-rating">
-              ${starsHtml}
-            </div>
-            <p class="testimoni-pesan">"${item.pesan}"</p>
-            <div class="testimoni-footer">
-              <h4 class="testimoni-nama">${item.nama}</h4>
-              <span class="testimoni-status">${item.status}</span>
-            </div>
-          </div>
-        `;
-      });
-      container.innerHTML = html;
-      
-      // Re-trigger scroll reveal for newly added elements
-      window.dispatchEvent(new Event('scroll'));
-    } catch (error) {
-      console.info('KopanaAPI: Gagal memuat testimoni.json');
-    }
   }
 };
 
-// Inisialisasi API
-KopanaAPI.getKontak();
-KopanaAPI.getBeranda();
-KopanaAPI.getProfil();
-KopanaAPI.getPengurus();
-KopanaAPI.getBerita();
-KopanaAPI.getGaleri();
-KopanaAPI.getStatistik();
-KopanaAPI.getFormulir();
-KopanaAPI.getFaq();
-KopanaAPI.getUsaha();
-KopanaAPI.getPengaturan();
-KopanaAPI.getPengumuman();
-KopanaAPI.getTestimoni();
+/* ============================================================
+   Inisialisasi API — hanya fetch data yang dibutuhkan halaman ini
+   (menghindari belasan request sia-sia di halaman lain)
+   ============================================================ */
+(function initKopanaAPI() {
+  const has = (id) => document.getElementById(id) !== null;
+
+  if (has('dyn-kontak-alamat') || document.querySelector('.dyn-email')) KopanaAPI.getKontak();
+  if (has('dyn-hero-title')) KopanaAPI.getBeranda();
+  if (has('dyn-sejarah-1')) KopanaAPI.getProfil();
+  if (has('dyn-pengurus-container') || has('dyn-pengawas-container') || has('dyn-cabang-container')) KopanaAPI.getPengurus();
+  if (has('berita-container')) KopanaAPI.getBerita();
+  if (has('dyn-galeri-grid') || document.querySelector('.galeri-grid')) KopanaAPI.getGaleri();
+  if (document.querySelector('.stat-number[data-key]')) KopanaAPI.getStatistik();
+  if (has('dyn-formulir-container')) KopanaAPI.getFormulir();
+  if (has('dyn-faq-list')) KopanaAPI.getFaq();
+  if (has('dyn-usaha-container')) KopanaAPI.getUsaha();
+  if (has('dyn-nav-brand-name') || document.querySelector('.visitor-badge-img')) KopanaAPI.getPengaturan();
+  if (has('announcement-modal')) KopanaAPI.getPengumuman();
+})();
 
 
 /* ============================================================

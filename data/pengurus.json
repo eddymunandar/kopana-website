@@ -3,12 +3,12 @@
     {
       "nama": "Ahmad Rizani",
       "jabatan": "Ketua",
-      "foto": "/assets/img/uploads/Ubah Foto jadi 800x800 - Resized Photo.png"
+      "foto": "/assets/img/uploads/Ubah Foto jadi 800x800 - Resized Photo.jpg"
     },
     {
       "nama": "Agus Purwanto",
       "jabatan": "Sekretaris",
-      "foto": "/assets/img/uploads/Modern Redesign (Same Content)-2.png"
+      "foto": "/assets/img/uploads/Modern Redesign (Same Content)-2.jpg"
     },
     {
       "nama": "Margono",
@@ -30,20 +30,20 @@
     {
       "nama": "Amin Purwanto",
       "jabatan": "Anggota Pengawas",
-      "foto": "/assets/img/uploads/Modern Redesign (Same Content).png"
+      "foto": "/assets/img/uploads/Modern Redesign (Same Content).jpg"
     }
   ],
   "cabang": [
     {
       "nama": "Kasijatno",
       "cabang": "Cabang Utara",
-      "foto": "/assets/img/uploads/Modern Redesign of Page Content.png",
+      "foto": "/assets/img/uploads/Modern Redesign of Page Content.jpg",
       "desc": "Melayani seluruh anggota KOPANA di wilayah Utara Yogyakarta dan sekitarnya."
     },
     {
       "nama": "Amin Purwanto",
       "cabang": "Cabang Selatan",
-      "foto": "/assets/img/uploads/Modern Redesign (Same Content).png",
+      "foto": "/assets/img/uploads/Modern Redesign (Same Content).jpg",
       "desc": "Melayani seluruh anggota KOPANA di wilayah Selatan Yogyakarta dan sekitarnya."
     },
     {

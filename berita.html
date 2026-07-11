@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Berita - KOPANA Yogyakarta</title>
+  <meta name="description" content="Berita dan pengumuman resmi KOPANA Yogyakarta - Koperasi Jasa Serba Usaha Purnakaryawan Pertamina.">
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo-192.png">
+  <link rel="manifest" href="manifest.json">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-Avb2QiuDEEvB4bZJYdab9wBMeP6E5RQLmBeRNqRXE7Z9wLd0zBX8U2nqeAh8iWcLrVSt8U9bfEa7fm/LzO+g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="assets/css/style.css?v=132">
+
+  <style>
+    .artikel-container {
+      max-width: 800px;
+      margin: 120px auto 60px;
+      padding: 40px;
+      background: var(--surface, rgba(255, 255, 255, 0.02));
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.05));
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(10px);
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: var(--primary, #2563eb);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    .artikel-kategori {
+      display: inline-block;
+      background: var(--primary, #2563eb);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .artikel-judul {
+      color: var(--text, #1e293b);
+      font-size: 1.7rem;
+      line-height: 1.35;
+      margin: 0 0 12px 0;
+    }
+    .artikel-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      color: var(--text-muted, #64748b);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border, #e2e8f0);
+    }
+    .artikel-meta i { margin-right: 6px; color: var(--primary, #2563eb); }
+    .artikel-foto {
+      width: 100%;
+      border-radius: var(--radius-md, 10px);
+      margin-bottom: 24px;
+      display: block;
+    }
+    .artikel-isi {
+      color: var(--text, #334155);
+      line-height: 1.85;
+      font-size: 1rem;
+    }
+    .artikel-isi p { margin: 0 0 16px 0; }
+    .artikel-share {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border, #e2e8f0);
+    }
+    .btn-share-wa {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #25D366;
+      color: #ffffff;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: var(--radius-md, 10px);
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+    .btn-share-wa:hover { opacity: 0.85; color: #ffffff; }
+
+    .berita-lain {
+      margin-top: 36px;
+    }
+    .berita-lain h3 {
+      color: var(--text, #1e293b);
+      font-size: 1.05rem;
+      margin-bottom: 14px;
+    }
+    .berita-lain a {
+      display: block;
+      padding: 12px 16px;
+      margin-bottom: 10px;
+      background: var(--bg-alt, #f8fafc);
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: var(--radius-md, 10px);
+      color: var(--text, #334155);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    .berita-lain a:hover {
+      border-color: var(--primary, #2563eb);
+      color: var(--primary, #2563eb);
+    }
+    .loading-state, .artikel-kosong {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-muted, #64748b);
+    }
+  </style>
+
+<script>
+  // Bersihkan service worker lama milik pengunjung dari versi situs sebelumnya.
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations()
+      .then(function(regs) { regs.forEach(function(r) { r.unregister(); }); })
+      .catch(function() {});
+  }
+</script>
+</head>
+<body>
+
+  <!-- ANTI-FOUC DARK MODE -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('kopana-dark-mode');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'true' || (saved === null && prefersDark)) {
+          document.body.classList.add('dark-mode');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Dark Toggle Button Absolut -->
+  <button id="dark-toggle" class="dark-toggle" style="position: absolute; top: 20px; right: 20px; z-index: 1000;" aria-label="Ganti tema gelap/terang">
+    <i id="dark-icon" class="fas fa-moon"></i>
+  </button>
+
+  <div class="artikel-container">
+    <a href="/#berita" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Berita</a>
+
+    <article id="artikel">
+      <div class="loading-state">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Memuat berita...</p>
+      </div>
+    </article>
+
+    <div class="berita-lain" id="berita-lain" style="display: none;">
+      <h3><i class="fas fa-newspaper" aria-hidden="true"></i> Berita Lainnya</h3>
+      <div id="berita-lain-list"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/script.js?v=134" defer></script>
+
+  <script>
+    (function() {
+      // Helper mandiri (tidak bergantung pada script.js yang dimuat defer)
+      function esc(v) {
+        return String(v == null ? '' : v).replace(/[&<>"']/g, function(c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+      // Harus sama persis dengan slugBerita() di script.js
+      function slug(judul) {
+        return String(judul == null ? '' : judul).toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+      }
+      // Ubah teks polos menjadi HTML aman: paragraf, baris baru, **tebal**, *miring*
+      function formatIsi(teks) {
+        var aman = esc(teks || '');
+        aman = aman.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        aman = aman.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+        return aman.split(/\n\s*\n/).map(function(p) {
+          return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
+        }).join('');
+      }
+
+      function tampilkanTidakDitemukan(artikel) {
+        artikel.innerHTML =
+          '<div class="artikel-kosong">' +
+          '<p><i class="fas fa-newspaper" style="font-size:2rem; margin-bottom:10px; display:block;"></i>' +
+          'Berita tidak ditemukan atau sudah dihapus.</p>' +
+          '<p><a class="back-link" href="/#berita">Lihat semua berita di halaman utama</a></p>' +
+          '</div>';
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var artikel = document.getElementById('artikel');
+        var id = new URLSearchParams(window.location.search).get('id') || '';
+
+        fetch('data/berita.json')
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            var items = (data && data.items) || [];
+            var item = null;
+            for (var i = 0; i < items.length; i++) {
+              if (slug(items[i].judul) === id) { item = items[i]; break; }
+            }
+            if (!item) { tampilkanTidakDitemukan(artikel); return; }
+
+            document.title = item.judul + ' - KOPANA Yogyakarta';
+
+            var fotoHtml = item.foto
+              ? '<img class="artikel-foto" src="' + esc(item.foto) + '" alt="' + esc(item.judul) + '">'
+              : '';
+            var isi = item.isi || item.ringkasan || '';
+            var shareText = encodeURIComponent(item.judul + ' — ' + window.location.href);
+
+            artikel.innerHTML =
+              '<span class="artikel-kategori">' + esc(item.kategori || 'Berita') + '</span>' +
+              '<h1 class="artikel-judul">' + esc(item.judul) + '</h1>' +
+              '<div class="artikel-meta">' +
+                '<span><i class="far fa-calendar-alt"></i>' + esc(item.tanggal || '') + '</span>' +
+                '<span><i class="far fa-user"></i>' + esc(item.penulis || 'Redaksi KOPANA') + '</span>' +
+              '</div>' +
+              fotoHtml +
+              '<div class="artikel-isi">' + formatIsi(isi) + '</div>' +
+              '<div class="artikel-share">' +
+                '<a class="btn-share-wa" href="https://wa.me/?text=' + shareText + '" target="_blank" rel="noopener noreferrer">' +
+                '<i class="fab fa-whatsapp"></i> Bagikan via WhatsApp</a>' +
+              '</div>';
+
+            // Daftar berita lainnya (maksimal 4)
+            var lain = items.filter(function(b) { return slug(b.judul) !== id; }).slice(0, 4);
+            if (lain.length > 0) {
+              document.getElementById('berita-lain').style.display = '';
+              document.getElementById('berita-lain-list').innerHTML = lain.map(function(b) {
+                var eksternal = b.url && b.url !== '#';
+                var href = eksternal ? b.url : 'berita.html?id=' + slug(b.judul);
+                return '<a href="' + esc(href) + '">' + esc(b.judul) + '</a>';
+              }).join('');
+            }
+          })
+          .catch(function() { tampilkanTidakDitemukan(artikel); });
+      });
+    })();
+  </script>
+</body>
+</html>

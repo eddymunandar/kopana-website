@@ -3,17 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pendaftaran Anggota KOPANA</title>
-  
+  <title>Pendaftaran Anggota Baru - KOPANA Yogyakarta</title>
+  <meta name="description" content="Formulir pendaftaran anggota baru KOPANA Yogyakarta. Isi data diri Anda lalu cetak formulir untuk diserahkan ke pengurus koperasi.">
+  <link rel="canonical" href="https://kopana.id/daftar.html">
+
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo.png?v=2">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo-192.png">
   <link rel="manifest" href="manifest.json">
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/style.css?v=130">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-Avb2QiuDEEvB4bZJYdab9wBMeP6E5RQLmBeRNqRXE7Z9wLd0zBX8U2nqeAh8iWcLrVSt8U9bfEa7fm/LzO+g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="assets/css/style.css?v=132">
   
   <style>
     .form-container {
@@ -231,38 +235,27 @@
   </style>
 
 <script>
-  // CACHE KILLER: Force unregister all Service Workers to clean up stale cache
+  // Bersihkan service worker lama milik pengunjung dari versi situs sebelumnya.
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for(let registration of registrations) {
-        registration.unregister().then(function(boolean) {
-          console.log('Service worker unregistered');
-        });
-      }
-    });
+    navigator.serviceWorker.getRegistrations()
+      .then(function(regs) { regs.forEach(function(r) { r.unregister(); }); })
+      .catch(function() {});
   }
-  
-  // Clear localStorage and sessionStorage cache versions if any
-  
-  
 </script>
 </head>
-<body class="dark-theme">
+<body>
 
-  
+
   <div class="form-container">
     <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</a>
-    
+
     <div class="form-header">
       <h1>Formulir Pendaftaran Anggota</h1>
-      <p>Silakan isi data diri Anda dengan lengkap dan benar.</p>
+      <p>Silakan isi data diri Anda dengan lengkap dan benar, lalu cetak formulir untuk diserahkan ke pengurus.</p>
     </div>
 
-    <!-- Formsubmit -->
-    <form id="formPendaftaran" action="https://formsubmit.co/kopanayogya@gmail.com" method="POST">
-      <input type="hidden" name="_subject" value="Pendaftaran Anggota Baru KOPANA">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="">
+    <!-- Form ini khusus untuk diisi lalu dicetak (tidak dikirim online) -->
+    <form id="formPendaftaran" onsubmit="return false;">
 
       <div class="form-group">
         <label for="nama">1. Nama Lengkap *</label>
@@ -555,27 +548,6 @@
       
       window.print();
     });
-
-    function getFormData() {
-      const form = document.getElementById('formPendaftaran');
-      if (!form.reportValidity()) return null;
-      const formData = new FormData(form);
-      return { form, formData, data: Object.fromEntries(formData.entries()) };
-    }
-
-    function buildPreviewDaftar(data) {
-      let text = "PENDAFTARAN ANGGOTA BARU:\n\n";
-      text += `1. Nama Lengkap: ${data['Nama Lengkap']}\n`;
-      text += `2. No. Pensiun / HC: ${data['No Pensiun']}\n`;
-      text += `3. Alamat Domisili: ${data['Alamat']}\n`;
-      text += `4. No. Telepon / HP: ${data['No Telepon']}\n`;
-      text += `5. Nama Ahli Waris: ${data['Nama Ahli Waris']}\n`;
-      text += `6. Alamat Ahli Waris: ${data['Alamat Ahli Waris']}\n`;
-      if(data['Penyesuaian Modal']) {
-        text += `7. Penyesuaian Modal: Rp ${formatRupiah(data['Penyesuaian Modal'])}\n`;
-      }
-      return text;
-    }
   </script>
 </body>
 </html>

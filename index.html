@@ -16,7 +16,7 @@
   <!-- SEO Meta Tags -->
   <title>KOPANA Yogyakarta - Koperasi Jasa Serba Usaha Purnakaryawan Pertamina</title>
   <meta name="description" content="Website resmi KOPANA - Koperasi Jasa Serba Usaha Purnakaryawan Pertamina Yogyakarta. Melayani anggota dengan integritas, profesionalisme, dan kebersamaan sejak 1996.">
-  <meta name="keywords" content="KOPANA, Koperasi Pertamina, Koperasi Yogyakarta, Purnakaryawan Pertamina, koperasi jasa, simpan pinjam, Selomartani, Kalasan, Sleman">
+  <meta name="keywords" content="KOPANA, Koperasi Pertamina, Koperasi Yogyakarta, Purnakaryawan Pertamina, koperasi jasa, Selomartani, Kalasan, Sleman">
   <meta name="author" content="KOPANA Yogyakarta">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#0F4C81">
@@ -40,8 +40,8 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo.png?v=2">
-  
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo-192.png">
+
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
 
@@ -59,7 +59,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer">
 
   <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="assets/css/style.css?v=130">
+  <link rel="stylesheet" href="assets/css/style.css?v=132">
 
   <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json">
@@ -90,20 +90,13 @@
   </script>
 
 <script>
-  // CACHE KILLER: Force unregister all Service Workers to clean up stale cache
+  // Bersihkan service worker lama milik pengunjung dari versi situs sebelumnya.
+  // Situs ini tidak lagi menggunakan service worker.
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for(let registration of registrations) {
-        registration.unregister().then(function(boolean) {
-          console.log('Service worker unregistered');
-        });
-      }
-    });
+    navigator.serviceWorker.getRegistrations()
+      .then(function(regs) { regs.forEach(function(r) { r.unregister(); }); })
+      .catch(function() {});
   }
-  
-  // Clear localStorage and sessionStorage cache versions if any
-  
-  
 </script>
 </head>
 
@@ -417,17 +410,10 @@
 
         <div class="stats-grid">
 
-          <!-- Jumlah Anggota -->
+          <!-- Jumlah Anggota (angka fallback; nilai terkini dimuat dari data/statistik.json) -->
           <div class="stat-card reveal">
             <div class="stat-icon"><i class="fas fa-users" aria-hidden="true"></i></div>
-            <!--
-              PLACEHOLDER: JUMLAH_ANGGOTA
-              Ganti data-target dengan jumlah anggota aktual.
-              Contoh: data-target="450"
-            -->
-            <div class="stat-number" data-target="JUMLAH_ANGGOTA" data-key="anggota" aria-label="Jumlah anggota">
-              JUMLAH_ANGGOTA
-            </div>
+            <div class="stat-number" data-target="254" data-key="anggota" aria-label="Jumlah anggota">254</div>
             <div class="stat-label">Anggota Aktif</div>
           </div>
 
@@ -497,7 +483,7 @@
         </div>
 
         <!-- Berita Container (dapat diperbarui via Google Apps Script API) -->
-        <div class="berita-grid" id="berita-container">
+        <div class="berita-grid" id="berita-container" data-limit="3">
 
           <!-- Berita 1 -->
           <article class="berita-card reveal reveal-delay-1">
@@ -586,9 +572,9 @@
         </div><!-- /berita-grid -->
 
         <div class="berita-cta reveal">
-          <a href="#" class="btn btn-outline btn-lg" id="all-berita-btn">
+          <a href="semua-berita.html" class="btn btn-outline btn-lg">
             <i class="fas fa-newspaper" aria-hidden="true"></i>
-            Lihat Semua Berita & Pengumuman
+            Lihat Semua Berita &amp; Pengumuman
           </a>
         </div>
       </div>
@@ -614,20 +600,21 @@
           </p>
         </div>
 
-        <!-- Filter Galeri -->
+        <!-- Filter Galeri (tombol dibangun otomatis dari kategori di data/galeri.json) -->
         <div class="galeri-filter reveal" role="group" aria-label="Filter galeri">
           <button class="filter-btn active" data-filter="all">Semua</button>
-          <button class="filter-btn" data-filter="rat">RAT</button>
-          <button class="filter-btn" data-filter="pelatihan">Pelatihan</button>
-          <button class="filter-btn" data-filter="gathering">Gathering</button>
-          <button class="filter-btn" data-filter="sosial">Kegiatan Sosial</button>
-          <button class="filter-btn" data-filter="pengurus">Pengurus</button>
-          <button class="filter-btn" data-filter="cabang">Cabang</button>
         </div>
 
-        <!-- Grid Galeri -->        <div class="galeri-grid" id="dyn-galeri-grid">
+        <!-- Grid Galeri -->        <div class="galeri-grid" id="dyn-galeri-grid" data-limit="8">
           <!-- Galeri items injected here -->
         </div><!-- /galeri-grid -->
+
+        <div class="berita-cta reveal">
+          <a href="semua-galeri.html" class="btn btn-outline btn-lg">
+            <i class="fas fa-images" aria-hidden="true"></i>
+            Lihat Semua Galeri
+          </a>
+        </div>
       </div>
     </section>
 
@@ -780,15 +767,6 @@
             Melayani anggota dengan integritas, profesionalisme, dan kebersamaan sejak 1996.
           </p>
           <div class="footer-social" id="dyn-footer-social" role="list" aria-label="Media sosial KOPANA">
-            <a href="#" class="social-btn" role="listitem" aria-label="Facebook KOPANA">
-              <i class="fab fa-facebook-f" aria-hidden="true"></i>
-            </a>
-            <a href="#" class="social-btn" role="listitem" aria-label="Instagram KOPANA">
-              <i class="fab fa-instagram" aria-hidden="true"></i>
-            </a>
-            <a href="#" class="social-btn" role="listitem" aria-label="YouTube KOPANA">
-              <i class="fab fa-youtube" aria-hidden="true"></i>
-            </a>
             <a href="https://wa.me/6282227154266" class="social-btn" role="listitem" aria-label="WhatsApp KOPANA" target="_blank" rel="noopener noreferrer">
               <i class="fab fa-whatsapp" aria-hidden="true"></i>
             </a>
@@ -802,7 +780,7 @@
             <a href="#hero"><i class="fas fa-chevron-right" aria-hidden="true"></i> Beranda</a>
             <a href="#tentang"><i class="fas fa-chevron-right" aria-hidden="true"></i> Tentang Kami</a>
             <a href="#usaha"><i class="fas fa-chevron-right" aria-hidden="true"></i> Bidang Usaha</a>
-            <a href="#pengurus"><i class="fas fa-chevron-right" aria-hidden="true"></i> Pengurus</a>
+            <a href="pengurus.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> Pengurus</a>
             <a href="#berita"><i class="fas fa-chevron-right" aria-hidden="true"></i> Berita & Pengumuman</a>
             <a href="#galeri"><i class="fas fa-chevron-right" aria-hidden="true"></i> Galeri</a>
             <a href="faq.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> FAQ</a>
@@ -855,13 +833,11 @@
           </p>
           <!-- Hit Counter Badge -->
           <a href="#" aria-label="Statistik Pengunjung" style="pointer-events: none;">
-            <img class="visitor-badge-img" src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fkopana.co.id&label=Total%20Pengunjung&labelColor=%230f172a&countColor=%232563eb" alt="Total Pengunjung Website KOPANA" style="height: 32px; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);"/>
+            <img class="visitor-badge-img" src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fkopana.co.id&label=Total%20Pengunjung&labelColor=%230f172a&countColor=%232563eb" alt="Total Pengunjung Website KOPANA" style="height: 32px; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);" onerror="this.parentElement.style.display='none'" onload="this.parentElement.style.display=''"/>
           </a>
         </div>
         <nav class="footer-legal" aria-label="Legal">
-          <a href="#">Kebijakan Privasi</a>
-          <a href="#">Syarat &amp; Ketentuan</a>
-          <a href="#">Sitemap</a>
+          <a href="/sitemap.xml">Sitemap</a>
           <a href="/admin/" aria-label="Login ke Halaman Admin"><i class="fas fa-lock" aria-hidden="true"></i> Login Admin</a>
         </nav>
       </div>
@@ -914,21 +890,6 @@
 
 
   <!-- Main Script -->
-  <script src="assets/js/script.js?v=130" defer></script>
-  
-  <!-- PWA Service Worker Registration -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then(registration => {
-            console.log('ServiceWorker registration successful');
-          })
-          .catch(err => {
-            console.log('ServiceWorker registration failed: ', err);
-          });
-      });
-    }
-  </script>
+  <script src="assets/js/script.js?v=134" defer></script>
 </body>
 </html>

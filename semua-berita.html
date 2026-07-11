@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FAQ & Pertanyaan - KOPANA Yogyakarta</title>
-  <meta name="description" content="Jawaban atas pertanyaan yang sering diajukan seputar keanggotaan dan layanan KOPANA Yogyakarta - Koperasi Jasa Serba Usaha Purnakaryawan Pertamina.">
-  <link rel="canonical" href="https://kopana.id/faq.html">
+  <title>Semua Berita & Pengumuman - KOPANA Yogyakarta</title>
+  <meta name="description" content="Arsip lengkap berita dan pengumuman resmi KOPANA Yogyakarta - Koperasi Jasa Serba Usaha Purnakaryawan Pertamina.">
+  <link rel="canonical" href="https://kopana.id/semua-berita.html">
 
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo-192.png">
@@ -20,24 +20,20 @@
   <link rel="stylesheet" href="assets/css/style.css?v=132">
 
   <style>
-    .faq-page-container {
-      max-width: 800px;
-      margin: 120px auto 60px;
-      padding: 40px;
-      background: var(--surface, rgba(255, 255, 255, 0.02));
-      border: 1px solid var(--border, rgba(255, 255, 255, 0.05));
-      border-radius: var(--radius-lg);
-      backdrop-filter: blur(10px);
+    .arsip-container {
+      max-width: 1100px;
+      margin: 100px auto 60px;
+      padding: 0 24px;
     }
-    .faq-header {
+    .arsip-header {
       text-align: center;
       margin-bottom: 40px;
     }
-    .faq-header h1 {
+    .arsip-header h1 {
       color: var(--text, #1e293b);
       margin-bottom: 10px;
     }
-    .faq-header p {
+    .arsip-header p {
       color: var(--text-muted, #475569);
     }
     .back-link {
@@ -47,61 +43,12 @@
       text-decoration: none;
       font-weight: 600;
     }
-    .back-link:hover {
-      text-decoration: underline;
-    }
-
-    /* Accordion Styles */
-    .faq-item {
-      margin-bottom: 15px;
-      border: 1px solid var(--border, #cbd5e1);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      background: var(--bg, #ffffff);
-      transition: all 0.3s ease;
-    }
-    .faq-question {
-      width: 100%;
-      text-align: left;
-      padding: 18px 20px;
-      background: var(--bg-alt, #f8fafc);
-      border: none;
-      font-weight: 600;
-      font-size: 1rem;
-      color: var(--text, #1e293b);
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background 0.3s ease;
-    }
-    .faq-question:hover {
-      background: var(--surface, #f1f5f9);
-    }
-    .faq-question i {
-      color: var(--primary, #3b82f6);
-      transition: transform 0.3s ease;
-    }
-    .faq-item.active .faq-question i {
-      transform: rotate(180deg);
-    }
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease-out;
-      background: var(--bg, #ffffff);
-    }
-    .faq-answer-content {
-      padding: 20px;
-      color: var(--text-muted, #475569);
-      line-height: 1.6;
-      border-top: 1px solid var(--border, #e2e8f0);
-    }
-
+    .back-link:hover { text-decoration: underline; }
     .loading-state {
       text-align: center;
       padding: 40px;
       color: var(--text-muted, #64748b);
+      grid-column: 1 / -1;
     }
   </style>
 
@@ -134,19 +81,18 @@
     <i id="dark-icon" class="fas fa-moon"></i>
   </button>
 
-  <div class="faq-page-container">
-    <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</a>
+  <div class="arsip-container">
+    <a href="/#berita" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</a>
 
-    <div class="faq-header">
-      <h1>FAQ & Pertanyaan</h1>
-      <p>Temukan jawaban untuk pertanyaan-pertanyaan umum seputar KOPANA.</p>
+    <div class="arsip-header">
+      <h1>Berita &amp; Pengumuman</h1>
+      <p>Arsip lengkap berita, pengumuman, dan kegiatan KOPANA Yogyakarta.</p>
     </div>
 
-    <div id="dyn-faq-list">
-      <!-- Akan diisi oleh script -->
+    <div class="berita-grid" id="berita-container">
       <div class="loading-state">
         <i class="fas fa-spinner fa-spin"></i>
-        <p>Memuat FAQ...</p>
+        <p>Memuat berita...</p>
       </div>
     </div>
   </div>
