@@ -101,7 +101,7 @@ Buka `http://localhost:8080`. (Membuka index.html langsung dari file explorer ti
 
 ## Informasi Kontak
 
-- **Alamat:** Brambang Gatak, Selomartani, Kalasan, Sleman, DIY
+- **Alamat:** Brambang Gatak 1, Selomartani, Kalasan, Sleman, DIY
 - **Telepon/WA:** 0822 2715 4266
 - **Email:** kopanayk@gmail.com
 - **Website:** [kopana.id](https://kopana.id)
