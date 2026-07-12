@@ -23,7 +23,7 @@
   --surface: #FFFFFF;
   --text: #222222;
   --text-muted: #6B7280;
-  --text-light: #9CA3AF;
+  --text-light: #6B7280;
   --border: #E2E8F0;
   --border-light: #F1F5F9;
 
@@ -97,19 +97,20 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-  font-size: 16px;
+  font-size: 17px;
 }
 
 body {
   font-family: var(--font-primary);
   background-color: var(--bg);
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.65;
   overflow-x: hidden;
   transition: background-color var(--transition-slow), color var(--transition-slow);
 }
 
 body.dark-mode {
+  --text-light: #9CA3AF;
   --bg: var(--dark-bg);
   --bg-alt: var(--dark-surface);
   --surface: var(--dark-surface-alt);
@@ -423,7 +424,7 @@ section {
 }
 
 .nav-brand-tagline {
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   font-weight: 500;
   color: rgba(255,255,255,0.75);
   text-transform: uppercase;
@@ -444,7 +445,7 @@ section {
 .nav-link {
   position: relative;
   padding: 0.5rem 0.5rem;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 500;
   color: rgba(255,255,255,0.9);
   border-radius: 50px;
@@ -2419,7 +2420,7 @@ footer {
   }
 
   .hero-badge {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     padding: 0.4rem 0.875rem;
   }
 
@@ -2434,7 +2435,7 @@ footer {
   }
 
   .stat-label {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
   }
 
   /* Cards */
@@ -2480,7 +2481,7 @@ footer {
 
   /* Section badge */
   .section-badge {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
   }
 
   /* Jam operasional */
@@ -2534,7 +2535,7 @@ footer {
   }
 
   .filter-btn {
-    min-height: 40px;
+    min-height: 44px;
   }
 
   .dark-toggle,

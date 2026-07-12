@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         integrity="sha512-Avb2QiuDEEvB4bZJYdab9wBMeP6E5RQLmBeRNqRXE7Z9wLd0zBX8U2nqeAh8iWcLrVSt8U9bfEa7fm/LzO+g=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
-  <link rel="stylesheet" href="assets/css/style.css?v=132">
+  <link rel="stylesheet" href="assets/css/style.css?v=133">
 
   <style>
     .arsip-container {
@@ -68,8 +68,7 @@
     (function() {
       try {
         var saved = localStorage.getItem('kopana-dark-mode');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (saved === 'true' || (saved === null && prefersDark)) {
+        if (saved === 'true') {
           document.body.classList.add('dark-mode');
         }
       } catch (e) {}
@@ -97,6 +96,13 @@
     </div>
   </div>
 
-  <script src="assets/js/script.js?v=135" defer></script>
+  <!-- ============================================================
+       BACK TO TOP BUTTON
+       ============================================================ -->
+  <button id="back-to-top" aria-label="Kembali ke atas halaman">
+    <i class="fas fa-chevron-up" aria-hidden="true"></i>
+  </button>
+
+  <script src="assets/js/script.js?v=136" defer></script>
 </body>
 </html>

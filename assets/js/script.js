@@ -141,9 +141,9 @@ function parseTanggal(str) {
   if (!toggleBtn) return;
 
   // Baca preferensi tersimpan atau system preference
+  // Default: mode terang. Gelap hanya jika pengunjung memilihnya sendiri.
   const saved = localStorage.getItem('kopana-dark-mode');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  let isDark = saved !== null ? saved === 'true' : prefersDark;
+  let isDark = saved === 'true';
 
   function applyDarkMode(dark) {
     document.body.classList.toggle('dark-mode', dark);
@@ -160,13 +160,6 @@ function parseTanggal(str) {
     applyDarkMode(isDark);
   });
 
-  // Ikuti perubahan system preference
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (localStorage.getItem('kopana-dark-mode') === null) {
-      isDark = e.matches;
-      applyDarkMode(isDark);
-    }
-  });
 })();
 
 
