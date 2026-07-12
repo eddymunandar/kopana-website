@@ -59,7 +59,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer">
 
   <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="assets/css/style.css?v=132">
+  <link rel="stylesheet" href="assets/css/style.css?v=133">
 
   <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json">
@@ -107,8 +107,7 @@
     (function() {
       try {
         var saved = localStorage.getItem('kopana-dark-mode');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (saved === 'true' || (saved === null && prefersDark)) {
+        if (saved === 'true') {
           document.body.classList.add('dark-mode');
         }
       } catch (e) {}
@@ -391,6 +390,6 @@
 
 
   <!-- Main Script -->
-  <script src="assets/js/script.js?v=135" defer></script>
+  <script src="assets/js/script.js?v=136" defer></script>
 </body>
 </html>
